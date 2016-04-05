@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls", "~> 0.8.11"
 
   spec.add_runtime_dependency "abort_if", "~> 0.1.0"
+  spec.add_runtime_dependency "bio", "~> 1.5"
 end

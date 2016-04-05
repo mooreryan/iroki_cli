@@ -25,6 +25,7 @@ require "iroki_lib/core_ext/hash/hash"
 require "iroki_lib/core_ext/string/string"
 require "iroki_lib/core_ext/file/file"
 require "iroki_lib/utils/utils"
+require "iroki_lib/main/main"
 
 
 include IrokiLib::Const
