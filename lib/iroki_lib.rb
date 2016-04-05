@@ -16,8 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with IrokiLib.  If not, see <http://www.gnu.org/licenses/>.
 
+require "abort_if"
+
 require "iroki_lib/version"
+require "iroki_lib/const/const"
+require "iroki_lib/color/color"
+require "iroki_lib/core_ext/hash/hash"
+require "iroki_lib/core_ext/string/string"
+require "iroki_lib/core_ext/file/file"
+require "iroki_lib/utils/utils"
+
+
+include IrokiLib::Const
+include IrokiLib::Color
+include IrokiLib::CoreExt::Hash
+include IrokiLib::CoreExt::String
+include IrokiLib::CoreExt::File
+include IrokiLib::Utils
+
+include AbortIf
+
 
 module IrokiLib
-  # Your code goes here...
 end

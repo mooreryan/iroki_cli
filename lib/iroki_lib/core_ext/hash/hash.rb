@@ -16,10 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with IrokiLib.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'spec_helper'
-
-describe IrokiLib do
-  it 'has a version number' do
-    expect(IrokiLib::VERSION).not_to be nil
+module IrokiLib
+  module CoreExt
+    module Hash
+      def duplicate_values? hash
+        values = hash.values
+        values.count != 1 && values.count != values.uniq.count
+      end
+    end
   end
 end
