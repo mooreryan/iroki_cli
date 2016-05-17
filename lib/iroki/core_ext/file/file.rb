@@ -20,7 +20,7 @@ module Iroki
   module CoreExt
     module File
       def check_file arg, which
-        help = " Try color_tree --help for help."
+        help = " Try iroki --help for help."
 
         abort_if arg.nil?,
                  "You must provide a #{which} file.#{help}"
