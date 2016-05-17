@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "abort_if", "~> 0.1.0"
   spec.add_runtime_dependency "bio", "~> 1.5"
+  spec.add_runtime_dependency "trollop", "~> 2.1", ">= 2.1.2"
 end
