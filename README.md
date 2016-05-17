@@ -1,6 +1,6 @@
-# IrokiLib #
+# Iroki #
 
-[![Gem Version](https://badge.fury.io/rb/iroki_lib.svg)](https://badge.fury.io/rb/iroki_lib) [![Build Status](https://travis-ci.org/mooreryan/iroki_lib.svg?branch=master)](https://travis-ci.org/mooreryan/iroki_lib) [![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki_lib/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki_lib?branch=master)
+[![Gem Version](https://badge.fury.io/rb/iroki.svg)](https://badge.fury.io/rb/iroki) [![Build Status](https://travis-ci.org/mooreryan/iroki.svg?branch=master)](https://travis-ci.org/mooreryan/iroki) [![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki?branch=master)
 
 Library code for Iroki, a phylogenetic tree customization program.
 
@@ -9,7 +9,7 @@ Library code for Iroki, a phylogenetic tree customization program.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'iroki_lib'
+gem 'iroki'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install iroki_lib
+    $ gem install iroki
 
 ## Development ##
 
@@ -36,7 +36,7 @@ the `.gem` file to [rubygems.org](https://rubygems.org).
 ## Contributing ##
 
 Bug reports and pull requests are welcome on GitHub at
-https://github.com/[USERNAME]/iroki_lib. This project is intended to
+https://github.com/mooreryan/iroki. This project is intended to
 be a safe, welcoming space for collaboration, and contributors are
 expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of

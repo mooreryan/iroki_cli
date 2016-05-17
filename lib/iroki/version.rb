@@ -16,20 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-require "spec_helper"
+# Library metadata
+module Iroki
+  VERSION = "0.0.1"
+  COPYRIGHT = "2015 - 2016 Ryan Moore"
+  CONTACT   = "moorer@udel.edu"
+  WEBSITE   = "https://github.com/mooreryan/iroki"
+  LICENSE   = "GPLv3"
 
-describe Iroki::CoreExt::Hash do
-  let(:klass) { Class.new { extend Iroki::CoreExt::Hash } }
-
-  describe "#duplicate_values?" do
-    it "is true when the hash has duplicate values" do
-      h = { a: 1, b: 1 }
-      expect(klass.duplicate_values? h).to be true
-    end
-
-    it "is false when the hash has no duplicate values" do
-      h = { a: 1, b: 2 }
-      expect(klass.duplicate_values? h).to be false
-    end
-  end
+  VERSION_BANNER = "  # Version: #{Iroki::VERSION}
+  # Copyright #{Iroki::COPYRIGHT}
+  # Contact: #{Iroki::CONTACT}
+  # Website: #{Iroki::WEBSITE}
+  # License: #{Iroki::LICENSE}"
 end

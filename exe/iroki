@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+
+# Copyright 2016 Ryan Moore
+# Contact: moorer@udel.edu
+#
+# This file is part of Iroki.
+#
+# Iroki is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Iroki is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
+
+require "iroki"
+require "trollop"
+
+opts = Trollop.options do
+  version Iroki::VERSION_BANNER
+
+  banner <<-EOS
+
+#{Iroki::VERSION_BANNER}
+
+  Iroki command line program.
+
+  Options:
+  EOS
+
+  opt(:color_branches,
+      "Color branches?",
+      short: "-b")
+
+  opt(:color_taxa_names,
+      "Color label names?",
+      short: "-t")
+
+  opt(:exact,
+      "Exact pattern matching")
+
+  opt(:remove_bootstraps_below,
+      "Remove bootstrap values below given value",
+      type: :float)
+
+  opt(:color_map,
+      "File with color mappings",
+      type: :string)
+
+  opt(:name_map,
+      "File with name mappings",
+      type: :string)
+
+  opt(:auto_color,
+      "Specify color scheme for auto coloring",
+      type: :string)
+
+  opt(:display_auto_color_options,
+      "Display options for auto coloring")
+
+  opt(:infile,
+      "Name of input newick file",
+      type: :string)
+
+  opt(:outfile,
+      "Name of outfile",
+      type: :string)
+end
+
+Iroki::Main.main(
+  color_branches:             opts[:color_branches],
+  color_taxa_names:           opts[:color_taxa_names],
+  exact:                      opts[:exact],
+  remove_bootstraps_below:    opts[:remove_bootstraps_below],
+  color_map_f:                opts[:color_map],
+  name_map_f:                 opts[:name_map],
+  auto_color:                 opts[:auto_color],
+  display_auto_color_options: opts[:display_auto_color_options],
+  newick_f:                   opts[:infile],
+  out_f:                      opts[:outfile]
+)

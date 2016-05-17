@@ -1,4 +1,4 @@
-module IrokiLib
+module Iroki
   module CoreExt
     module String
 

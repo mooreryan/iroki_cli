@@ -1,25 +1,25 @@
 # Copyright 2016 Ryan Moore
 # Contact: moorer@udel.edu
 #
-# This file is part of IrokiLib.
+# This file is part of Iroki.
 #
-# IrokiLib is free software: you can redistribute it and/or modify it
+# Iroki is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# IrokiLib is distributed in the hope that it will be useful, but
+# Iroki is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with IrokiLib.  If not, see <http://www.gnu.org/licenses/>.
+# along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
 require "spec_helper"
 
-describe IrokiLib::CoreExt::File do
-  let(:klass) { Class.new { extend IrokiLib::CoreExt::File } }
+describe Iroki::CoreExt::File do
+  let(:klass) { Class.new { extend Iroki::CoreExt::File } }
 
   let(:this_dir) { File.dirname __FILE__ }
   let(:test_files) { File.join this_dir, "..", "..", "test_files" }

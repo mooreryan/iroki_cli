@@ -16,20 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-require "spec_helper"
+require "abort_if"
 
-describe Iroki::CoreExt::Hash do
-  let(:klass) { Class.new { extend Iroki::CoreExt::Hash } }
+require "iroki/version"
+require "iroki/const/const"
+require "iroki/color/color"
+require "iroki/core_ext/hash/hash"
+require "iroki/core_ext/string/string"
+require "iroki/core_ext/file/file"
+require "iroki/utils/utils"
+require "iroki/main/main"
 
-  describe "#duplicate_values?" do
-    it "is true when the hash has duplicate values" do
-      h = { a: 1, b: 1 }
-      expect(klass.duplicate_values? h).to be true
-    end
 
-    it "is false when the hash has no duplicate values" do
-      h = { a: 1, b: 2 }
-      expect(klass.duplicate_values? h).to be false
-    end
-  end
+include Iroki::Const
+include Iroki::Color
+include Iroki::CoreExt::Hash
+include Iroki::CoreExt::String
+include Iroki::CoreExt::File
+include Iroki::Utils
+
+include AbortIf
+
+
+module Iroki
 end

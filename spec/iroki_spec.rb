@@ -18,18 +18,34 @@
 
 require "spec_helper"
 
-describe Iroki::CoreExt::Hash do
-  let(:klass) { Class.new { extend Iroki::CoreExt::Hash } }
+describe Iroki do
+  it "has a version" do
+    expect(Iroki::VERSION).not_to be nil
+  end
 
-  describe "#duplicate_values?" do
-    it "is true when the hash has duplicate values" do
-      h = { a: 1, b: 1 }
-      expect(klass.duplicate_values? h).to be true
-    end
+  it "has a copyright" do
+    expect(Iroki::COPYRIGHT).not_to be nil
+  end
 
-    it "is false when the hash has no duplicate values" do
-      h = { a: 1, b: 2 }
-      expect(klass.duplicate_values? h).to be false
-    end
+  it "has a contact" do
+    expect(Iroki::CONTACT).not_to be nil
+  end
+
+  it "has a website" do
+    expect(Iroki::WEBSITE).not_to be nil
+  end
+
+  it "has a license" do
+    expect(Iroki::LICENSE).not_to be nil
+  end
+
+  it "has a version banner" do
+    version_banner = "  # Version: #{Iroki::VERSION}
+  # Copyright #{Iroki::COPYRIGHT}
+  # Contact: #{Iroki::CONTACT}
+  # Website: #{Iroki::WEBSITE}
+  # License: #{Iroki::LICENSE}"
+
+    expect(Iroki::VERSION_BANNER).to eq version_banner
   end
 end

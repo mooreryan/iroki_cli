@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'iroki_lib/version'
+require 'iroki/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "iroki_lib"
-  spec.version       = IrokiLib::VERSION
+  spec.name          = "iroki"
+  spec.version       = Iroki::VERSION
   spec.authors       = ["Ryan Moore"]
   spec.email         = ["moorer@udel.edu"]
 
   spec.summary       = %q{Library code for Iroki, a phylogenetic tree customization program.}
   spec.description   = %q{Library code for Iroki, a phylogenetic tree customization program.}
-  spec.homepage      = "https://github.com/mooreryan/iroki_lib"
+  spec.homepage      = "https://github.com/mooreryan/iroki"
   spec.license       = "GPLv3: http://www.gnu.org/licenses/gpl.txt"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
