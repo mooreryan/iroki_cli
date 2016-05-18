@@ -41,3 +41,19 @@ be a safe, welcoming space for collaboration, and contributors are
 expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of
 conduct.
+
+## Version Info ##
+
+### 0.0.1 ###
+
+Migrate from [color_tree](https://github.com/mooreryan/color_tree) to
+Iroki.
+
+### 0.0.2 ###
+
+Add [iroki](https://github.com/mooreryan/iroki/blob/master/exe/iroki)
+executable, and use RubyGems for installation.
+
+### 0.0.3 ###
+
+Add a [Dockerfile](https://github.com/mooreryan/iroki/blob/master/Dockerfile) and a [wrapper script](https://github.com/mooreryan/iroki/blob/master/exe/iroki_docker) for running Iroki with Docker.

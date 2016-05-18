@@ -1,0 +1,21 @@
+#!/usr/bin/perl -w
+
+use File::Spec;
+
+my @args = ();
+
+foreach my $arg (@ARGV) {
+    if ($arg =~ /^-/) {
+        push @args, $arg;
+    } else {
+        my $path = File::Spec->rel2abs($arg);
+        push @args, $path;
+    }
+}
+
+my $img = "mooreryan/iroki";
+my $cmd = "docker run -v \"\$HOME:\$HOME\" $img @args";
+
+print "\n  RUNNING COMMAND: $cmd\n";
+
+exec("$cmd");

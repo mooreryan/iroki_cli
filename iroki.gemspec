@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ryan Moore"]
   spec.email         = ["moorer@udel.edu"]
 
-  spec.summary       = %q{Library code for Iroki, a phylogenetic tree customization program.}
-  spec.description   = %q{Library code for Iroki, a phylogenetic tree customization program.}
+  spec.summary       = %q{Command line app and library code for Iroki, a phylogenetic tree customization program.}
+  spec.description   = %q{Command line app and library code for Iroki, a phylogenetic tree customization program.}
   spec.homepage      = "https://github.com/mooreryan/iroki"
   spec.license       = "GPLv3: http://www.gnu.org/licenses/gpl.txt"
 
