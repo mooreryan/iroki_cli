@@ -2,7 +2,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/iroki.svg)](https://badge.fury.io/rb/iroki) [![Build Status](https://travis-ci.org/mooreryan/iroki.svg?branch=master)](https://travis-ci.org/mooreryan/iroki) [![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki?branch=master)
 
-Library code for Iroki, a phylogenetic tree customization program.
+Command line app and library code for Iroki, a phylogenetic tree
+customization program.
 
 ## Installation ##
 
