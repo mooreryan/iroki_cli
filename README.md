@@ -7,6 +7,24 @@ customization program.
 
 ## Installation ##
 
+### Running with Docker ###
+
+See the [wiki](https://github.com/mooreryan/iroki/wiki).
+
+### Use the command line app with RubyGems ###
+
+If you already have a working Ruby environment, run this
+
+    $ gem install iroki
+
+Then type `which iroki` and you should see something like this
+
+    /Users/mooreryan/.rvm/gems/ruby-2.2.4@iroki/bin/iroki
+
+If so, you are good to go!
+
+### To use the library code ###
+
 Add this line to your application's Gemfile:
 
 ```ruby

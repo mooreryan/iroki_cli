@@ -16,6 +16,6 @@ foreach my $arg (@ARGV) {
 my $img = "mooreryan/iroki";
 my $cmd = "docker run -v \"\$HOME:\$HOME\" $img @args";
 
-print "\n  RUNNING COMMAND: $cmd\n";
+print "\nRUNNING COMMAND: $cmd\n";
 
 exec("$cmd");
