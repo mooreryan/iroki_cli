@@ -76,3 +76,7 @@ executable, and use RubyGems for installation.
 ### 0.0.3 ###
 
 Add a [Dockerfile](https://github.com/mooreryan/iroki/blob/master/Dockerfile) and a [wrapper script](https://github.com/mooreryan/iroki/blob/master/exe/iroki_docker) for running Iroki with Docker.
+
+### 0.0.4 ###
+
+Fix the `iroki_docker` install bug.
