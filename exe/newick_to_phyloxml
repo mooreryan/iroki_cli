@@ -55,5 +55,3 @@ make_xml_string $descendents
 
 puts $xml_start
 puts "#{$xml_end}"
-
-warn $tree.output_newick(indent: false)
