@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+# NOTE make sure the newick has no spaces for jsPhyloXML
+
+# NOTE for Archaeopteryx, you need <name>#{boot}</name> to show
+# bootsraps, but for jsPhyloXML, just the confidence is needed
+
 require "set"
 require "bio"
 
@@ -24,22 +29,39 @@ $xml_end = %q{</clade>
 </phyloxml>
 }
 
-added_nodes = Set.new
-
 def leaf? tree, node
   tree.descendents(node).count.zero?
 end
 
-def make_xml_string descendents
+def make_xml_string descendents, start_node
   while (node = descendents.shift)
     unless $already_added.include? node
       if leaf? $tree, node
-        $xml_start << "<clade>\n<name>#{node.name}</name>\n</clade>\n"
+        # TODO this will raise something if no dist, rescue it
+        dist = $tree.distance(start_node, node)
+
+        $xml_start << "<clade>
+<name>#{node.name}</name>
+<branch_length>#{dist}</branch_length>
+</clade>\n"
         $already_added << node
+        $prev_node = node
       else
+        boot = node.bootstrap
+        if boot
+          boot_xml = %Q{<confidence type="bootstrap">#{boot}</confidence>}
+        else
+          boot_xml = ""
+        end
+
+        # TODO this will raise something if no dist, rescue it
+        dist = $tree.distance(start_node, node)
+        $xml_start << "<clade>
+<branch_length>#{dist}</branch_length>
+#{boot_xml}"
+
         STDERR.puts "LOG -- recurse"
-        $xml_start << "<clade>\n"
-        make_xml_string $tree.descendents(node)
+        make_xml_string $tree.descendents(node), node
         $xml_start << "</clade>\n"
         $already_added << node
       end
@@ -49,9 +71,15 @@ end
 
 $already_added = Set.new
 
-$descendents = $tree.descendents($tree.root)
+STDERR.puts $tree.nodes.inspect
 
-make_xml_string $descendents
+start_node = $tree.root
+
+$descendents = $tree.descendents(start_node)
+
+STDERR.puts $descendents.inspect
+
+make_xml_string $descendents, start_node
 
 puts $xml_start
 puts "#{$xml_end}"

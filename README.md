@@ -96,3 +96,7 @@ Fix the `iroki_docker` install bug.
 ### 0.0.5 ###
 
 Add `newick_to_phyloxml` script.
+
+### 0.0.6 ###
+
+Add branch length and bootstraps to `newick_to_phyloxml`.
