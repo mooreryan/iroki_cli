@@ -39,6 +39,16 @@ Or install it yourself as:
 
     $ gem install iroki
 
+## Other programs ##
+
+### Newick format to PhyloXML ###
+
+- `exe/newick_to_phyloxml.rb`
+
+*Usage*: `newick_to_phyloxml.rb tree.newick > tree.phyloxml`
+
+*Note*: No specs for this as of yet.
+
 ## Development ##
 
 After checking out the repo, run `bin/setup` to install
