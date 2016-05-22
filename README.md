@@ -90,3 +90,7 @@ Add a [Dockerfile](https://github.com/mooreryan/iroki/blob/master/Dockerfile) an
 ### 0.0.4 ###
 
 Fix the `iroki_docker` install bug.
+
+### 0.0.5 ###
+
+Add `newick_to_phyloxml.rb` script.
