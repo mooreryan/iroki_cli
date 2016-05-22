@@ -43,9 +43,11 @@ Or install it yourself as:
 
 ### Newick format to PhyloXML ###
 
-- `exe/newick_to_phyloxml.rb`
+- `exe/newick_to_phyloxml`
 
-*Usage*: `newick_to_phyloxml.rb tree.newick > tree.phyloxml`
+This will be installed when you run `gem install iroki`.
+
+*Usage*: `newick_to_phyloxml tree.newick > tree.phyloxml`
 
 *Note*: No specs for this as of yet.
 
@@ -93,4 +95,4 @@ Fix the `iroki_docker` install bug.
 
 ### 0.0.5 ###
 
-Add `newick_to_phyloxml.rb` script.
+Add `newick_to_phyloxml` script.
