@@ -1,0 +1,206 @@
+#!/usr/bin/env ruby
+
+require "bio"
+require "trollop"
+require "abort_if"
+
+include AbortIf
+
+module Math
+  def self.max ary
+    ary.max
+  end
+
+  def self.median ary
+    len = ary.length
+    if len > 0
+      sorted = ary.sort
+
+      if len.odd?
+        sorted[len / 2]
+      else
+        (sorted[(len-1) / 2] + sorted[len/2]) / 2.0
+      end
+    end
+  end
+
+  def self.mean ary
+    len = ary.length
+    if len > 0
+      ary.reduce(:+) / len.to_f
+    end
+  end
+
+  def self.dist_for_comp metric, ary
+    self.send(metric, ary)
+  end
+
+end
+
+class Bio::Tree
+  def root_to_node_dist node
+    self.distance(self.root, node)
+  end
+
+  def root_to_node_dists nodes
+    nodes.map do |node|
+      root_to_node_dist node
+    end
+  end
+
+  def __to_newick(parents, source, depth, format_leaf,
+                  options, &block)
+    result = []
+    if indent_string = __get_option(:indent, options) then
+      indent0 = indent_string * depth
+      indent  = indent_string * (depth + 1)
+      newline = "\n"
+    else
+      indent0 = indent = newline = ''
+    end
+    out_edges = self.out_edges(source)
+    if block_given? then
+      out_edges.sort! { |edge1, edge2| yield(edge1[1], edge2[1]) }
+    else
+      # this sorts within clades
+      out_edges.sort! do |edge1, edge2|
+        n1 = edge1[1]
+        n2 = edge2[1]
+        # o1 = edge1[1].order_number
+        # o2 = edge2[1].order_number
+        d1 = edge1[2].distance
+        d2 = edge2[2].distance
+        # STDERR.puts
+        # STDERR.puts [:hi, edge1[0], edge1[1], d1, edge2[0], edge2[1], d2].inspect
+
+        n1_leaves = self.leaves(n1)
+        n2_leaves = self.leaves(n2)
+
+        dists_1 = root_to_node_dists n1_leaves
+        dists_2 = root_to_node_dists n2_leaves
+
+        the_dist_1 = Math.dist_for_comp COMP_METHOD, dists_1
+        the_dist_2 = Math.dist_for_comp COMP_METHOD, dists_2
+
+        # TODO check if leaves is empty
+        if the_dist_1 && the_dist_2
+          # STDERR.puts [:bye, the_dist_1, the_dist_2]
+          if LONG_ON_TOP
+            the_dist_2 <=> the_dist_1
+          else
+            the_dist_1 <=> the_dist_2
+          end
+        elsif the_dist_1 # first has leaves, it is "longer"
+          if LONG_ON_TOP
+            -1
+          else
+            1
+          end
+        elsif the_dist_2 # second has leaves, second is longer
+          if LONG_ON_TOP
+            1
+          else
+            -1
+          end
+        else # neither has leaves, use dist
+          if d1 and d2 then # check that both dists exist
+            if LONG_ON_TOP
+              d2 <=> d1
+            else
+              d1 <=> d2
+            end
+          else # just use the names
+            edge1[1].name.to_s <=> edge2[1].name.to_s
+          end
+        end
+      end
+    end
+    out_edges.each do |src, tgt, edge|
+      if parents.include?(tgt) then
+        ;;
+      elsif self.out_degree(tgt) == 1 then # target is a leaf?
+        # STDERR.puts "what is this? |#{src}| |#{tgt}|"
+        result << indent + __send__(format_leaf, tgt, edge, options)
+      else # target is an interior node
+        # STDERR.puts "recurse |#{src}| |#{tgt}|"
+        result <<
+          __to_newick([ src ].concat(parents), tgt, depth + 1,
+                      format_leaf, options) +
+          __send__(format_leaf, tgt, edge, options)
+      end
+    end
+    indent0 + "(" + newline + result.join(',' + newline) +
+      (result.size > 0 ? newline : '') + indent0 + ')'
+  end
+  private :__to_newick
+end
+
+opts = Trollop.options do
+  banner <<-EOS
+
+  Synopsis
+    reorder_nodes [-o order] [-c comparison_method] -i newick.tre > newick.ordered.tre
+
+  Info
+    Given a newick file, reorder the nodes as directed.
+
+  Option details
+    --infile     A newick file with a single tree
+    --order      Order in which to display nodes: increasing or decreasing
+    --comparison Method to sort inner nodes: mean, median, max
+
+  Options
+
+  EOS
+
+  opt(:infile,
+      "input file",
+      type: :string)
+
+  opt(:order,
+      "increasing or decreasing",
+      type: :string,
+      default: "increasing")
+
+  opt(:comparison,
+      "mean, median, or max",
+      type: :string,
+      default: "max")
+end
+
+abort_unless %w[increasing decreasing].include?(opts[:order]),
+             "--order must be one of increasing or decreasing, " +
+             "got #{opts[:order]}.\nTry reorder_nodes --help for help."
+
+if opts[:order] == "increasing"
+  LONG_ON_TOP = true
+else
+  LONG_ON_TOP = false
+end
+
+abort_unless %w[mean median max].include?(opts[:comparison]),
+             "--comparison must be one of mean, median, or max, " +
+             "got #{opts[:comparison]}.\n" +
+             "Try reorder_nodes --help for help."
+
+COMP_METHOD = opts[:comparison]
+
+abort_unless opts[:infile],
+             "--infile is a required option. " +
+             "Try reorder_nodes --help for help."
+
+abort_unless File.exists?(opts[:infile]),
+             "--infile #{opts[:infile]} does not exist.\n" +
+             "Try reorder_nodes --help for help."
+
+fname = opts[:infile]
+
+tree_str = File.open(fname, 'rt').read
+
+# this only will work if there is only one tree
+newick = Bio::Newick.new(tree_str, parser: :naive, indent: false)
+
+tree = newick.tree
+
+# warn tree_str
+puts tree.newick

@@ -100,3 +100,7 @@ Add `newick_to_phyloxml` script.
 ### 0.0.6 ###
 
 Add branch length and bootstraps to `newick_to_phyloxml`.
+
+### 0.0.7 ###
+
+Add `reorder_nodes` script.
