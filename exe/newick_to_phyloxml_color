@@ -1,0 +1,132 @@
+#!/usr/bin/env ruby
+
+# NOTE make sure the newick has no spaces for jsPhyloXML
+
+# NOTE for Archaeopteryx, you need <name>#{boot}</name> to show
+# bootsraps, but for jsPhyloXML, just the confidence is needed
+
+require "set"
+require "bio"
+require "color"
+require "abort_if"
+
+include AbortIf
+
+logger.warn { "This is an internal Iroki script. It is not meant for " +
+              "general use." }
+
+def leaf? tree, node
+  tree.children(node).empty?
+end
+
+fname = ARGV.first
+
+tree_str = File.open(fname, 'rt').read
+
+newick = Bio::Newick.new(tree_str, parser: :naive)
+
+$tree = newick.tree
+
+$xml_start = %q{<phyloxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.phyloxml.org http://www.phyloxml.org/1.10/phyloxml.xsd" xmlns="http://www.phyloxml.org">
+<phylogeny rooted="false">
+<clade>
+}
+
+$xml_end = %q{</clade>
+</phylogeny>
+</phyloxml>
+}
+
+def leaf? tree, node
+  tree.descendents(node).count.zero?
+end
+
+def name_and_color node
+  m = node.name.match(/(.*)___ryan_([a-fA-F0-9]+)/)
+  if m
+    name = m[1]
+    hex  = m[2]
+
+    col = Color::RGB.by_hex hex
+
+    [name, col]
+  else
+    nil
+  end
+end
+
+def make_xml_string descendents, start_node
+  while (node = descendents.shift)
+    unless $already_added.include? node
+      ary = name_and_color(node)
+      new_name, col = ary
+
+      if leaf? $tree, node
+        # TODO this will raise something if no dist, rescue it
+        dist = $tree.distance(start_node, node)
+        dist = 1
+
+        if ary # then it needs color
+          color_xml = %Q{<color>
+<red>#{col.red}</red>
+<green>#{col.green}</green>
+<blue>#{col.blue}</blue>
+</color>
+<property ref="style:font_color" datatype="xsd:token" applies_to="node">##{col.hex}</property>}
+        else
+          color_xml = ""
+        end
+
+        $xml_start << "<clade>
+<name>#{ary ? new_name : node.name}</name>
+<branch_length>#{dist}</branch_length>
+#{color_xml}
+</clade>\n"
+        $already_added << node
+        $prev_node = node
+      else
+        boot = node.bootstrap
+        if boot
+          boot_xml = %Q{\n<confidence type="bootstrap">#{boot}</confidence>}
+        else
+          boot_xml = ""
+        end
+
+        # TODO this will raise something if no dist, rescue it
+        dist = $tree.distance(start_node, node)
+        dist = 1
+
+        if ary # then it needs color
+          color_xml = "<color>
+<red>#{col.red}</red>
+<green>#{col.green}</green>
+<blue>#{col.blue}</blue>
+</color>"
+        else
+          color_xml = ""
+        end
+
+        $xml_start << "<clade>
+<branch_length>#{dist}</branch_length>
+#{boot_xml}
+#{color_xml}"
+
+        STDERR.puts "LOG -- recurse"
+        make_xml_string $tree.descendents(node), node
+        $xml_start << "</clade>\n"
+        $already_added << node
+      end
+    end
+  end
+end
+
+$already_added = Set.new
+
+start_node = $tree.root
+
+$descendents = $tree.descendents(start_node)
+
+make_xml_string $descendents, start_node
+
+puts $xml_start
+puts "#{$xml_end}"
