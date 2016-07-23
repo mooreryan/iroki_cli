@@ -10,3 +10,5 @@
 *.lock
 .ruby-gemset
 newicks
+test_files
+sandbox
