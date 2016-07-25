@@ -45,8 +45,8 @@ module Iroki
           abort_if newname.nil? || newname.empty?,
                    "Column 2 missing for line: #{line.inspect}"
 
-          oldname = clean oldname
-          newname = clean newname
+          oldname = oldname.clean
+          newname = newname.clean
 
           abort_if name_map.has_key?(oldname),
                    "#{oldname} is repeated in column 1"

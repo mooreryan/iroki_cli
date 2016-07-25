@@ -66,10 +66,18 @@ module Iroki
       # color = add_color_to_leaf_branch patterns, node, exact
 
       # clean the name no matter what
-      node.name = clean_name node.name
+      if node.name
+        node.name = node.name.clean_name
+      else
+        node.name = nil
+      end
 
       # if its a leaf that hasnt been checked & needs color
-      if leaf?(tree, node) && !already_checked?(node.name) # && color
+      # TODO the node.name is there to make sure already_checked?
+      # doesn't blow up. When can node.name be nil?
+      if(leaf?(tree, node) &&
+         node.name &&
+         !node.name.already_checked?)
         # check if it needs color, if so set the color
 
         # NOTE: this was originally before cleaning the node name a

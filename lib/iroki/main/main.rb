@@ -115,7 +115,7 @@ module Iroki
           color = "black" if color.nil? || color.empty?
 
           if name_map_f || color_taxa_names || color_branches
-            pattern = clean_name pattern
+            pattern = pattern.clean_name
           end
 
           if !exact
@@ -125,7 +125,7 @@ module Iroki
           if auto_color
             patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
           else
-            if hex? color
+            if color.hex?
               patterns[pattern] = "[&!color=\"#{color}\"]"
             else
               patterns[pattern] = Iroki::Color.color_hex color
@@ -159,7 +159,7 @@ module Iroki
 
       if color_taxa_names
         leaves = tree.leaves.map do |n|
-          name = clean_name n.name
+          name = n.name.clean_name
 
           if (color = add_color_to_leaf_branch(patterns, name, exact))
             name + color
