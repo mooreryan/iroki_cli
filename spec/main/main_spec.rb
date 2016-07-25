@@ -26,7 +26,7 @@ describe Iroki::Main do
 
   let(:newick) { File.join test_files, "test.tre" }
   let(:expected_nexus) { File.join test_files, "expected.nex" }
-  let(:output_nexus) { File.join test_files, "output.nex " }
+  let(:output_nexus) { File.join test_files, "output.nex" }
   let(:color_map) { File.join test_files, "test.color_map" }
 
   describe "::main" do

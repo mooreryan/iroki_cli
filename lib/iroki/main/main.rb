@@ -94,21 +94,6 @@ module Iroki
                "any coloring options"
 
 
-      # if passed color other than one defined, return black
-      black = "#000000"
-      red = "#FF1300"
-      yellow = "#FFD700"
-      blue = "#5311FF"
-      green = "#00FF2C"
-      color2hex = Hash.new "[&!color=\"#{black}\"]"
-      color2hex.merge!({
-                         "black" => "[&!color=\"#{black}\"]",
-                         "red" => "[&!color=\"#{red}\"]",
-                         "blue" => "[&!color=\"#{blue}\"]",
-                         "yellow" => "[&!color=\"#{yellow}\"]",
-                         "green" => "[&!color=\"#{green}\"]"
-                       })
-
       # check if complementary colors requested
       if color_f
         colors = Set.new
@@ -143,7 +128,7 @@ module Iroki
             if hex? color
               patterns[pattern] = "[&!color=\"#{color}\"]"
             else
-              patterns[pattern] = color2hex[color]
+              patterns[pattern] = Iroki::Color.color_hex color
             end
           end
         end
