@@ -108,7 +108,7 @@ module Iroki
 
       # get the color patterns
       if color_f
-        patterns = parse_color_map color_f, exact
+        patterns = parse_color_map color_f, exact_matching: exact
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)

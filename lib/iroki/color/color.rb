@@ -18,47 +18,71 @@
 
 module Iroki
   module Color
-    BASIC =
-      { "1" => "#FF3814",   # red
-        "2" => "#712BFF",   # blue
-        "3" => "#FFDF14",   # yellow
-        "4" => "#14FF63", } # green
+    module Palette
+      BASIC =
+        { "1" => "#FF3814",   # red
+          "2" => "#712BFF",   # blue
+          "3" => "#FFDF14",   # yellow
+          "4" => "#14FF63", } # green
 
-    BASIC_LIGHT =
-      { "1" => "#FF8872",
-        "2" => "#A97FFE",
-        "3" => "#FFEC72",
-        "4" => "#71FEA1", }
+      BASIC_LIGHT =
+        { "1" => "#FF8872",
+          "2" => "#A97FFE",
+          "3" => "#FFEC72",
+          "4" => "#71FEA1", }
 
-    BASIC_DARK =
-      { "1" => "#FF2800",
-        "2" => "#4901DD",
-        "3" => "#FFDD00",
-        "4" => "#00E24D", }
+      BASIC_DARK =
+        { "1" => "#FF2800",
+          "2" => "#4901DD",
+          "3" => "#FFDD00",
+          "4" => "#00E24D", }
 
-    FUNKY =
-      { "1" => "#FF7314",
-        "2" => "#9F23FF",
-        "3" => "#FFF814",
-        "4" => "#14FFD8", }
+      FUNKY =
+        { "1" => "#FF7314",
+          "2" => "#9F23FF",
+          "3" => "#FFF814",
+          "4" => "#14FFD8", }
 
-    FUNKY_LIGHT =
-      { "1" => "#FFAB72",
-        "2" => "#C57AFE",
-        "3" => "#FFFB72",
-        "4" => "#71FEE6", }
+      FUNKY_LIGHT =
+        { "1" => "#FFAB72",
+          "2" => "#C57AFE",
+          "3" => "#FFFB72",
+          "4" => "#71FEE6", }
 
-    FUNKY_DARK =
-      { "1" => "#FF6700",
-        "2" => "#7C01DC",
-        "3" => "#FFF700",
-        "4" => "#00D7B3", }
+      FUNKY_DARK =
+        { "1" => "#FF6700",
+          "2" => "#7C01DC",
+          "3" => "#FFF700",
+          "4" => "#00D7B3", }
 
-    def self.get_tag str
+      KELLY = {
+        "1"  => { name: "purple",          hex: "#875692" },
+        "2"  => { name: "orange",          hex: "#F38400" },
+        "3"  => { name: "light_blue",      hex: "#A1CAF1" },
+        "4"  => { name: "red",             hex: "#BE0032" },
+        "5"  => { name: "buff",            hex: "#C2B280" },
+        "6"  => { name: "grey",            hex: "#848482" },
+        "7"  => { name: "green",           hex: "#008856" },
+        "8"  => { name: "purplish_pink",   hex: "#E68FAC" },
+        "9"  => { name: "blue",            hex: "#0067A5" },
+        "10" => { name: "yellowish_pink",  hex: "#F99379" },
+        "11" => { name: "violet",          hex: "#604E97" },
+        "12" => { name: "orange_yellow",   hex: "#F6A600" },
+        "13" => { name: "purplish_red",    hex: "#B3446C" },
+        "14" => { name: "reddish_brown",   hex: "#882D17" },
+        "15" => { name: "yellow_green",    hex: "#8DB600" },
+        "16" => { name: "yellowish_brown", hex: "#654522" },
+        "17" => { name: "reddish_orange",  hex: "#E25822" },
+        "18" => { name: "olive_green",     hex: "#2B3D26" },
+        "19" => { name: "yellow",          hex: "#F3C300" },
+      }
+    end
+
+    def self.get_tag str, palette=nil
       if str.hex?
         self.tag_from_hex str
       else
-        self.tag_from_color str
+        self.tag_from_color str, palette
       end
     end
 
@@ -68,14 +92,22 @@ module Iroki
       %Q{[&!color="#{hex}"]}
     end
 
-    def self.tag_from_color color
+    def self.tag_from_color color, palette=nil
       col = color.downcase.strip
 
-      if COLORS.has_key? col
-        hex = COLORS[col]
+      if palette
+        hash =
+          Hash[palette.keys.zip palette.map(&:last).map{|h| h[:hex]}]
+        colors = COLORS.merge hash
+      else
+        colors = COLORS
+      end
+
+      if colors.has_key? col
+        hex = colors[col]
       else
         # if passed color other than one defined, return black
-        hex = COLORS["black"]
+        hex = colors["black"]
       end
 
       %Q{[&!color="#{hex}"]}

@@ -40,6 +40,8 @@ describe Iroki::Color do
       expect(Iroki::Color.get_tag input).
         to eq %Q{[&!color="#{hex}"]}
     end
+
+    it "passes the auto_color variable on to ::tag_from_color"
   end
 
   describe "::tag_from_hex" do
@@ -59,6 +61,16 @@ describe Iroki::Color do
   end
 
   describe "::tag_from_color" do
+    context "when palette is given" do
+      it "combines the palette with the original R colors" do
+        palette = { "1"  => { name: "purple", hex: "#875692" } }
+        color = "1"
+
+        expect(Iroki::Color.tag_from_color color, palette).
+          to eq %Q{[&!color="#{palette[color][:hex]}"]}
+      end
+    end
+
     context "when color exists in the hash" do
       it "takes a color name and outputs the FigTree hex tag" do
         color = "aliceblue"
@@ -76,6 +88,8 @@ describe Iroki::Color do
         expect(Iroki::Color.tag_from_color color).
           to eq %Q{[&!color="#{hex}"]}
       end
+
+      it "raises SystemExit (still debating this one)"
     end
 
     context "when the color is there but bad user input" do

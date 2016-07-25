@@ -27,6 +27,16 @@ describe Iroki::CoreExt::File do
 
 
   let(:color_map) { File.join test_files, "color_map_with_tags.txt" }
+  let(:auto_color_map) { File.join test_files, "auto_color_map.txt" }
+
+  let(:label_tag_twice) {
+    File.join test_files, "label_tag_twice.txt"
+  }
+
+  let(:branch_tag_twice) {
+    File.join test_files, "branch_tag_twice.txt"
+  }
+
   let(:bad_name_color_map) { File.join test_files,
                                        "bad_names.color_map" }
 
@@ -35,6 +45,22 @@ describe Iroki::CoreExt::File do
                                 branch: Iroki::Color.get_tag("blue"), },
       "pie_is_really_good" => { label: Iroki::Color.get_tag("red"),
                                 branch: Iroki::Color.get_tag("red"), }, }
+  }
+
+  let(:auto_purple) {
+    Iroki::Color.get_tag Iroki::Color::Palette::KELLY["1"][:hex]
+  }
+  let(:auto_orange) {
+    Iroki::Color.get_tag Iroki::Color::Palette::KELLY["2"][:hex]
+  }
+  let(:red) { Iroki::Color.get_tag "red" }
+
+  let(:auto_color_patterns) {
+    {
+      "auto_1" => { label: auto_purple, branch: auto_purple },
+      "auto_2" => { label: auto_orange, branch: auto_orange },
+      "ryan_3" => { label: red, branch: red },
+    }
   }
 
   let(:patterns) {
@@ -82,7 +108,19 @@ describe Iroki::CoreExt::File do
   describe "::parse_color_map" do
     context "when file doesn't exist" do
       it "raises SystemExit" do
-        expect{klass.parse_color_map "apple.txt", true}.
+        expect{klass.parse_color_map "apple.txt"}.
+          to raise_error SystemExit
+      end
+    end
+
+    context "misc bad user input" do
+      it "raises SystemExit if label tag is given twice" do
+        expect{klass.parse_color_map label_tag_twice}.
+          to raise_error SystemExit
+      end
+
+      it "raises SystemExit if branch tag is given twice" do
+        expect{klass.parse_color_map branch_tag_twice}.
           to raise_error SystemExit
       end
     end
@@ -108,12 +146,23 @@ describe Iroki::CoreExt::File do
 
     context "regex pattern matching" do
       it "treats the pattern column as a regular expression" do
-        pattern = klass.parse_color_map(color_map, false).first.first
+        pattern =
+          klass.parse_color_map(color_map, exact_matching: false).
+          first.
+          first
 
         expect(pattern).to be_a Regexp
       end
 
       it "raises SystemExit if the regexp is invalid"
+    end
+
+    context "with auto-coloring turned on" do
+      it "selects colors automatically from the given palette" do
+        kelly = Iroki::Color::Palette::KELLY
+        expect(klass.parse_color_map(auto_color_map, auto_color: kelly)).
+          to eq auto_color_patterns
+      end
     end
   end
 
