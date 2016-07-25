@@ -16,6 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
+def color_given? str
+  str && !str.empty?
+end
+
+def has_label_tag? str
+  m = str.match(/\Alabel:(\p{Alnum}+)\Z/i)
+
+  m[1] if m
+end
+
+def has_branch_tag? str
+  m = str.match(/\Abranch:(\p{Alnum}+)\Z/i)
+
+  m[1] if m
+end
+
 module Iroki
   module CoreExt
     module File
@@ -34,18 +50,64 @@ module Iroki
       def parse_color_map fname, exact_matching=true
         check_file fname, :color_map
 
+
         patterns = {}
         Object::File.open(fname).each_line do |line|
-          pattern, color = line.chomp.split "\t"
+          label_tag = ""
+          branch_tag = ""
 
-          color = "black" if color.nil? || color.empty?
+          pattern, label_color, branch_color = line.chomp.split "\t"
 
-          assert pattern, "pattern was nil"
+          # color = "black" if color.nil? || color.empty?
+
+          assert pattern, "found no pattern"
 
           if exact_matching # TODO should this really be everytime?
             pattern = pattern.clean
           else
+            # TODO flag bad regexp
             pattern = Regexp.new pattern
+          end
+
+          if color_given?(label_color) && color_given?(branch_color)
+            abort_if(has_label_tag?(label_color) &&
+                     has_label_tag?(branch_color),
+                     "Label tag specified twice for #{line}")
+
+            abort_if(has_branch_tag?(label_color) &&
+                     has_branch_tag?(branch_color),
+                     "Branch tag specified twice for #{line}")
+          end
+
+          if color_given?(label_color) && !color_given?(branch_color)
+            if (color = has_label_tag? label_color)
+              label_tag = Iroki::Color.get_tag color
+            elsif (color = has_branch_tag? label_color)
+              branch_tag = Iroki::Color.get_tag color
+            else
+              label_tag = Iroki::Color.get_tag label_color
+              branch_tag = Iroki::Color.get_tag label_color
+            end
+          else
+            if color_given? label_color
+              if (color = has_label_tag? label_color)
+                label_tag = Iroki::Color.get_tag color
+              elsif (color = has_branch_tag? label_color)
+                branch_tag = Iroki::Color.get_tag color
+              else
+                label_tag = Iroki::Color.get_tag label_color
+              end
+            end
+
+            if color_given? branch_color
+              if (color = has_branch_tag? branch_color)
+                branch_tag = Iroki::Color.get_tag color
+              elsif (color = has_label_tag? branch_color)
+                label_tag = Iroki::Color.get_tag color
+              else
+                branch_tag = Iroki::Color.get_tag branch_color
+              end
+            end
           end
 
           # if auto_color
@@ -54,7 +116,7 @@ module Iroki
           #   patterns[pattern] = Iroki::Color.get_tag color
           # end
 
-          patterns[pattern] = Iroki::Color.get_tag color
+          patterns[pattern] = { label: label_tag, branch: branch_tag }
         end
 
         patterns

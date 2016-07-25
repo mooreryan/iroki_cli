@@ -26,39 +26,40 @@ describe Iroki::CoreExt::File do
   let(:good_name_map) { File.join test_files, "name_map.good.test" }
 
 
-  let(:color_map) { File.join test_files, "test.color_map" }
+  let(:color_map) { File.join test_files, "color_map_with_tags.txt" }
   let(:bad_name_color_map) { File.join test_files,
                                        "bad_names.color_map" }
 
   let(:bad_name_patterns) {
-    { "ap_ple_3_2_pie"     => %q{[&!color="#0000FF"]},
-      "pie_is_really_good" => %q{[&!color="#FF0000"]}, }
+    { "ap_ple_3_2_pie"     => { label: Iroki::Color.get_tag("blue"),
+                                branch: Iroki::Color.get_tag("blue"), },
+      "pie_is_really_good" => { label: Iroki::Color.get_tag("red"),
+                                branch: Iroki::Color.get_tag("red"), }, }
   }
 
   let(:patterns) {
-    { "Desulfobul" => %q{[&!color="#FF0000"]},
-      "Nitrospina" => %q{[&!color="#FF0000"]},
-      "Geobacterh" => %q{[&!color="#FF0000"]},
-      "Geobacterp" => %q{[&!color="#FF0000"]},
-      "Thermotoga" => %q{[&!color="#FF0000"]},
-      "Aquifexpyr" => %q{[&!color="#FF0000"]},
-      "Desurellaa" => %q{[&!color="#FF0000"]},
-      "Desurellap" => %q{[&!color="#FF0000"]},
-      "Nitratirup" => %q{[&!color="#0000FF"]},
-      "Sulfurimon" => %q{[&!color="#FF0000"]},
-      "Sulfurovum" => %q{[&!color="#FF0000"]},
-      "Hyphomonas" => %q{[&!color="#00FF00"]},
-      "Rhodobacte" => %q{[&!color="#00FF00"]},
-      "Roseobacte" => %q{[&!color="#00FF00"]},
-      "Thiomicroh" => %q{[&!color="#00FF00"]},
-      "Thiomicrop" => %q{[&!color="#00FF00"]},
-      "Marinobact" => %q{[&!color="#00FF00"]},
-      "Thiothrixe" => %q{[&!color="#00FF00"]},
-      "Thiothrixd" => %q{[&!color="#00FF00"]},
-      "Leptothrsp" => %q{[&!color="#00FF00"]},
-      "Leptothrdi" => %q{[&!color="#00FF00"]},
-      "Gallionesp" => %q{[&!color="#00FF00"]},
-      "Gallionefe" => %q{[&!color="#00FF00"]}, }
+    { "apple" =>     { label: Iroki::Color.get_tag("red"),
+                       branch: Iroki::Color.get_tag("red"), },
+      "grape" =>     { label: Iroki::Color.get_tag("green"),
+                       branch: Iroki::Color.get_tag("blue"), },
+      "peanut" =>    { label: Iroki::Color.get_tag("green"),
+                       branch: Iroki::Color.get_tag("green"), },
+      "amelionia" => { label: Iroki::Color.get_tag("brown"),
+                       branch: Iroki::Color.get_tag("brown"), },
+      "ice_cream" => { label: Iroki::Color.get_tag("brown"),
+                       branch: Iroki::Color.get_tag("blue"), },
+      "thingy" =>    { label: Iroki::Color.get_tag("green"),
+                       branch: "", },
+      "pi_ece" =>    { label: Iroki::Color.get_tag("orange"),
+                       branch: Iroki::Color.get_tag("purple"), },
+      "teehee" =>    { label: "",
+                       branch: Iroki::Color.get_tag("tomato"), },
+      "pie" =>       { label: "",
+                       branch: Iroki::Color.get_tag("goldenrod3"), },
+      "water" =>     { label: Iroki::Color.get_tag("black"),
+                       branch: Iroki::Color.get_tag("thistle"), },
+
+    }
   }
 
   describe "#check_file" do
@@ -111,6 +112,8 @@ describe Iroki::CoreExt::File do
 
         expect(pattern).to be_a Regexp
       end
+
+      it "raises SystemExit if the regexp is invalid"
     end
   end
 

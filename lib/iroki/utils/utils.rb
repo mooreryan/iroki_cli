@@ -85,7 +85,7 @@ module Iroki
         color = add_color_to_leaf_branch patterns, node, exact
 
         # add color to the name
-        node.name = node.name + color if color
+        node.name = node.name + color[:branch] if color
       elsif !leaf?(tree, node)
         children = tree.children(node) # get the children
         children_colors = []

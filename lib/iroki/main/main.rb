@@ -139,7 +139,7 @@ module Iroki
           name = n.name.clean_name
 
           if (color = add_color_to_leaf_branch(patterns, name, exact))
-            name + color
+            name + color[:label]
           else
             name
           end

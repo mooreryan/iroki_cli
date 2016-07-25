@@ -1,9 +1,9 @@
 Desulfobul	red
-Nitrospina	red
-Geobacterh	red
-Geobacterp	red
-Thermotoga	red
-Aquifexpyr	red
+Nitrospina	branch:red	label:red
+Geobacterh	label:red	branch:red
+Geobacterp	red	red
+Thermotoga	blue	red
+Aquifexpyr	branch:red
 Desurellaa	red
 Desurellap	red
 Nitratirup	blue
