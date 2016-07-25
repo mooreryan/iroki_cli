@@ -25,38 +25,71 @@ describe Iroki::Color do
     expect(Iroki::Color::COLORS).not_to be nil
   end
 
-  describe "::color_hex" do
-    describe "when color exists in the hash" do
+  describe "::get_tag" do
+    it "calls ::tag_from_hex when input is a hex code" do
+      input = "#FF0000"
+
+      expect(Iroki::Color.get_tag input).
+        to eq %Q{[&!color="#{input}"]}
+    end
+
+    it "calls ::tag_from_color when input is a color name" do
+      input = "red"
+      hex = "#FF0000"
+
+      expect(Iroki::Color.get_tag input).
+        to eq %Q{[&!color="#{hex}"]}
+    end
+  end
+
+  describe "::tag_from_hex" do
+    it "takes a hex code and outputs the FigTree hex tag" do
+      hex = "#FF00FF"
+
+      expect(Iroki::Color.tag_from_hex hex).
+        to eq %Q{[&!color="#{hex}"]}
+    end
+
+    context "when hex doesn't pass hex?" do
+      it "raisese SystemExit" do
+        expect { Iroki::Color.tag_from_hex "apple" }.
+          to raise_error AbortIf::Assert::AssertionFailureError
+      end
+    end
+  end
+
+  describe "::tag_from_color" do
+    context "when color exists in the hash" do
       it "takes a color name and outputs the FigTree hex tag" do
         color = "aliceblue"
 
-        expect(Iroki::Color.color_hex color).
+        expect(Iroki::Color.tag_from_color color).
           to eq %Q{[&!color="#{aliceblue_hex}"]}
       end
     end
 
-    describe "when color does not exist in the hash" do
+    context "when color does not exist in the hash" do
       it "returns the FigTree hex tag for black" do
         color = "sdlkfjaslfjasldfjlasjkfasdkjf"
         hex = "#000000"
 
-        expect(Iroki::Color.color_hex color).
+        expect(Iroki::Color.tag_from_color color).
           to eq %Q{[&!color="#{hex}"]}
       end
     end
 
-    describe "when the color is there but bad user input" do
+    context "when the color is there but bad user input" do
       it "downcases the color to begin with" do
         color = "AliceBlue"
 
-        expect(Iroki::Color.color_hex color).
+        expect(Iroki::Color.tag_from_color color).
           to eq %Q{[&!color="#{aliceblue_hex}"]}
       end
 
       it "strips whitespace from the begininng and end" do
         color = "     aliceblue  \t  "
 
-        expect(Iroki::Color.color_hex color).
+        expect(Iroki::Color.tag_from_color color).
           to eq %Q{[&!color="#{aliceblue_hex}"]}
       end
     end

@@ -54,7 +54,21 @@ module Iroki
         "3" => "#FFF700",
         "4" => "#00D7B3", }
 
-    def self.color_hex color
+    def self.get_tag str
+      if str.hex?
+        self.tag_from_hex str
+      else
+        self.tag_from_color str
+      end
+    end
+
+    def self.tag_from_hex hex
+      assert hex.hex?, "'#{hex}' was not a valid hex code"
+
+      %Q{[&!color="#{hex}"]}
+    end
+
+    def self.tag_from_color color
       col = color.downcase.strip
 
       if COLORS.has_key? col

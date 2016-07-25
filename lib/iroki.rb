@@ -31,14 +31,12 @@ require "iroki/main/main"
 include Iroki::Const
 include Iroki::Color
 include Iroki::CoreExt::Hash
-# include Iroki::CoreExt::String
 String.include Iroki::CoreExt::String
 include Iroki::CoreExt::File
 include Iroki::Utils
 
 include AbortIf
 include AbortIf::Assert
-
 
 module Iroki
 end

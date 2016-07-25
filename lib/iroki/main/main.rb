@@ -125,11 +125,7 @@ module Iroki
           if auto_color
             patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
           else
-            if color.hex?
-              patterns[pattern] = "[&!color=\"#{color}\"]"
-            else
-              patterns[pattern] = Iroki::Color.color_hex color
-            end
+            patterns[pattern] = Iroki::Color.get_tag color
           end
         end
       end
