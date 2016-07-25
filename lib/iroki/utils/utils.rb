@@ -18,9 +18,6 @@
 
 module Iroki
   module Utils
-    include AbortIf
-    include Iroki::CoreExt::String
-
     def leaf? tree, node
       tree.children(node).empty?
     end
