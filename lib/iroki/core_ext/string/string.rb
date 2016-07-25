@@ -7,7 +7,7 @@ module Iroki
       end
 
       def clean
-        self.gsub(/[^\p{Alnum}_]+/, "_").gsub(/_+/, "_")
+        self.strip.gsub(/[^\p{Alnum}_]+/, "_").gsub(/_+/, "_")
       end
 
       def has_color?

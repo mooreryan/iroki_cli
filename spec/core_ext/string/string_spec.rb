@@ -30,8 +30,9 @@ describe Iroki::CoreExt::String do
   end
 
   describe "#clean" do
-    it "replaces non _ or alphanumeric chars with a _" do
-      str = "a!3.*pp   le"
+    it "stips outer whitespace then replaces non _ or " +
+       "alphanumeric chars with a _" do
+      str = "   a!3.*pp   le  "
       expect(str.clean).to eq "a_3_pp_le"
     end
   end

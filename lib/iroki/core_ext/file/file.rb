@@ -26,9 +26,38 @@ module Iroki
                  "You must provide a #{which} file.#{help}"
 
         abort_unless Object::File.exists?(arg),
-                     "The file #{arg} doesn't exist.#{help}"
+                     "The file '#{arg}' doesn't exist.#{help}"
 
         arg
+      end
+
+      def parse_color_map fname, exact_matching=true
+        check_file fname, :color_map
+
+        patterns = {}
+        Object::File.open(fname).each_line do |line|
+          pattern, color = line.chomp.split "\t"
+
+          color = "black" if color.nil? || color.empty?
+
+          assert pattern, "pattern was nil"
+
+          if exact_matching # TODO should this really be everytime?
+            pattern = pattern.clean
+          else
+            pattern = Regexp.new pattern
+          end
+
+          # if auto_color
+          #   patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
+          # else
+          #   patterns[pattern] = Iroki::Color.get_tag color
+          # end
+
+          patterns[pattern] = Iroki::Color.get_tag color
+        end
+
+        patterns
       end
 
       def parse_name_map fname

@@ -34,43 +34,43 @@ module Iroki
 
 
 
-      if display_auto_color_options
-        puts "\n  Choices for --auto-color ..."
-        print "  basic, basic_light, basic_dark, funky, funky_light, " +
-              "funky_dark\n\n"
-        exit
-      end
+      # if display_auto_color_options
+      #   puts "\n  Choices for --auto-color ..."
+      #   print "  basic, basic_light, basic_dark, funky, funky_light, " +
+      #         "funky_dark\n\n"
+      #   exit
+      # end
 
-      auto_color_options =
-        ["basic", "basic_light", "basic_dark",
-         "funky", "funky_light", "funky_dark",]
+      # auto_color_options =
+      #   ["basic", "basic_light", "basic_dark",
+      #    "funky", "funky_light", "funky_dark",]
 
 
-      if(!auto_color.nil? &&
-         !auto_color_options.include?(auto_color))
-        puts "\n  Choices for --auto-color ..."
-        print "  basic, basic_light, basic_dark, funky, funky_light, " +
-              "funky_dark\n\n"
+      # if(!auto_color.nil? &&
+      #    !auto_color_options.include?(auto_color))
+      #   puts "\n  Choices for --auto-color ..."
+      #   print "  basic, basic_light, basic_dark, funky, funky_light, " +
+      #         "funky_dark\n\n"
 
-        Trollop.die :auto_color, "#{auto_color} is not a valid option"
-      end
+      #   Trollop.die :auto_color, "#{auto_color} is not a valid option"
+      # end
 
-      case auto_color
-      when nil
-        auto_colors = BASIC
-      when "basic"
-        auto_colors = BASIC
-      when "basic_light"
-        auto_colors = BASIC_LIGHT
-      when "basic_dark"
-        auto_colors = BASIC_DARK
-      when "funky"
-        auto_colors = FUNKY
-      when "funky_light"
-        auto_colors = FUNKY_LIGHT
-      when "funky_dark"
-        auto_colors = FUNKY_DARK
-      end
+      # case auto_color
+      # when nil
+      #   auto_colors = BASIC
+      # when "basic"
+      #   auto_colors = BASIC
+      # when "basic_light"
+      #   auto_colors = BASIC_LIGHT
+      # when "basic_dark"
+      #   auto_colors = BASIC_DARK
+      # when "funky"
+      #   auto_colors = FUNKY
+      # when "funky_light"
+      #   auto_colors = FUNKY_LIGHT
+      # when "funky_dark"
+      #   auto_colors = FUNKY_DARK
+      # end
 
       # color_branches = true
       # color_taxa_names = true
@@ -108,26 +108,7 @@ module Iroki
 
       # get the color patterns
       if color_f
-        patterns = {}
-        File.open(color_f).each_line do |line|
-          pattern, color = line.chomp.split "\t"
-
-          color = "black" if color.nil? || color.empty?
-
-          if name_map_f || color_taxa_names || color_branches
-            pattern = pattern.clean_name
-          end
-
-          if !exact
-            pattern = Regexp.new pattern
-          end
-
-          if auto_color
-            patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
-          else
-            patterns[pattern] = Iroki::Color.get_tag color
-          end
-        end
+        patterns = parse_color_map color_f, exact
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)
