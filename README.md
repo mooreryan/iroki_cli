@@ -104,3 +104,8 @@ Add branch length and bootstraps to `newick_to_phyloxml`.
 ### 0.0.7 ###
 
 Add `reorder_nodes` script.
+
+### 0.0.8 ###
+
+- Add auto coloring with Kelly theme
+- Add ability to color branches and labels separately
