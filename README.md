@@ -112,4 +112,4 @@ Add `reorder_nodes` script.
 
 ### 0.0.9 ###
 
-- Add single sample color gradients
+- Add single sample color gradients (one and two color)
