@@ -32,52 +32,28 @@ module Iroki
                   newick_f: nil,
                   out_f: nil)
 
+      if display_auto_color_options
+        puts "\n  Choices for --auto-color ..."
+        print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
+        exit
+      end
 
+      auto_color_options = ["kelly"]
 
-      # if display_auto_color_options
-      #   puts "\n  Choices for --auto-color ..."
-      #   print "  basic, basic_light, basic_dark, funky, funky_light, " +
-      #         "funky_dark\n\n"
-      #   exit
-      # end
+      if !auto_color.nil? && !auto_color_options.include?(auto_color)
+        puts "\n  Choices for --auto-color ..."
+        print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
 
-      # auto_color_options =
-      #   ["basic", "basic_light", "basic_dark",
-      #    "funky", "funky_light", "funky_dark",]
+        Trollop.die :auto_color, "#{auto_color} is not a valid option"
+      end
 
+      case auto_color
+      when nil
+        auto_color_hash = nil
+      when "kelly"
+        auto_color_hash = Iroki::Color::Palette::KELLY
+      end
 
-      # if(!auto_color.nil? &&
-      #    !auto_color_options.include?(auto_color))
-      #   puts "\n  Choices for --auto-color ..."
-      #   print "  basic, basic_light, basic_dark, funky, funky_light, " +
-      #         "funky_dark\n\n"
-
-      #   Trollop.die :auto_color, "#{auto_color} is not a valid option"
-      # end
-
-      # case auto_color
-      # when nil
-      #   auto_colors = BASIC
-      # when "basic"
-      #   auto_colors = BASIC
-      # when "basic_light"
-      #   auto_colors = BASIC_LIGHT
-      # when "basic_dark"
-      #   auto_colors = BASIC_DARK
-      # when "funky"
-      #   auto_colors = FUNKY
-      # when "funky_light"
-      #   auto_colors = FUNKY_LIGHT
-      # when "funky_dark"
-      #   auto_colors = FUNKY_DARK
-      # end
-
-      # color_branches = true
-      # color_taxa_names = true
-      # exact = false
-      # color_map_f = "test_files/500.patterns_with_name_map"
-      # name_map_f = "test_files/500.name_map"
-      # ARGV[0] = "test_files/500.zetas.tre"
       newick = check_file newick_f, :newick
 
       color_f = nil
@@ -93,22 +69,11 @@ module Iroki
                "A pattern file was provided without specifying " +
                "any coloring options"
 
-
-      # check if complementary colors requested
-      if color_f
-        colors = Set.new
-        File.open(color_f).each_line do |line|
-          _, color = line.chomp.split "\t"
-
-          colors << color
-        end
-
-        auto_color = colors.all? { |color| color.match /\A[0-4]\Z/ }
-      end
-
       # get the color patterns
       if color_f
-        patterns = parse_color_map color_f, exact_matching: exact
+        patterns = parse_color_map color_f,
+                                   exact_matching: exact,
+                                   auto_color: auto_color_hash
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)

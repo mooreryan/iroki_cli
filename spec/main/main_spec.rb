@@ -29,17 +29,38 @@ describe Iroki::Main do
   let(:output_nexus) { File.join test_files, "output.nex" }
   let(:color_map) { File.join test_files, "test.color_map" }
 
+  let(:small_newick)    { File.join test_files, "small.tre" }
+  let(:small_nexus)     { File.join test_files, "small.nex" }
+  let(:small_color_map) { File.join test_files, "small.color_map" }
+
   describe "::main" do
     it "runs Iroki main program" do
       Iroki::Main::main color_branches:   true,
-                           color_taxa_names: true,
-                           exact:            true,
-                           color_map_f:      color_map,
-                           newick_f:         newick,
-                           out_f:            output_nexus
+                        color_taxa_names: true,
+                        exact:            true,
+                        color_map_f:      color_map,
+                        newick_f:         newick,
+                        out_f:            output_nexus
 
       expected_output = File.read expected_nexus
       actual_output   = File.read output_nexus
+
+      expect(actual_output).to eq expected_output
+
+      FileUtils.rm output_nexus
+    end
+
+    it "handles auto colors mixed with specified colors" do
+      Iroki::Main::main color_branches:   true,
+                        color_taxa_names: true,
+                        exact:            true,
+                        auto_color:       "kelly",
+                        color_map_f:      small_color_map,
+                        newick_f:         small_newick,
+                        out_f:            output_nexus
+
+      actual_output   = File.read output_nexus
+      expected_output = File.read small_nexus
 
       expect(actual_output).to eq expected_output
 

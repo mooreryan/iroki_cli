@@ -56,12 +56,12 @@ opts = Trollop.options do
       "File with name mappings",
       type: :string)
 
-  # opt(:auto_color,
-  #     "Specify color scheme for auto coloring",
-  #     type: :string)
+  opt(:auto_color,
+      "Specify color scheme for auto coloring",
+      type: :string)
 
-  # opt(:display_auto_color_options,
-  #     "Display options for auto coloring")
+  opt(:display_auto_color_options,
+      "Display options for auto coloring")
 
   opt(:infile,
       "Name of input newick file",
