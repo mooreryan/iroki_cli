@@ -20,7 +20,7 @@ require "spec_helper"
 
 describe Iroki::Biom do
   let(:this_dir) { File.dirname __FILE__ }
-  let(:test_files) { File.join this_dir, "..", "test_files" }
+  let(:test_files) { File.join this_dir, "test_files" }
   let(:single_sample_biom_f) { File.join test_files, "single_sample.biom" }
   let(:two_sample_biom_f) { File.join test_files, "two_sample.biom" }
 
