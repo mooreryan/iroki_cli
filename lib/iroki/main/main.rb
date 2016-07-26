@@ -18,6 +18,7 @@
 
 require "bio"
 require "set"
+require "trollop"
 
 module Iroki
   module Main
@@ -33,19 +34,15 @@ module Iroki
                   out_f: nil)
 
       if display_auto_color_options
-        puts "\n  Choices for --auto-color ..."
-        print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
+        STDERR.puts "\n  Choices for --auto-color ..."
+        STDERR.print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
         exit
       end
 
       auto_color_options = ["kelly"]
 
-      if !auto_color.nil? && !auto_color_options.include?(auto_color)
-        puts "\n  Choices for --auto-color ..."
-        print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
-
-        Trollop.die :auto_color, "#{auto_color} is not a valid option"
-      end
+      abort_if !auto_color.nil? && !auto_color_options.include?(auto_color),
+               "'#{auto_color}' is not a valid option. Try iroki --help for help."
 
       case auto_color
       when nil

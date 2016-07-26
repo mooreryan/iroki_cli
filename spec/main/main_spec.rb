@@ -67,4 +67,45 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
   end
+
+  it "raises SystemExit when display-auto-color-options is passed" do
+    expect { Iroki::Main::main display_auto_color_options: true }.
+      to raise_error SystemExit
+  end
+
+  it "raises SystemExit when the auto-color option is invalid" do
+    auto_color = "asldkfjaldj"
+
+    expect { Iroki::Main::main color_branches:   true,
+                               color_taxa_names: true,
+                               exact:            true,
+                               auto_color:       auto_color,
+                               color_map_f:      small_color_map,
+                               newick_f:         small_newick,
+                               out_f:            output_nexus }.
+      to raise_error SystemExit
+
+  end
+
+  it "raises SystemExit when the newick file doesn't exist" do
+    expect { Iroki::Main::main color_branches:   true,
+                               color_taxa_names: true,
+                               exact:            true,
+                               auto_color:       "kelly",
+                               color_map_f:      small_color_map,
+                               newick_f:         "sldfjalsdjf",
+                               out_f:            output_nexus }.
+      to raise_error SystemExit
+  end
+
+  it "raises SystemExit when the color file doesn't exist" do
+    expect { Iroki::Main::main color_branches:   true,
+                               color_taxa_names: true,
+                               exact:            true,
+                               auto_color:       "kelly",
+                               color_map_f:      "alsdkjf",
+                               newick_f:         small_newick,
+                               out_f:            output_nexus }.
+      to raise_error SystemExit
+  end
 end
