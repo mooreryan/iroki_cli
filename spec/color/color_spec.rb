@@ -27,10 +27,11 @@ describe Iroki::Color do
 
   describe "::get_tag" do
     it "calls ::tag_from_hex when input is a hex code" do
-      input = "#FF0000"
+      input = "#ff0000"
+      expected = "#FF0000"
 
       expect(Iroki::Color.get_tag input).
-        to eq %Q{[&!color="#{input}"]}
+        to eq %Q{[&!color="#{expected}"]}
     end
 
     it "calls ::tag_from_color when input is a color name" do
@@ -46,10 +47,11 @@ describe Iroki::Color do
 
   describe "::tag_from_hex" do
     it "takes a hex code and outputs the FigTree hex tag" do
-      hex = "#FF00FF"
+      hex = "#ff00ff"
+      expected = "#FF00FF"
 
       expect(Iroki::Color.tag_from_hex hex).
-        to eq %Q{[&!color="#{hex}"]}
+        to eq %Q{[&!color="#{expected}"]}
     end
 
     context "when hex doesn't pass hex?" do

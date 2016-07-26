@@ -27,6 +27,7 @@ module Iroki
                   exact: nil,
                   remove_bootstraps_below: nil,
                   color_map_f: nil,
+                  biom_f: nil,
                   name_map_f: nil,
                   auto_color: nil,
                   display_auto_color_options: nil,
@@ -51,10 +52,13 @@ module Iroki
         auto_color_hash = Iroki::Color::Palette::KELLY
       end
 
+      abort_if biom_f && color_map_f,
+               "--color-map and --biom-file cannot both be specified. Try iroki --help for help."
+
       newick = check_file newick_f, :newick
 
       color_f = nil
-      if color_taxa_names || color_branches
+      if !biom_f && (color_taxa_names || color_branches)
         color_f = check_file color_map_f, :color_map_f
       end
 
@@ -71,6 +75,9 @@ module Iroki
         patterns = parse_color_map color_f,
                                    exact_matching: exact,
                                    auto_color: auto_color_hash
+      else
+        samples, counts = Biom.open(biom_f).parse_single_sample
+        patterns = SingleSampleGradient.new(samples, counts).patterns
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)

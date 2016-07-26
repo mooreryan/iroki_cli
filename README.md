@@ -109,3 +109,7 @@ Add `reorder_nodes` script.
 
 - Add auto coloring with Kelly theme
 - Add ability to color branches and labels separately
+
+### 0.0.9 ###
+
+- Add single sample color gradients

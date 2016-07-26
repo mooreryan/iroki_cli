@@ -16,67 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
+require "color"
+
 module Iroki
   module Color
-    module Palette
-      # BASIC =
-      #   { "1" => "#FF3814",   # red
-      #     "2" => "#712BFF",   # blue
-      #     "3" => "#FFDF14",   # yellow
-      #     "4" => "#14FF63", } # green
+    GREEN_HUE = 1 / 3.0
+    BLUE_HUE = 2 / 3.0
+    FULLY_SATURATED = 1
+    PURE_COLOR = 0.5
 
-      # BASIC_LIGHT =
-      #   { "1" => "#FF8872",
-      #     "2" => "#A97FFE",
-      #     "3" => "#FFEC72",
-      #     "4" => "#71FEA1", }
+    GREEN = Object::Color::HSL.from_fraction GREEN_HUE,
+                                             FULLY_SATURATED,
+                                             PURE_COLOR
 
-      # BASIC_DARK =
-      #   { "1" => "#FF2800",
-      #     "2" => "#4901DD",
-      #     "3" => "#FFDD00",
-      #     "4" => "#00E24D", }
-
-      # FUNKY =
-      #   { "1" => "#FF7314",
-      #     "2" => "#9F23FF",
-      #     "3" => "#FFF814",
-      #     "4" => "#14FFD8", }
-
-      # FUNKY_LIGHT =
-      #   { "1" => "#FFAB72",
-      #     "2" => "#C57AFE",
-      #     "3" => "#FFFB72",
-      #     "4" => "#71FEE6", }
-
-      # FUNKY_DARK =
-      #   { "1" => "#FF6700",
-      #     "2" => "#7C01DC",
-      #     "3" => "#FFF700",
-      #     "4" => "#00D7B3", }
-
-      KELLY = {
-        "1"  => { name: "purple",          hex: "#875692" },
-        "2"  => { name: "orange",          hex: "#F38400" },
-        "3"  => { name: "light_blue",      hex: "#A1CAF1" },
-        "4"  => { name: "red",             hex: "#BE0032" },
-        "5"  => { name: "buff",            hex: "#C2B280" },
-        "6"  => { name: "grey",            hex: "#848482" },
-        "7"  => { name: "green",           hex: "#008856" },
-        "8"  => { name: "purplish_pink",   hex: "#E68FAC" },
-        "9"  => { name: "blue",            hex: "#0067A5" },
-        "10" => { name: "yellowish_pink",  hex: "#F99379" },
-        "11" => { name: "violet",          hex: "#604E97" },
-        "12" => { name: "orange_yellow",   hex: "#F6A600" },
-        "13" => { name: "purplish_red",    hex: "#B3446C" },
-        "14" => { name: "reddish_brown",   hex: "#882D17" },
-        "15" => { name: "yellow_green",    hex: "#8DB600" },
-        "16" => { name: "yellowish_brown", hex: "#654522" },
-        "17" => { name: "reddish_orange",  hex: "#E25822" },
-        "18" => { name: "olive_green",     hex: "#2B3D26" },
-        "19" => { name: "yellow",          hex: "#F3C300" },
-      }
-    end
+    BLUE = Object::Color::HSL.from_fraction BLUE_HUE,
+                                            FULLY_SATURATED,
+                                            PURE_COLOR
 
     def self.get_tag str, palette=nil
       if str.hex?
@@ -89,7 +44,7 @@ module Iroki
     def self.tag_from_hex hex
       assert hex.hex?, "'#{hex}' was not a valid hex code"
 
-      %Q{[&!color="#{hex}"]}
+      %Q{[&!color="#{hex.upcase}"]}
     end
 
     def self.tag_from_color color, palette=nil
@@ -110,7 +65,7 @@ module Iroki
         hex = colors["black"]
       end
 
-      %Q{[&!color="#{hex}"]}
+      %Q{[&!color="#{hex.upcase}"]}
     end
 
     COLORS = {

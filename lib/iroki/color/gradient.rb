@@ -16,34 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-require "abort_if"
-
-require "iroki/biom"
-require "iroki/version"
-
-require "iroki/const/const"
-
-require "iroki/color/color"
-require "iroki/color/gradient"
-require "iroki/color/single_sample_gradient"
-require "iroki/color/palette/palette"
-
-require "iroki/core_ext/hash/hash"
-require "iroki/core_ext/string/string"
-require "iroki/core_ext/file/file"
-require "iroki/utils/utils"
-require "iroki/main/main"
-
-
-include Iroki::Const
-include Iroki::Color
-include Iroki::CoreExt::Hash
-String.include Iroki::CoreExt::String
-include Iroki::CoreExt::File
-include Iroki::Utils
-
-include AbortIf
-include AbortIf::Assert
-
 module Iroki
+  module Color
+    class Gradient
+      attr_accessor :samples, :color_hex_codes, :lumins
+
+      # scales [old_min, old_max] to [new_max, new_min]
+      def self.scale_reverse x, new_min=0, new_max=0, old_min=0.0, old_max=1.0
+        (new_max - ((((new_max - new_min) * (x - old_min)) / (old_max - old_min)) + new_min)) + new_min
+      end
+
+      def patterns
+        hash = {}
+        @samples.zip(@color_hex_codes).each do |(sample, hexcode)|
+          tag = Iroki::Color.get_tag hexcode
+          hash[sample] = { label: tag, branch: tag }
+        end
+
+        hash
+      end
+    end
+  end
 end

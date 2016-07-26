@@ -16,34 +16,28 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-require "abort_if"
+require "spec_helper"
 
-require "iroki/biom"
-require "iroki/version"
+describe Iroki::Color::Gradient do
+  it { should respond_to :samples }
+  it { should respond_to :color_hex_codes }
+  it { should respond_to :lumins }
 
-require "iroki/const/const"
+  describe "#patterns" do
+    it "returns the patterns hash" do
 
-require "iroki/color/color"
-require "iroki/color/gradient"
-require "iroki/color/single_sample_gradient"
-require "iroki/color/palette/palette"
+      gradient = Iroki::Color::Gradient.new
+      gradient.samples = ["s1", "s2"]
+      gradient.color_hex_codes = ["#00FF00", "#FF00FF"]
 
-require "iroki/core_ext/hash/hash"
-require "iroki/core_ext/string/string"
-require "iroki/core_ext/file/file"
-require "iroki/utils/utils"
-require "iroki/main/main"
+      the_patterns = {
+        "s1" => { label:  %q{[&!color="#00FF00"]},
+                  branch: %q{[&!color="#00FF00"]}, },
+        "s2" => { label:  %q{[&!color="#FF00FF"]},
+                  branch: %q{[&!color="#FF00FF"]}, },
+      }
 
-
-include Iroki::Const
-include Iroki::Color
-include Iroki::CoreExt::Hash
-String.include Iroki::CoreExt::String
-include Iroki::CoreExt::File
-include Iroki::Utils
-
-include AbortIf
-include AbortIf::Assert
-
-module Iroki
+      expect(gradient.patterns).to eq the_patterns
+    end
+  end
 end
