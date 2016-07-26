@@ -19,6 +19,7 @@
 require "abort_if"
 
 require "iroki/version"
+require "iroki/biom/biom"
 require "iroki/const/const"
 require "iroki/color/color"
 require "iroki/core_ext/hash/hash"
