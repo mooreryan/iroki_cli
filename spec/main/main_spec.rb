@@ -27,6 +27,7 @@ describe Iroki::Main do
   let(:single_sample_biom) { File.join test_files, "single_sample.biom" }
   let(:single_sample_tre) { File.join test_files, "single_sample.tre" }
   let(:single_sample_nex) { File.join test_files, "single_sample.nex" }
+  let(:single_sample_one_color_nex) { File.join test_files, "single_sample_one_color.nex" }
 
   let(:newick) { File.join test_files, "test.tre" }
   let(:expected_nexus) { File.join test_files, "expected.nex" }
@@ -71,7 +72,25 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
 
-    it "handles single sample biom files" do
+    it "handles single sample biom files with single color gradient" do
+      Iroki::Main::main color_branches:   true,
+                        color_taxa_names: true,
+                        exact:            true,
+                        biom_f:           single_sample_biom,
+                        single_color:     true,
+                        newick_f:         single_sample_tre,
+                        out_f:            output_nexus
+
+      actual_output   = File.read output_nexus
+      expected_output = File.read single_sample_one_color_nex
+
+      expect(actual_output).to eq expected_output
+
+      FileUtils.rm output_nexus
+    end
+
+
+    it "handles single sample biom files with two color gradient" do
       Iroki::Main::main color_branches:   true,
                         color_taxa_names: true,
                         exact:            true,

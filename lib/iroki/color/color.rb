@@ -22,8 +22,12 @@ module Iroki
   module Color
     GREEN_HUE = 1 / 3.0
     BLUE_HUE = 2 / 3.0
+    WHITE_HUE = 1.0
     FULLY_SATURATED = 1
     PURE_COLOR = 0.5
+    PURE_LIGHT = 1.0
+
+
 
     GREEN = Object::Color::HSL.from_fraction GREEN_HUE,
                                              FULLY_SATURATED,
@@ -32,6 +36,10 @@ module Iroki
     BLUE = Object::Color::HSL.from_fraction BLUE_HUE,
                                             FULLY_SATURATED,
                                             PURE_COLOR
+
+    WHITE = Object::Color::HSL.from_fraction WHITE_HUE,
+                                             FULLY_SATURATED,
+                                             PURE_LIGHT
 
     def self.get_tag str, palette=nil
       if str.hex?
@@ -728,6 +736,6 @@ module Iroki
       "yellowgreen" => "#9ACD32",
     }
 
-
+    DARK_GREEN = Object::Color::RGB.by_hex(COLORS["darkgreen"])
   end
 end

@@ -28,6 +28,7 @@ module Iroki
                   remove_bootstraps_below: nil,
                   color_map_f: nil,
                   biom_f: nil,
+                  single_color: nil,
                   name_map_f: nil,
                   auto_color: nil,
                   display_auto_color_options: nil,
@@ -77,7 +78,7 @@ module Iroki
                                    auto_color: auto_color_hash
       else
         samples, counts = Biom.open(biom_f).parse_single_sample
-        patterns = SingleSampleGradient.new(samples, counts).patterns
+        patterns = SingleSampleGradient.new(samples, counts, single_color).patterns
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)

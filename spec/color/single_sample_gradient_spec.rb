@@ -35,6 +35,7 @@ describe Iroki::Color::SingleSampleGradient do
 
   subject { ssg }
   it { should respond_to :samples }
+  it { should respond_to :single_color }
   it { should respond_to :counts }
   it { should respond_to :rel_abunds }
   it { should respond_to :color_hex_codes }
