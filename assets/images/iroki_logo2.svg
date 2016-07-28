@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="1503" height="1030" viewBox="0, 0, 1503, 1030">
+  <defs>
+    <clipPath id="Clip_1">
+      <path d="M1503,1030 L1503,0 L0,0 L0,1030 L1503,1030 z"/>
+    </clipPath>
+  </defs>
+  <g id="Layer_1">
+    <g clip-path="url(#Clip_1)">
+      <path d="M0,0 L1503,0 L1503,1030 L0,1030 L0,0 z" fill="#FFFFFF"/>
+      <path d="M628.34,877.53 L604.41,862.97" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M563.57,824.83 L547.41,801.95" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M209.45,695.32 L517.54,695.32" fill-opacity="0" stroke="#F9B400" stroke-width="9"/>
+      <path d="M604.41,527.67 L628.34,513.12" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M457.21,976.02 L547.41,801.95" fill-opacity="0" stroke="#79572D" stroke-width="9"/>
+      <path d="M249.76,798.83 L519.45,723.27" fill-opacity="0" stroke="#C25B7F" stroke-width="9"/>
+      <path d="M266.89,327 L534.53,613.57" fill-opacity="0" stroke="#007CB4" stroke-width="9"/>
+      <path d="M472.39,127.06 L563.57,565.82" fill-opacity="0" stroke="#009769" stroke-width="9"/>
+      <path d="M195.82,576.7 L519.45,667.38" fill-opacity="0" stroke="#7464A8" stroke-width="9"/>
+      <path d="M1319.18,406.69 L708.74,490.59" fill-opacity="0" stroke="#9A6DA3" stroke-width="9"/>
+      <path d="M935.22,78.37 L628.34,513.12" fill-opacity="0" stroke="#CC1E41" stroke-width="9"/>
+      <path d="M706.69,907.4 L681,896.24" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M654.03,888.69 L628.34,877.53" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M641.93,968.54 L604.41,862.97" fill-opacity="0" stroke="#F6CC00" stroke-width="9"/>
+      <path d="M615.17,70.32 L582.68,545.35" fill-opacity="0" stroke="#969694" stroke-width="9"/>
+      <path d="M697.48,924.04 L654.03,888.69" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M525.15,639.96 L534.53,613.57" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M534.53,613.57 L547.41,588.7" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M519.45,667.38 L525.15,639.96" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M547.41,588.7 L563.57,565.82" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M525.15,750.69 L519.45,723.27" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M681,494.41 L708.74,490.59" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M354.13,215.68 L547.41,588.7" fill-opacity="0" stroke="#ECA3BA" stroke-width="9"/>
+      <path d="M563.57,565.82 L582.68,545.35" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M534.53,777.08 L525.15,750.69" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M1088.55,148.45 L654.03,501.96" fill-opacity="0" stroke="#B0D4F4" stroke-width="9"/>
+      <path d="M708.74,900.06 L681,896.24" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M582.68,845.3 L563.57,824.83" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M547.41,801.95 L534.53,777.08" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M604.41,862.97 L582.68,845.3" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M628.34,513.12 L654.03,501.96" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M654.03,501.96 L681,494.41" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M517.54,695.32 L519.45,667.38" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M582.68,545.35 L604.41,527.67" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M676.79,946.17 L628.34,877.53" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M381.59,940.83 L534.53,777.08" fill-opacity="0" stroke="#9DBF00" stroke-width="9"/>
+      <path d="M214.05,450.78 L525.15,639.96" fill-opacity="0" stroke="#FCA68B" stroke-width="9"/>
+      <path d="M529.37,989.36 L563.57,824.83" fill-opacity="0" stroke="#EA6E2C" stroke-width="9"/>
+      <path d="M592.24,985.01 L582.68,845.3" fill-opacity="0" stroke="#384D32" stroke-width="9"/>
+      <path d="M519.45,723.27 L517.54,695.32" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M1220.47,260.08 L681,494.41" fill-opacity="0" stroke="#F79700" stroke-width="9"/>
+      <path d="M681,896.24 L654.03,888.69" fill-opacity="0" stroke="#000000" stroke-width="9"/>
+      <path d="M773.24,52.64 L604.41,527.67" fill-opacity="0" stroke="#CDBE92" stroke-width="9"/>
+      <path d="M309.77,881.66 L525.15,750.69" fill-opacity="0" stroke="#9B3E1D" stroke-width="9"/>
+    </g>
+  </g>
+  <g id="since_2015">
+    <g>
+      <text transform="matrix(1, 0, -0, 1, 709, 732.145)">
+        <tspan x="-54.78" y="-5.5" font-family="HelveticaNeue-Thin" font-size="15" fill="#000000">Phylogenetic Tree </tspan>
+        <tspan x="-34.912" y="12.5" font-family="HelveticaNeue-Thin" font-size="15" fill="#000000">Customizer</tspan>
+      </text>
+      <path d="M634,703 L784,703" fill-opacity="0" stroke="#000000" stroke-width="1.5"/>
+      <text transform="matrix(1, 0, 0, 1, 709, 672.5)">
+        <tspan x="-35.52" y="16.5" font-family="HelveticaNeue-UltraLight" font-size="48" fill="#000000">Iroki</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
