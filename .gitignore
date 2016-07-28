@@ -12,3 +12,4 @@
 newicks
 test_files
 sandbox
+.coveralls.yml
