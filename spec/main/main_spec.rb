@@ -34,9 +34,17 @@ describe Iroki::Main do
   let(:output_nexus) { File.join test_files, "output.nex" }
   let(:color_map) { File.join test_files, "test.color_map" }
 
+  let(:jess_newick) { File.join test_files, "jess.tre" }
+  let(:jess_nexus)  { File.join test_files, "jess.nex" }
+
   let(:small_newick)    { File.join test_files, "small.tre" }
   let(:small_nexus)     { File.join test_files, "small.nex" }
   let(:small_color_map) { File.join test_files, "small.color_map" }
+
+  let(:kelly_newick)    { File.join test_files, "23.tre" }
+  let(:kelly_nexus)     { File.join test_files, "23.nex" }
+  let(:kelly_out)     { File.join test_files, "23.out.nex" }
+  let(:kelly_color_map) { File.join test_files, "23.color_map" }
 
   describe "::main" do
     it "runs Iroki main program" do
@@ -66,6 +74,23 @@ describe Iroki::Main do
 
       actual_output   = File.read output_nexus
       expected_output = File.read small_nexus
+
+      expect(actual_output).to eq expected_output
+
+      FileUtils.rm output_nexus
+    end
+
+    it "handles Jess's bug (RAxML terminal leaf node with no name)" do
+      Iroki::Main::main color_branches:   true,
+                        color_taxa_names: true,
+                        exact:            true,
+                        auto_color:       "kelly",
+                        color_map_f:      small_color_map,
+                        newick_f:         jess_newick,
+                        out_f:            output_nexus
+
+      actual_output   = File.read output_nexus
+      expected_output = File.read jess_nexus
 
       expect(actual_output).to eq expected_output
 
@@ -105,6 +130,23 @@ describe Iroki::Main do
 
       FileUtils.rm output_nexus
     end
+
+    # it "looks good with kelly colors" do
+    #   Iroki::Main::main color_branches:   true,
+    #                     color_taxa_names: true,
+    #                     exact:            true,
+    #                     auto_color:       "kelly",
+    #                     color_map_f:      kelly_color_map,
+    #                     newick_f:         kelly_newick,
+    #                     out_f:            kelly_out
+
+    #   actual_output   = File.read kelly_out
+    #   expected_output = File.read kelly_nexus
+
+    #   expect(actual_output).to eq expected_output
+
+    #   # FileUtils.rm output_nexus
+    # end
 
     it "raises SystemExit when display-auto-color-options is passed" do
       expect { Iroki::Main::main display_auto_color_options: true }.

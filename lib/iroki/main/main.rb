@@ -104,8 +104,9 @@ module Iroki
         end
       end
 
+      leaves_with_names = tree.leaves.reject { |leaf| leaf.name.nil? }
       if color_taxa_names
-        leaves = tree.leaves.map do |n|
+        leaves = leaves_with_names.map do |n|
           name = n.name.clean_name
 
           if (color = add_color_to_leaf_branch(patterns, name, exact))
@@ -115,7 +116,7 @@ module Iroki
           end
         end
       else
-        leaves = tree.leaves.map { |n| clean_name n.name }
+        leaves = leaves_with_names.map { |n| clean_name n.name }
       end
 
       if color_branches
