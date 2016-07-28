@@ -19,35 +19,19 @@
 module Iroki
   module Color
     class SingleSampleGradient < Gradient
-      attr_accessor :counts, :rel_abunds, :single_color
+      attr_accessor :counts, :rel_abunds
 
       def initialize samples, counts, single_color=false
         @single_color = single_color
         @samples = samples
         @counts = counts
-        @rel_abunds = counts_to_rel_abunds
-        @lumins = rel_abunds_to_lumins
+        @rel_abunds = counts_to_rabunds counts
+        @lumins = rabunds_to_lumins @rel_abunds
 
         if @single_color
           @color_hex_codes = single_color_gradient_hex_codes
         else
           @color_hex_codes = two_color_gradient_hex_codes
-        end
-      end
-
-      private
-
-      def counts_to_rel_abunds
-        max_count = @counts.max.to_f
-
-        @counts.map do |count|
-          count / max_count
-        end
-      end
-
-      def rel_abunds_to_lumins
-        @rel_abunds.map do |count|
-          Gradient.scale_reverse count, new_min=50, new_max=97
         end
       end
 
@@ -67,7 +51,7 @@ module Iroki
       def single_color_gradient_hex_codes
         @rel_abunds.zip(@lumins).map do |rel_abund, lumin|
           amt_of_orig_color =
-            Gradient.scale rel_abund, new_min=10, new_max=95
+            scale rel_abund, new_min=10, new_max=95
 
           col =
             Iroki::Color::DARK_GREEN.lighten_by amt_of_orig_color

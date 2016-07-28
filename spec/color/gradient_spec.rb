@@ -22,6 +22,7 @@ describe Iroki::Color::Gradient do
   it { should respond_to :samples }
   it { should respond_to :color_hex_codes }
   it { should respond_to :lumins }
+  it { should respond_to :single_color }
 
   describe "#patterns" do
     it "returns the patterns hash" do
