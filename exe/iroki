@@ -44,12 +44,20 @@ opts = Trollop.options do
   opt(:exact,
       "Exact pattern matching")
 
-  opt(:remove_bootstraps_below,
-      "Remove bootstrap values below given value",
-      type: :float)
+  # opt(:remove_bootstraps_below,
+  #     "Remove bootstrap values below given value",
+  #     type: :float)
 
   opt(:color_map,
       "File with color mappings",
+      type: :string)
+
+  opt(:biom,
+      "Biom file to make color gradient",
+      type: :string)
+
+  opt(:single_color,
+      "Use single color gradient for single group biom files",
       type: :string)
 
   opt(:name_map,
@@ -78,6 +86,8 @@ Iroki::Main.main(
   exact:                      opts[:exact],
   remove_bootstraps_below:    opts[:remove_bootstraps_below],
   color_map_f:                opts[:color_map],
+  biom_f:                     opts[:biom],
+  single_color:               opts[:single_color],
   name_map_f:                 opts[:name_map],
   auto_color:                 opts[:auto_color],
   display_auto_color_options: opts[:display_auto_color_options],
