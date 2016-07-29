@@ -47,7 +47,6 @@ describe Iroki::Color::SingleSampleGradient do
     end
 
     it "sets the relative abundances" do
-      p [:hello, ssg.color_hex_codes]
       expect(ssg.rel_abunds).to eq [0, 0.25, 0.5, 0.75, 1]
     end
   end

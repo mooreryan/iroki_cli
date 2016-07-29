@@ -20,61 +20,6 @@ require "color"
 
 module Iroki
   module Color
-    GREEN_HUE = 1 / 3.0
-    BLUE_HUE = 2 / 3.0
-    WHITE_HUE = 1.0
-    FULLY_SATURATED = 1
-    PURE_COLOR = 0.5
-    PURE_LIGHT = 1.0
-
-
-
-    GREEN = Object::Color::HSL.from_fraction GREEN_HUE,
-                                             FULLY_SATURATED,
-                                             PURE_COLOR
-
-    BLUE = Object::Color::HSL.from_fraction BLUE_HUE,
-                                            FULLY_SATURATED,
-                                            PURE_COLOR
-
-    WHITE = Object::Color::HSL.from_fraction WHITE_HUE,
-                                             FULLY_SATURATED,
-                                             PURE_LIGHT
-
-    def self.get_tag str, palette=nil
-      if str.hex?
-        self.tag_from_hex str
-      else
-        self.tag_from_color str, palette
-      end
-    end
-
-    def self.tag_from_hex hex
-      assert hex.hex?, "'#{hex}' was not a valid hex code"
-
-      %Q{[&!color="#{hex.upcase}"]}
-    end
-
-    def self.tag_from_color color, palette=nil
-      col = color.downcase.strip
-
-      if palette
-        hash =
-          Hash[palette.keys.zip palette.map(&:last).map{|h| h[:hex]}]
-        colors = COLORS.merge hash
-      else
-        colors = COLORS
-      end
-
-      if colors.has_key? col
-        hex = colors[col]
-      else
-        # if passed color other than one defined, return black
-        hex = colors["black"]
-      end
-
-      %Q{[&!color="#{hex.upcase}"]}
-    end
 
     COLORS = {
       "white" => "#FFFFFF",
@@ -736,6 +681,58 @@ module Iroki
       "yellowgreen" => "#9ACD32",
     }
 
-    DARK_GREEN = Object::Color::RGB.by_hex(COLORS["darkgreen"])
+    # TOP
+
+    GREEN_HUE = 1 / 3.0
+    BLUE_HUE = 2 / 3.0
+    WHITE_HUE = 1.0
+    FULLY_SATURATED = 1
+    PURE_COLOR = 0.5
+    PURE_LIGHT = 1.0
+
+    HSL = Object::Color::HSL
+    RGB = Object::Color::RGB
+
+    GREEN = HSL.from_fraction GREEN_HUE, FULLY_SATURATED, PURE_COLOR
+    BLUE  = HSL.from_fraction BLUE_HUE,  FULLY_SATURATED, PURE_COLOR
+    WHITE = HSL.from_fraction WHITE_HUE, FULLY_SATURATED, PURE_LIGHT
+
+    DARK_GREEN = RGB.by_hex(COLORS["darkgreen"])
+    GRAY =       RGB.by_hex(COLORS["gray"])
+
+    def self.get_tag str, palette=nil
+      if str.hex?
+        self.tag_from_hex str
+      else
+        self.tag_from_color str, palette
+      end
+    end
+
+    def self.tag_from_hex hex
+      assert hex.hex?, "'#{hex}' was not a valid hex code"
+
+      %Q{[&!color="#{hex.upcase}"]}
+    end
+
+    def self.tag_from_color color, palette=nil
+      col = color.downcase.strip
+
+      if palette
+        hash =
+          Hash[palette.keys.zip palette.map(&:last).map{|h| h[:hex]}]
+        colors = COLORS.merge hash
+      else
+        colors = COLORS
+      end
+
+      if colors.has_key? col
+        hex = colors[col]
+      else
+        # if passed color other than one defined, return black
+        hex = colors["black"]
+      end
+
+      %Q{[&!color="#{hex.upcase}"]}
+    end
   end
 end

@@ -21,7 +21,7 @@ module Iroki
     class Gradient
       attr_accessor :samples, :color_hex_codes, :lumins, :single_color
 
-      # scales [min, max] to [A, B]
+      # scales [old_min, old_max] to [new_min, new_max]
       def scale x, new_min=0.05, new_max=0.9, old_min=0.0, old_max=1.0
         ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)
       end
