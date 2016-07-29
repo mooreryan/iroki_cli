@@ -18,39 +18,28 @@
 
 module Iroki
   class Biom < File
-    def parse_single_sample
+    attr_accessor :single_group
+
+    def parse
       samples = []
       counts  = []
 
       self.each_line do |line|
         unless line.start_with? "#"
-          sample, count = line.chomp.split "\t"
+          sample, *the_counts = line.chomp.split "\t"
 
           samples << sample
-          counts << count.to_f
+
+          if the_counts.length == 1
+            counts << the_counts.first.to_f
+            @single_group = true
+          else
+            counts << the_counts.map(&:to_f)
+          end
         end
       end
 
-      [samples, counts]
-    end
-
-
-    def parse_two_sample
-      samples = []
-      counts_group1  = []
-      counts_group2  = []
-
-      self.each_line do |line|
-        unless line.start_with? "#"
-          sample, count1, count2 = line.chomp.split "\t"
-
-          samples << sample
-          counts_group1 << count1.to_f
-          counts_group2 << count2.to_f
-        end
-      end
-
-      [samples, counts_group1, counts_group2]
+      [samples, counts, @single_group]
     end
   end
 end

@@ -24,6 +24,10 @@ describe Iroki::Main do
   let(:spec_dir) { File.join this_dir, ".." }
   let(:test_files) { File.join spec_dir, "test_files" }
 
+  let(:two_group_biom) { File.join test_files, "two_group.biom" }
+  let(:two_group_tre) { File.join test_files, "two_group.tre" }
+  let(:two_group_nex) { File.join test_files, "two_group.nex" }
+
   let(:single_sample_biom) { File.join test_files, "single_sample.biom" }
   let(:single_sample_tre) { File.join test_files, "single_sample.tre" }
   let(:single_sample_nex) { File.join test_files, "single_sample.nex" }
@@ -125,6 +129,22 @@ describe Iroki::Main do
 
       actual_output   = File.read output_nexus
       expected_output = File.read single_sample_nex
+
+      expect(actual_output).to eq expected_output
+
+      FileUtils.rm output_nexus
+    end
+
+    it "handles two group biom files with two color gradient" do
+      Iroki::Main::main color_branches:   true,
+                        color_taxa_names: true,
+                        exact:            true,
+                        biom_f:           two_group_biom,
+                        newick_f:         two_group_tre,
+                        out_f:            output_nexus
+
+      actual_output   = File.read output_nexus
+      expected_output = File.read two_group_nex
 
       expect(actual_output).to eq expected_output
 

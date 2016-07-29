@@ -18,15 +18,15 @@
 
 require "spec_helper"
 
-SingleSampleGradient = Iroki::Color::SingleSampleGradient
+SingleGroupGradient = Iroki::Color::SingleGroupGradient
 Gradient = Iroki::Color::Gradient
 
-describe Iroki::Color::SingleSampleGradient do
+describe Iroki::Color::SingleGroupGradient do
   let(:samples) { %w[s1 s2 s3 s4 s5] }
   let(:counts)  { [0, 25, 50, 75, 100] }
 
   let(:ssg) {
-    SingleSampleGradient.new samples, counts
+    SingleGroupGradient.new samples, counts
   }
 
   it "is a Gradient" do
@@ -38,6 +38,8 @@ describe Iroki::Color::SingleSampleGradient do
   it { should respond_to :rel_abunds }
 
   describe "::initialize" do
+    it "raises an error if the samples and counts are different sized"
+
     it "sets the samples" do
       expect(ssg.samples).to eq samples
     end

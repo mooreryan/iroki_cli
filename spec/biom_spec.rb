@@ -26,41 +26,36 @@ describe Iroki::Biom do
 
   let(:single_sample_biom) { Iroki::Biom.open single_sample_biom_f }
   let(:two_sample_biom) { Iroki::Biom.open two_sample_biom_f }
-  let(:samples) { %w[seq_1 seq_2 seq_3 seq_4 seq_5] }
+  let(:samples) { %w[seq_1 seq_2 seq_3 seq_4 seq_5 seq_6] }
 
   it "is a File" do
     expect(single_sample_biom).to be_a File
   end
 
   describe "#parse" do
+    context "when passed a file where not all rows have the same number of columns" do
+      it "raises SystemExit"
+    end
+
     context "when passed a single sample biom file" do
-      it "calls #parse_single_sample"
+      it "returns the samples and the counts" do
+        is_single_group = true
+        counts = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
+
+        expect(single_sample_biom.parse).
+          to eq [samples, counts, is_single_group]
+
+      end
     end
 
     context "when passed a two sample biom file" do
-      it "calls #parse_two_sample"
-    end
-  end
-
-  describe "#parse_single_sample" do
-    context "with valid biom file" do
-      it "returns samples and counts" do
-        counts = [0, 25, 50, 75, 100]
-
-        expect(single_sample_biom.parse_single_sample).
-          to eq [samples, counts]
-      end
-    end
-  end
-
-  describe "#parse_two_sample" do
-    context "with valid biom file" do
       it "returns samples and counts for both" do
-        counts1 = [100, 75, 50, 25, 0]
-        counts2 = [0, 25, 50, 75, 100]
+        is_single_group = nil
+        counts1 = [100.0, 75.0, 50.0, 25.0, 0.0, 0.0]
+        counts2 = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
 
-        expect(two_sample_biom.parse_two_sample).
-          to eq [samples, counts1, counts2]
+        expect(two_sample_biom.parse).
+          to eq [samples, counts1.zip(counts2), is_single_group]
       end
     end
   end

@@ -18,7 +18,7 @@
 
 module Iroki
   module Color
-    class SingleSampleGradient < Gradient
+    class SingleGroupGradient < Gradient
       attr_accessor :counts, :rel_abunds
 
       def initialize samples, counts, single_color=false

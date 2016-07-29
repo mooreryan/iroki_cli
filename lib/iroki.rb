@@ -25,7 +25,8 @@ require "iroki/const/const"
 
 require "iroki/color/color"
 require "iroki/color/gradient"
-require "iroki/color/single_sample_gradient"
+require "iroki/color/single_group_gradient"
+require "iroki/color/two_group_gradient"
 require "iroki/color/palette/palette"
 
 require "iroki/core_ext/hash/hash"

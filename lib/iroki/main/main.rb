@@ -77,8 +77,15 @@ module Iroki
                                    exact_matching: exact,
                                    auto_color: auto_color_hash
       else
-        samples, counts = Biom.open(biom_f).parse_single_sample
-        patterns = SingleSampleGradient.new(samples, counts, single_color).patterns
+        samples, counts, is_single_group = Biom.open(biom_f).parse
+
+        if is_single_group
+          patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
+        else
+          g1_counts = counts.map(&:first)
+          g2_counts = counts.map(&:last)
+          patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
+        end
       end
 
       treeio = Bio::FlatFile.open(Bio::Newick, newick)
