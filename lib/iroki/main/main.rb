@@ -123,7 +123,8 @@ module Iroki
           end
         end
       else
-        leaves = leaves_with_names.map { |n| clean_name n.name }
+        leaves = leaves_with_names.
+                 map { |n| n.name.clean_name }
       end
 
       if color_branches

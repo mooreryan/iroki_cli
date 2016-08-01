@@ -47,8 +47,33 @@ describe Iroki::Main do
 
   let(:kelly_newick)    { File.join test_files, "23.tre" }
   let(:kelly_nexus)     { File.join test_files, "23.nex" }
-  let(:kelly_out)     { File.join test_files, "23.out.nex" }
+  let(:kelly_out)       { File.join test_files, "23.out.nex" }
   let(:kelly_color_map) { File.join test_files, "23.color_map" }
+
+
+  # deep dive into testing command line options in conjunction with a
+  # complicated color map
+  let(:basic_tre) { File.join test_files, "basic.tre" }
+
+  let(:basic_color_map_with_tags) {
+    File.join test_files, "basic_color_map_with_tags.txt" }
+  let(:basic_color_map_regex) {
+    File.join test_files, "basic_color_map_regex.txt" }
+
+  let(:basic_branches) {
+    File.join test_files, "basic_branches_only.nex" }
+  let(:basic_branches_regex) {
+    File.join test_files, "basic_branches_only_regex.nex" }
+
+  let(:basic_labels) {
+    File.join test_files, "basic_labels_only.nex"}
+  let(:basic_labels_regex) {
+    File.join test_files, "basic_labels_only_regex.nex"}
+
+  let(:basic_labels_and_branches) {
+    File.join test_files, "basic_labels_and_branches.nex"}
+  let(:basic_labels_and_branches_regex) {
+    File.join test_files, "basic_labels_and_branches_regex.nex"}
 
   describe "::main" do
     it "runs Iroki main program" do
@@ -143,12 +168,81 @@ describe Iroki::Main do
                         newick_f:         two_group_tre,
                         out_f:            output_nexus
 
-      actual_output   = File.read output_nexus
-      expected_output = File.read two_group_nex
+      check_output output_nexus, two_group_nex
+    end
 
-      expect(actual_output).to eq expected_output
+    context "Testing of command line args with tricky color map" do
+      context "exact string matching" do
+        it "colors the labels" do
+          Iroki::Main::main color_branches: false,
+                            color_taxa_names: true,
+                            exact: true,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_with_tags,
+                            out_f: output_nexus
 
-      FileUtils.rm output_nexus
+          check_output output_nexus, basic_labels
+        end
+
+        it "colors the branches" do
+          Iroki::Main::main color_branches: true,
+                            color_taxa_names: false,
+                            exact: true,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_with_tags,
+                            out_f: output_nexus
+
+          check_output output_nexus, basic_branches
+        end
+
+        it "colors labels and branches" do
+          Iroki::Main::main color_branches: true,
+                            color_taxa_names: true,
+                            exact: true,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_with_tags,
+                            out_f: output_nexus
+
+          check_output output_nexus, basic_labels_and_branches
+        end
+      end
+
+      context "regular expression matching" do
+        it "colors the labels" do
+          Iroki::Main::main color_branches: false,
+                            color_taxa_names: true,
+                            exact: false,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_regex,
+                            out_f: output_nexus
+
+          check_output output_nexus, basic_labels_regex
+        end
+
+        it "colors the branches" do
+          Iroki::Main::main color_branches: true,
+                            color_taxa_names: false,
+                            exact: false,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_regex,
+                            out_f: output_nexus
+
+          check_output output_nexus, basic_branches_regex
+        end
+
+        it "colors labels and branches" do
+          Iroki::Main::main color_branches: true,
+                            color_taxa_names: true,
+                            exact: false,
+                            newick_f: basic_tre,
+                            color_map_f: basic_color_map_regex,
+                            out_f: output_nexus
+
+          check_output output_nexus, basic_labels_and_branches_regex
+        end
+
+        it "works with the ^ (match at beginning character) (bug fix)"
+      end
     end
 
     # it "looks good with kelly colors" do
@@ -209,4 +303,8 @@ describe Iroki::Main do
         to raise_error SystemExit
     end
   end
+end
+
+def check_output actual, expected
+  expect(File.read(actual)).to eq File.read(expected)
 end

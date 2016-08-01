@@ -23,6 +23,7 @@ module Iroki
     end
 
     def add_color_to_leaf_branch patterns, node, exact
+      p [:jawnface, exact]
       num_matches = 0
       color = nil
       already_matched = false
@@ -38,7 +39,7 @@ module Iroki
         end
       else
         node_s = node.to_s
-
+p :hi_bob
         patterns.each do |pattern, this_color|
           if node_s =~ pattern
             abort_if already_matched,
