@@ -51,6 +51,16 @@ describe Iroki::Main do
   let(:kelly_color_map) { File.join test_files, "23.color_map" }
 
 
+  let(:regex_bug_tre) {
+    File.join test_files, "regex_bug.tre"
+  }
+  let(:regex_bug_color_map) {
+    File.join test_files, "regex_bug.color_map"
+  }
+  let(:regex_bug_nexus) {
+    File.join test_files, "regex_bug.nex"
+  }
+
   # deep dive into testing command line options in conjunction with a
   # complicated color map
   let(:basic_tre) { File.join test_files, "basic.tre" }
@@ -241,7 +251,16 @@ describe Iroki::Main do
           check_output output_nexus, basic_labels_and_branches_regex
         end
 
-        it "works with the ^ (match at beginning character) (bug fix)"
+        it "works with the ^ (match at beginning character) (bug fix)" do
+          Iroki::Main::main color_branches: true,
+                            color_taxa_names: true,
+                            exact: false,
+                            newick_f: regex_bug_tre,
+                            color_map_f: regex_bug_color_map,
+                            out_f: output_nexus
+
+          check_output output_nexus, regex_bug_nexus
+        end
       end
     end
 
