@@ -24,6 +24,8 @@ describe Iroki::Main do
   let(:spec_dir) { File.join this_dir, ".." }
   let(:test_files) { File.join spec_dir, "test_files" }
 
+  let(:empty_name_map) { File.join test_files, "empty.name_map" }
+
   let(:two_group_biom) { File.join test_files, "two_group.biom" }
   let(:two_group_tre) { File.join test_files, "two_group.tre" }
   let(:two_group_nex) { File.join test_files, "two_group.nex" }
@@ -332,6 +334,81 @@ describe Iroki::Main do
                                    color_map_f:      small_color_map,
                                    newick_f:         nil,
                                    out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when only the newick file is given" do
+        expect { Iroki::Main::main newick_f: small_newick }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when only the color map file is given" do
+        expect { Iroki::Main::main color_map_f: small_color_map }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when only the name map file is given" do
+        expect { Iroki::Main::main name_map_f: small_color_map }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when only the biom file is given" do
+        expect { Iroki::Main::main biom_f: two_group_biom }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when given newick, color branches " +
+         " and neither a biom file nor a color map file" do
+        expect { Iroki::Main::main color_branches: true,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when given newick, color labels " +
+         " and neither a biom file nor a color map file" do
+        expect { Iroki::Main::main color_taxa_names: true,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when given no output file" do
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            true,
+                                   auto_color:       "kelly",
+                                   color_map_f:      small_color_map,
+                                   newick_f:         small_newick,
+                                   out_f:            nil }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises when given biom f but no color options" do
+        expect { Iroki::Main::main exact: true,
+                                   biom_f: two_group_biom,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+
+      it "raises when given color map but no color options" do
+        expect { Iroki::Main::main exact: true,
+                                   color_map_f: small_color_map,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises when given --single-color with no biom file" do
+        expect { Iroki::Main::main exact: true,
+                                   color_branches: true,
+                                   color_taxa_names: true,
+                                   color_map_f: small_color_map,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus,
+                                   single_color: true}.
           to raise_error AbortIf::Exit
       end
     end

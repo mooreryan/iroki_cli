@@ -53,10 +53,25 @@ module Iroki
         auto_color_hash = Iroki::Color::Palette::KELLY
       end
 
+      abort_if single_color && biom_f.nil?,
+               "--single-color was passed but no biom file was given"
+
       abort_if biom_f && color_map_f,
                "--color-map and --biom-file cannot both be specified. Try iroki --help for help."
 
+      abort_if (biom_f || color_map_f) && color_branches.nil? && color_taxa_names.nil?,
+               "No coloring options selected."
+
       newick = check_file newick_f, :newick
+
+      abort_if out_f.nil?,
+               "--outfile is a required arg. Try iroki --help for help."
+
+      if color_branches || color_taxa_names
+        abort_if biom_f.nil? && color_map_f.nil?,
+                 "Color options were provided, but no biom file " +
+                 "or color map file was provided"
+      end
 
       color_f = nil
       if !biom_f && (color_taxa_names || color_branches)
@@ -68,8 +83,14 @@ module Iroki
               !color_branches
 
       abort_if check,
-               "A pattern file was provided without specifying " +
+               "A color map file was provided without specifying " +
                "any coloring options"
+
+      abort_if(newick_f &&
+               color_map_f.nil? &&
+               biom_f.nil? &&
+               name_map_f.nil?,
+               "Newick file was given but no other files were given")
 
       # get the color patterns
       if color_f
