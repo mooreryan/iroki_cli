@@ -123,3 +123,7 @@ Add `reorder_nodes` script.
 ### 0.0.11 ###
 
 - Add two color, two group color gradients from biom files
+
+### 0.0.12 ###
+
+- Bug fixes
