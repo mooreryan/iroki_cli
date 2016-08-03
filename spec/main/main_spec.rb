@@ -286,40 +286,54 @@ describe Iroki::Main do
         to raise_error SystemExit
     end
 
-    it "raises SystemExit when the auto-color option is invalid" do
-      auto_color = "asldkfjaldj"
+    context "bad user input" do
 
-      expect { Iroki::Main::main color_branches:   true,
-                                 color_taxa_names: true,
-                                 exact:            true,
-                                 auto_color:       auto_color,
-                                 color_map_f:      small_color_map,
-                                 newick_f:         small_newick,
-                                 out_f:            output_nexus }.
-        to raise_error SystemExit
+      it "raises AbortIf::Exit when the auto-color option is invalid" do
+        auto_color = "asldkfjaldj"
 
-    end
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            true,
+                                   auto_color:       auto_color,
+                                   color_map_f:      small_color_map,
+                                   newick_f:         small_newick,
+                                   out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
 
-    it "raises SystemExit when the newick file doesn't exist" do
-      expect { Iroki::Main::main color_branches:   true,
-                                 color_taxa_names: true,
-                                 exact:            true,
-                                 auto_color:       "kelly",
-                                 color_map_f:      small_color_map,
-                                 newick_f:         "sldfjalsdjf",
-                                 out_f:            output_nexus }.
-        to raise_error SystemExit
-    end
+      end
 
-    it "raises SystemExit when the color file doesn't exist" do
-      expect { Iroki::Main::main color_branches:   true,
-                                 color_taxa_names: true,
-                                 exact:            true,
-                                 auto_color:       "kelly",
-                                 color_map_f:      "alsdkjf",
-                                 newick_f:         small_newick,
-                                 out_f:            output_nexus }.
-        to raise_error SystemExit
+      it "raises AbortIf::Exit when the newick file doesn't exist" do
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            true,
+                                   auto_color:       "kelly",
+                                   color_map_f:      small_color_map,
+                                   newick_f:         "sldfjalsdjf",
+                                   out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when the color file doesn't exist" do
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            true,
+                                   auto_color:       "kelly",
+                                   color_map_f:      "alsdkjf",
+                                   newick_f:         small_newick,
+                                   out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
+      end
+
+      it "raises AbortIf::Exit when the newick file is nil" do
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            true,
+                                   auto_color:       "kelly",
+                                   color_map_f:      small_color_map,
+                                   newick_f:         nil,
+                                   out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
+      end
     end
   end
 end
