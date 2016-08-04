@@ -28,13 +28,20 @@ describe Iroki::Biom do
   let(:two_sample_biom) { Iroki::Biom.open two_sample_biom_f }
   let(:samples) { %w[seq_1 seq_2 seq_3 seq_4 seq_5 seq_6] }
 
+  let(:different_number_of_columns) {
+    File.join test_files, "different_number_of_columns.biom"
+  }
+
   it "is a File" do
     expect(single_sample_biom).to be_a File
   end
 
   describe "#parse" do
     context "when passed a file where not all rows have the same number of columns" do
-      it "raises SystemExit"
+      it "raises AbortIf::Exit" do
+        expect { Iroki::Biom.open(different_number_of_columns).parse }.
+          to raise_error AbortIf::Exit
+      end
     end
 
     context "when passed a single sample biom file" do

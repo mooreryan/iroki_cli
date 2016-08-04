@@ -42,7 +42,14 @@ describe Iroki::Color do
         to eq %Q{[&!color="#{hex}"]}
     end
 
-    it "passes the auto_color variable on to ::tag_from_color"
+    it "knows about the kelly palette" do
+      input = "1"
+      hex = "#875692"
+      palette = Iroki::Color::Palette::KELLY
+
+      expect(Iroki::Color.get_tag input, palette).
+        to eq %Q{[&!color="#{hex}"]}
+    end
   end
 
   describe "::tag_from_hex" do
@@ -83,15 +90,21 @@ describe Iroki::Color do
     end
 
     context "when color does not exist in the hash" do
-      it "returns the FigTree hex tag for black" do
+      # it "returns the FigTree hex tag for black" do
+      #   color = "sdlkfjaslfjasldfjlasjkfasdkjf"
+      #   hex = "#000000"
+
+      #   expect(Iroki::Color.tag_from_color color).
+      #     to eq %Q{[&!color="#{hex}"]}
+      # end
+
+      it "raises AbortIf::Exit (still debating this one)" do
         color = "sdlkfjaslfjasldfjlasjkfasdkjf"
         hex = "#000000"
 
-        expect(Iroki::Color.tag_from_color color).
-          to eq %Q{[&!color="#{hex}"]}
+        expect { Iroki::Color.tag_from_color color }.
+          to raise_error AbortIf::Exit
       end
-
-      it "raises SystemExit (still debating this one)"
     end
 
     context "when the color is there but bad user input" do

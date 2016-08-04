@@ -38,7 +38,10 @@ describe Iroki::Color::SingleGroupGradient do
   it { should respond_to :rel_abunds }
 
   describe "::initialize" do
-    it "raises an error if the samples and counts are different sized"
+    it "raises an error if the samples and counts are different sized" do
+      expect { SingleGroupGradient.new %w[s], [1,2] }.
+        to raise_error AbortIf::Exit
+    end
 
     it "sets the samples" do
       expect(ssg.samples).to eq samples

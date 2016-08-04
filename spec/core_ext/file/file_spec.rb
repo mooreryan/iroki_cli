@@ -153,8 +153,6 @@ describe Iroki::CoreExt::File do
 
         expect(pattern).to be_a Regexp
       end
-
-      it "raises SystemExit if the regexp is invalid"
     end
 
     context "with auto-coloring turned on" do
@@ -211,7 +209,29 @@ describe Iroki::CoreExt::File do
       end
 
       context "with line ending issues" do
-        it "raises SystemExit"
+        it "handles line feeds only" do
+          fname =
+            File.join test_files, "line_endings_line_feed.txt"
+          name_map = { "a" => "A", "b" => "B", "c" => "C" }
+
+          expect(klass.parse_name_map fname).to eq name_map
+        end
+
+        it "handles carriage returns only" do
+          fname =
+            File.join test_files, "line_endings_car_return.txt"
+          name_map = { "a" => "A", "b" => "B", "c" => "C" }
+
+          expect(klass.parse_name_map fname).to eq name_map
+        end
+
+        it "handles carriage returns and line feeds" do
+          fname =
+            File.join test_files, "line_endings_car_return_line_feed.txt"
+          name_map = { "a" => "A", "b" => "B", "c" => "C" }
+
+          expect(klass.parse_name_map fname).to eq name_map
+        end
       end
     end
   end

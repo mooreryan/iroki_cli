@@ -131,3 +131,7 @@ Add `reorder_nodes` script.
 ### 0.0.13 ###
 
 - Handle bad command line input
+
+### 0.0.14 ###
+
+- Add more specs and various improvements

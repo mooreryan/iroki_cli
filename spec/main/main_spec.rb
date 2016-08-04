@@ -411,7 +411,16 @@ describe Iroki::Main do
           to raise_error AbortIf::Exit
       end
 
-      it "raises when given single color with two group biom file"
+      it "raises when given single color with two group biom file" do
+        expect { Iroki::Main::main exact: true,
+                                   color_branches: true,
+                                   color_taxa_names: true,
+                                   color_map_f: two_group_biom,
+                                   newick_f: small_newick,
+                                   out_f: output_nexus,
+                                   single_color: true}.
+          to raise_error AbortIf::Exit
+      end
     end
   end
 end

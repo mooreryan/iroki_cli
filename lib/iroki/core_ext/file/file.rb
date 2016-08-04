@@ -55,7 +55,7 @@ module Iroki
 
 
         patterns = {}
-        Object::File.open(fname).each_line do |line|
+        Object::File.open(fname, "rt").each_line do |line|
           unless line.start_with? "#"
             label_tag = ""
             branch_tag = ""
@@ -131,7 +131,7 @@ module Iroki
         check_file fname, :name_map
 
         name_map = {}
-        Object::File.open(fname).each_line do |line|
+        Object::File.open(fname, "rt").each_line do |line|
           unless line.start_with? "#"
             oldname, newname = line.chomp.split "\t"
 

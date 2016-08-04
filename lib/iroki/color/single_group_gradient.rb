@@ -22,6 +22,10 @@ module Iroki
       attr_accessor :counts, :rel_abunds
 
       def initialize samples, counts, single_color=false
+        abort_unless samples.count == counts.count,
+                     "Samples (#{samples.count}) and counts " +
+                     "#{counts.count} are different size."
+
         @single_color = single_color
         @samples = samples
         @counts = counts

@@ -98,7 +98,7 @@ module Iroki
                                    exact_matching: exact,
                                    auto_color: auto_color_hash
       else
-        samples, counts, is_single_group = Biom.open(biom_f).parse
+        samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
         if is_single_group
           patterns = SingleGroupGradient.new(samples, counts, single_color).patterns

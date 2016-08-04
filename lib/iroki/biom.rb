@@ -23,10 +23,21 @@ module Iroki
     def parse
       samples = []
       counts  = []
+      lineno = -1
+      first_line_count = -1
 
-      self.each_line do |line|
+      self.each_line.with_index do |line, idx|
         unless line.start_with? "#"
+          lineno += 1
           sample, *the_counts = line.chomp.split "\t"
+
+          if lineno.zero?
+            first_line_count = the_counts.count
+          else
+            abort_unless first_line_count == the_counts.count,
+                         "The biom file has rows with different " +
+                         "numbers of columns"
+          end
 
           samples << sample
 

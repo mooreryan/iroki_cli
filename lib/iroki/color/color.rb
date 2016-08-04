@@ -698,7 +698,7 @@ module Iroki
     WHITE = HSL.from_fraction WHITE_HUE, FULLY_SATURATED, PURE_LIGHT
 
     DARK_GREEN = RGB.by_hex(COLORS["darkgreen"])
-    GRAY =       RGB.by_hex(COLORS["gray"])
+    GRAY       = RGB.by_hex(COLORS["gray"])
 
     def self.get_tag str, palette=nil
       if str.hex?
@@ -725,13 +725,10 @@ module Iroki
         colors = COLORS
       end
 
-      if colors.has_key? col
-        hex = colors[col]
-      else
-        # if passed color other than one defined, return black
-        hex = colors["black"]
-      end
+      abort_unless colors.has_key?(col),
+                   "Color '#{col}' is not defined."
 
+      hex = colors[col]
       %Q{[&!color="#{hex.upcase}"]}
     end
   end
