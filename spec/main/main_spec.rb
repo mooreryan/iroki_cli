@@ -392,7 +392,6 @@ describe Iroki::Main do
           to raise_error AbortIf::Exit
       end
 
-
       it "raises when given color map but no color options" do
         expect { Iroki::Main::main exact: true,
                                    color_map_f: small_color_map,
@@ -411,6 +410,8 @@ describe Iroki::Main do
                                    single_color: true}.
           to raise_error AbortIf::Exit
       end
+
+      it "raises when given single color with two group biom file"
     end
   end
 end
