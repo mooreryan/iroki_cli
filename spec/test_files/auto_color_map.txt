@@ -1,0 +1,3 @@
+auto_1	1
+auto_2	2
+ryan_3	red

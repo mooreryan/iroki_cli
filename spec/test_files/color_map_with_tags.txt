@@ -1,0 +1,11 @@
+# I'm a comment
+apple	red
+grape	green	blue
+peanut	green	green
+amelionia	brown
+ice cream	branch:blue	label:brown
+thingy	label:green
+pi--ece	label:orange	branch:purple
+teehee		tomato
+pie	branch:goldenrod3
+water	branch:thistle	label:black

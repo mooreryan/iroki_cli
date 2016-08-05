@@ -10,6 +10,6 @@
 *.lock
 .ruby-gemset
 newicks
-test_files
+/test_files
 sandbox
 .coveralls.yml
