@@ -135,3 +135,7 @@ Add `reorder_nodes` script.
 ### 0.0.14 ###
 
 - Add more specs and various improvements
+
+### 0.0.15 ###
+
+- `.ruby-version` file was being weird when user didn't have the correct ruby
