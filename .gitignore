@@ -9,6 +9,7 @@
 /tmp/
 *.lock
 .ruby-gemset
+.ruby-version
 newicks
 /test_files
 sandbox
