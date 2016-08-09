@@ -56,6 +56,7 @@ module Iroki
       abort_if single_color && biom_f.nil?,
                "--single-color was passed but no biom file was given"
 
+      # this should be allowed
       abort_if biom_f && color_map_f,
                "--color-map and --biom-file cannot both be specified. Try iroki --help for help."
 
@@ -92,23 +93,6 @@ module Iroki
                name_map_f.nil?,
                "Newick file was given but no other files were given")
 
-      # get the color patterns
-      if color_f
-        patterns = parse_color_map color_f,
-                                   exact_matching: exact,
-                                   auto_color: auto_color_hash
-      else
-        samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
-
-        if is_single_group
-          patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
-        else
-          g1_counts = counts.map(&:first)
-          g2_counts = counts.map(&:last)
-          patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
-        end
-      end
-
       treeio = Bio::FlatFile.open(Bio::Newick, newick)
 
       newick = treeio.next_entry
@@ -121,7 +105,7 @@ module Iroki
         tree.collect_node! do |node|
           unless node.name.nil?
             # every name is cleaned no matter what
-            node.name = clean node.name
+            node.name = node.name.clean
 
             if name_map.has_key?(node.name)
               node.name = name_map[node.name]
@@ -129,6 +113,27 @@ module Iroki
           end
 
           node
+        end
+      end
+
+      if name_map_f && color_map_f.nil? && biom_f.nil?
+        AbortIf.logger.info "Only renaming was requested."
+      end
+
+      # get the color patterns
+      if color_f
+        patterns = parse_color_map color_f,
+                                   exact_matching: exact,
+                                   auto_color: auto_color_hash
+      elsif biom_f
+        samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
+
+        if is_single_group
+          patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
+        else
+          g1_counts = counts.map(&:first)
+          g2_counts = counts.map(&:last)
+          patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
         end
       end
 

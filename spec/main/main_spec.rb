@@ -87,7 +87,32 @@ describe Iroki::Main do
   let(:basic_labels_and_branches_regex) {
     File.join test_files, "basic_labels_and_branches_regex.nex"}
 
+  let(:apple_name_map) {
+    File.join test_files, "apple.name_map" }
+  let(:apple_newick) {
+    File.join test_files, "apple.tre" }
+  let(:apple_no_color_nexus) {
+    File.join test_files, "apple.no_color.nexus" }
+
+
+
   describe "::main" do
+    context "with renaming" do
+      context "no coloring options" do
+        it "renames node labels with a name map" do
+          # this also tests what happens when (1) names are in the
+          # tree but missing from the name map, (2) names are in the
+          # name map but not in the tree, (3) illegal characters are
+          # used (parentheses and spaces only)
+          Iroki::Main::main name_map_f: apple_name_map,
+                            newick_f:   apple_newick,
+                            out_f:      output_nexus
+
+          check_output output_nexus, apple_no_color_nexus
+        end
+      end
+    end
+
     it "runs Iroki main program" do
       Iroki::Main::main color_branches:   true,
                         color_taxa_names: true,
