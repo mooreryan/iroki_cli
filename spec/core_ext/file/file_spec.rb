@@ -21,6 +21,9 @@ require "spec_helper"
 describe Iroki::CoreExt::File do
   let(:klass) { Class.new { extend Iroki::CoreExt::File } }
 
+  let(:blue_tag) { Iroki::Color.get_tag "blue" }
+  let(:red_tag) { Iroki::Color.get_tag "red" }
+
   let(:this_dir) { File.dirname __FILE__ }
   let(:test_files) { File.join this_dir, "..", "..", "test_files" }
   let(:good_name_map) { File.join test_files, "name_map.good.test" }
@@ -40,12 +43,12 @@ describe Iroki::CoreExt::File do
   let(:bad_name_color_map) { File.join test_files,
                                        "bad_names.color_map" }
 
-  let(:bad_name_patterns) {
-    { "ap_ple_3_2_pie"     => { label: Iroki::Color.get_tag("blue"),
-                                branch: Iroki::Color.get_tag("blue"), },
-      "pie_is_really_good" => { label: Iroki::Color.get_tag("red"),
-                                branch: Iroki::Color.get_tag("red"), }, }
-  }
+  let(:bad_name_patterns) do
+    { %q{ap-"p"le*'3'_2!#$#@.()p,ie} => { label: blue_tag,
+                                          branch: blue_tag, },
+      %q{   pie '"is"' "'really'" good } => { label: red_tag,
+                                             branch: red_tag, } }
+  end
 
   let(:auto_purple) {
     Iroki::Color.get_tag Iroki::Color::Palette::KELLY["1"][:hex]
@@ -59,11 +62,11 @@ describe Iroki::CoreExt::File do
     {
       "auto_1" => { label: auto_purple, branch: auto_purple },
       "auto_2" => { label: auto_orange, branch: auto_orange },
-      "ryan_3" => { label: red, branch: red },
+      "ryan_3" => { label: red_tag, branch: red_tag },
     }
   }
 
-  let(:patterns) {
+  let(:patterns) do
     { "apple" =>     { label: Iroki::Color.get_tag("red"),
                        branch: Iroki::Color.get_tag("red"), },
       "grape" =>     { label: Iroki::Color.get_tag("green"),
@@ -72,11 +75,11 @@ describe Iroki::CoreExt::File do
                        branch: Iroki::Color.get_tag("green"), },
       "amelionia" => { label: Iroki::Color.get_tag("brown"),
                        branch: Iroki::Color.get_tag("brown"), },
-      "ice_cream" => { label: Iroki::Color.get_tag("brown"),
+      "ice cream" => { label: Iroki::Color.get_tag("brown"),
                        branch: Iroki::Color.get_tag("blue"), },
       "thingy" =>    { label: Iroki::Color.get_tag("green"),
                        branch: "", },
-      "pi_ece" =>    { label: Iroki::Color.get_tag("orange"),
+      "pi--ece" =>    { label: Iroki::Color.get_tag("orange"),
                        branch: Iroki::Color.get_tag("purple"), },
       "teehee" =>    { label: "",
                        branch: Iroki::Color.get_tag("tomato"), },
@@ -86,7 +89,15 @@ describe Iroki::CoreExt::File do
                        branch: Iroki::Color.get_tag("thistle"), },
 
     }
-  }
+  end
+
+
+  let(:patterns_iroki) do
+    { "iroki0iroki" => { label: red_tag, branch: red_tag },
+      "iroki1iroki" => { label: blue_tag, branch: blue_tag },
+      "iroki2iroki" => { label: red_tag, branch: red_tag }, }
+  end
+  let(:color_map_iroki) { File.join test_files, "color_map_iroki.txt" }
 
   describe "#check_file" do
     it "aborts if file is nil" do
@@ -102,6 +113,33 @@ describe Iroki::CoreExt::File do
     it "returns fname if file exists" do
       fname = __FILE__
       expect(klass.check_file fname, :apple).to eq fname
+    end
+  end
+
+  # NAMETHING
+  describe "::parse_color_map_iroki" do
+    context "exact matching" do
+      it "reads the color file and returns a hash of patterns" do
+        iroki_to_name = { "iroki0iroki" => "s1",
+                          "iroki1iroki" => "s2",
+                          "iroki2iroki" => "s3" }
+
+        expect(klass.parse_color_map_iroki color_map_iroki, iroki_to_name).to eq patterns_iroki
+      end
+    end
+
+    context "regex matching" do
+      it "reads the color file and returns a hash of patterns" do
+        iroki_to_name = { "iroki0iroki" => "s1",
+                          "iroki1iroki" => "s2",
+                          "iroki2iroki" => "s3" }
+
+        output = { /s1/ => { label: red_tag, branch: red_tag },
+                   /s2/ => { label: blue_tag, branch: blue_tag },
+                   /s3/ => { label: red_tag, branch: red_tag }, }
+
+        expect(klass.parse_color_map_iroki color_map_iroki, iroki_to_name, exact_matching: false).to eq output
+      end
     end
   end
 
@@ -166,10 +204,10 @@ describe Iroki::CoreExt::File do
 
   describe "#parse_name_map" do
     context "with good input" do
-      it "returns a hash with clean old name => clean new name" do
+      it "returns a hash with old name => new name" do
         fname = File.join test_files, "name_map.good.txt"
-        name_map = { "app_le" => "pie",
-                     "is" => "g_o_o_d" }
+        name_map = { %q{a"p"p&^%$le} => %q{p'i'e},
+                     %q{i's'} => %q{g o "o" !@#$ d}, }
 
         expect(klass.parse_name_map fname).to eq name_map
       end
@@ -199,6 +237,8 @@ describe Iroki::CoreExt::File do
           expect{klass.parse_name_map fname}.to raise_error SystemExit
         end
       end
+
+      it "raises when col 1 has duplicate values"
 
       context "when col 2 has duplicate values" do
         it "raises SystemExit" do

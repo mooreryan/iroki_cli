@@ -23,33 +23,34 @@ describe Iroki::Main do
   let(:this_dir) { File.dirname __FILE__ }
   let(:spec_dir) { File.join this_dir, ".." }
   let(:test_files) { File.join spec_dir, "test_files" }
+  let(:nexus_files) { File.join test_files, "nexus_files" }
 
   let(:empty_name_map) { File.join test_files, "empty.name_map" }
 
   let(:two_group_biom) { File.join test_files, "two_group.biom" }
   let(:two_group_tre) { File.join test_files, "two_group.tre" }
-  let(:two_group_nex) { File.join test_files, "two_group.nex" }
+  let(:two_group_nex) { File.join nexus_files, "two_group.nex" }
 
   let(:single_sample_biom) { File.join test_files, "single_sample.biom" }
   let(:single_sample_tre) { File.join test_files, "single_sample.tre" }
-  let(:single_sample_nex) { File.join test_files, "single_sample.nex" }
-  let(:single_sample_one_color_nex) { File.join test_files, "single_sample_one_color.nex" }
+  let(:single_sample_nex) { File.join nexus_files, "single_sample.nex" }
+  let(:single_sample_one_color_nex) { File.join nexus_files, "single_sample_one_color.nex" }
 
   let(:newick) { File.join test_files, "test.tre" }
-  let(:expected_nexus) { File.join test_files, "expected.nex" }
-  let(:output_nexus) { File.join test_files, "output.nex" }
+  let(:expected_nexus) { File.join nexus_files, "expected.nex" }
+  let(:output_nexus) { File.join nexus_files, "output.nex" }
   let(:color_map) { File.join test_files, "test.color_map" }
 
   let(:jess_newick) { File.join test_files, "jess.tre" }
-  let(:jess_nexus)  { File.join test_files, "jess.nex" }
+  let(:jess_nexus)  { File.join nexus_files, "jess.nex" }
 
   let(:small_newick)    { File.join test_files, "small.tre" }
-  let(:small_nexus)     { File.join test_files, "small.nex" }
+  let(:small_nexus)     { File.join nexus_files, "small.nex" }
   let(:small_color_map) { File.join test_files, "small.color_map" }
 
   let(:kelly_newick)    { File.join test_files, "23.tre" }
-  let(:kelly_nexus)     { File.join test_files, "23.nex" }
-  let(:kelly_out)       { File.join test_files, "23.out.nex" }
+  let(:kelly_nexus)     { File.join nexus_files, "23.nex" }
+  let(:kelly_out)       { File.join nexus_files, "23.out.nex" }
   let(:kelly_color_map) { File.join test_files, "23.color_map" }
 
 
@@ -60,7 +61,7 @@ describe Iroki::Main do
     File.join test_files, "regex_bug.color_map"
   }
   let(:regex_bug_nexus) {
-    File.join test_files, "regex_bug.nex"
+    File.join nexus_files, "regex_bug.nex"
   }
 
   # deep dive into testing command line options in conjunction with a
@@ -73,26 +74,26 @@ describe Iroki::Main do
     File.join test_files, "basic_color_map_regex.txt" }
 
   let(:basic_branches) {
-    File.join test_files, "basic_branches_only.nex" }
+    File.join nexus_files, "basic_branches_only.nex" }
   let(:basic_branches_regex) {
-    File.join test_files, "basic_branches_only_regex.nex" }
+    File.join nexus_files, "basic_branches_only_regex.nex" }
 
   let(:basic_labels) {
-    File.join test_files, "basic_labels_only.nex"}
+    File.join nexus_files, "basic_labels_only.nex"}
   let(:basic_labels_regex) {
-    File.join test_files, "basic_labels_only_regex.nex"}
+    File.join nexus_files, "basic_labels_only_regex.nex"}
 
   let(:basic_labels_and_branches) {
-    File.join test_files, "basic_labels_and_branches.nex"}
+    File.join nexus_files, "basic_labels_and_branches.nex"}
   let(:basic_labels_and_branches_regex) {
-    File.join test_files, "basic_labels_and_branches_regex.nex"}
+    File.join nexus_files, "basic_labels_and_branches_regex.nex"}
 
   let(:apple_name_map) {
     File.join test_files, "apple.name_map" }
   let(:apple_newick) {
     File.join test_files, "apple.tre" }
   let(:apple_no_color_nexus) {
-    File.join test_files, "apple.no_color.nexus" }
+    File.join nexus_files, "apple.no_color.nexus" }
 
 
 
@@ -114,6 +115,22 @@ describe Iroki::Main do
     end
 
     it "runs Iroki main program" do
+      Iroki::Main::main color_branches:   true,
+                        color_taxa_names: true,
+                        exact:            true,
+                        color_map_f:      color_map,
+                        newick_f:         newick,
+                        out_f:            output_nexus
+
+      expected_output = File.read expected_nexus
+      actual_output   = File.read output_nexus
+
+      expect(actual_output).to eq expected_output
+
+      FileUtils.rm output_nexus
+    end
+
+    it "handles seanie's weird chars" do
       Iroki::Main::main color_branches:   true,
                         color_taxa_names: true,
                         exact:            true,
@@ -243,6 +260,8 @@ describe Iroki::Main do
           check_output output_nexus, basic_labels_and_branches
         end
       end
+
+      it "handles biom file and color map file"
 
       context "regular expression matching" do
         it "colors the labels" do

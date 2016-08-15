@@ -19,6 +19,7 @@
 require "abort_if"
 
 require "iroki/biom"
+require "iroki/tree"
 require "iroki/version"
 
 require "iroki/const/const"

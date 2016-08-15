@@ -1,19 +1,16 @@
 #NEXUS
 begin taxa;
-dimensions ntax=7;
+dimensions ntax=4;
 taxlabels
-s1
-s2
-s3
-s4
-apple[&!color="#0000FF"]
-abcd[&!color="#0000FF"]
-bcda
+"the. a-pple, (is) [go_od]"[&!color="#00FF00"]
+'a-pple. pie, (i_s (really) [good])'[&!color="#0000FF"]
+"c_'1'"[&!color="#0000FF"]
+'dandy "snack"'[&!color="#0000FF"]
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (s1,(s2,(s3,(s4,(apple[&!color="#0000FF"],(abcd[&!color="#0000FF"],bcda))))));
+  tree tree_1 = [&R] ("the. a-pple, (is) [go_od]"[&!color="#FF00AA"],('a-pple. pie, (i_s (really) [good])'[&!color="#FF00AA"],("c_'1'",'dandy "snack"')));
 
 end;
 

@@ -1,17 +1,19 @@
 #NEXUS
 begin taxa;
-dimensions ntax=5;
+dimensions ntax=7;
 taxlabels
-seq_1[&!color="#F0FFF0"]
-seq_2[&!color="#B4FFD9"]
-seq_3[&!color="#78FFFF"]
-seq_4[&!color="#3C9DFF"]
-seq_5[&!color="#0000FF"]
+'s1'[&!color="#00FF00"]
+'s2'[&!color="#0000FF"]
+'s3'[&!color="#0000FF"]
+'s4'[&!color="#0000FF"]
+'s5'[&!color="#FF0000"]
+'s6'
+'s7'[&!color="#0000FF"]
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (seq_1[&!color="#F0FFF0"],(seq_2[&!color="#B4FFD9"],(seq_3[&!color="#78FFFF"],(seq_4[&!color="#3C9DFF"],seq_5[&!color="#0000FF"]))));
+  tree tree_1 = [&R] ('s1',('s2',('s3',('s4',('s5',('s6','s7'))))));
 
 end;
 

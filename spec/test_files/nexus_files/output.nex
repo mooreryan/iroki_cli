@@ -2,18 +2,18 @@
 begin taxa;
 dimensions ntax=7;
 taxlabels
-s1
-s2
-s3
-s4
-apple[&!color="#0000FF"]
-abcd[&!color="#0000FF"]
-bcda
+'s1'
+'s2'
+'s3'
+'s4'
+'apple'[&!color="#0000FF"]
+'abcd'[&!color="#0000FF"]
+'bcda'
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (s1,(s2,(s3,(s4,(apple[&!color="#0000FF"],(abcd[&!color="#0000FF"],bcda))))));
+  tree tree_1 = [&R] ('s1',('s2',('s3',('s4',('apple'[&!color="#0000FF"],('abcd'[&!color="#0000FF"],'bcda'))))));
 
 end;
 

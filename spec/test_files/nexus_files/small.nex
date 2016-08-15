@@ -2,18 +2,18 @@
 begin taxa;
 dimensions ntax=7;
 taxlabels
-A[&!color="#0000FF"]
-B[&!color="#875692"]
-C[&!color="#875692"]
-D
-E
-F[&!color="#F38400"]
-G[&!color="#F38400"]
+'A'[&!color="#0000FF"]
+'B'[&!color="#875692"]
+'C'[&!color="#875692"]
+'D'
+'E'
+'F'[&!color="#F38400"]
+'G'[&!color="#F38400"]
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (A[&!color="#00FF00"]:1,(B[&!color="#875692"]:1,C[&!color="#875692"]:1)[&!color="#875692"]:1,(D:1,(E:1,(F[&!color="#F38400"]:1,G[&!color="#F38400"]:1)[&!color="#F38400"]:1):1):1);
+  tree tree_1 = [&R] ('A'[&!color="#00FF00"]:1,('B'[&!color="#875692"]:1,'C'[&!color="#875692"]:1)[&!color="#875692"]:1,('D':1,('E':1,('F'[&!color="#F38400"]:1,'G'[&!color="#F38400"]:1)[&!color="#F38400"]:1):1):1);
 
 end;
 

@@ -2,16 +2,16 @@
 begin taxa;
 dimensions ntax=5;
 taxlabels
-seq_1[&!color="#E6F0E6"]
-seq_2[&!color="#AFCFAF"]
-seq_3[&!color="#79AE79"]
-seq_4[&!color="#438D43"]
-seq_5[&!color="#0D6C0D"]
+'seq_1'[&!color="#E6F0E6"]
+'seq_2'[&!color="#AFCFAF"]
+'seq_3'[&!color="#79AE79"]
+'seq_4'[&!color="#438D43"]
+'seq_5'[&!color="#0D6C0D"]
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (seq_1[&!color="#E6F0E6"],(seq_2[&!color="#AFCFAF"],(seq_3[&!color="#79AE79"],(seq_4[&!color="#438D43"],seq_5[&!color="#0D6C0D"]))));
+  tree tree_1 = [&R] ('seq_1'[&!color="#E6F0E6"],('seq_2'[&!color="#AFCFAF"],('seq_3'[&!color="#79AE79"],('seq_4'[&!color="#438D43"],'seq_5'[&!color="#0D6C0D"]))));
 
 end;
 

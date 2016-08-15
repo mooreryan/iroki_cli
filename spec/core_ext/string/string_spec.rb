@@ -29,11 +29,54 @@ describe Iroki::CoreExt::String do
     end
   end
 
+  describe "#single_quote" do
+    it "wraps string in single quotes changing internal single " +
+       "quotes to double quotes" do
+      str = %q{apple 'pie' "is" good}
+
+      expect(str.single_quote).to eq %q{'apple "pie" "is" good'}
+    end
+
+    it "returns itself if it is already single quoted" do
+      str = %q{'apple'}
+
+      expect(str.single_quote).to eq %q{'apple'}
+    end
+  end
+
   describe "#clean" do
+    it "changes internal single quotes to double quotes" do
+      str = "   a'!\"3.*''p''(p) [a]  le  "
+
+      expect(str.clean).to eq %q{   a"!"3.*""p""(p) [a]  le  }
+    end
+  end
+
+  describe "#clean_strict" do
     it "stips outer whitespace then replaces non _ or " +
        "alphanumeric chars with a _" do
-      str = "   a!3.*pp   le  "
-      expect(str.clean).to eq "a_3_pp_le"
+      str = "   a'!\"3.*p(p) [a]  le  "
+      expect(str.clean_strict).to eq "a_3_p_p_a_le"
+    end
+  end
+
+  describe "#clean_name" do
+    context "with colored name" do
+      it "cleans only the name part" do
+        old = 'KM042485 1* 8(6)4[&!color="#5311FF"]'
+        new = %q{'KM042485 1* 8(6)4'[&!color="#5311FF"]}
+
+        expect(old.clean_name).to eq new
+      end
+    end
+
+    context "with non-colored name" do
+      it "cleans the whole thing" do
+        old = "KM042485 1* 8(6)4"
+        new = %q{'KM042485 1* 8(6)4'}
+
+        expect(old.clean_name).to eq new
+      end
     end
   end
 
@@ -63,23 +106,15 @@ describe Iroki::CoreExt::String do
     end
   end
 
-  describe "#clean_name" do
-    context "with colored name" do
-      it "cleans only the name part" do
-        old = 'KM042485 1* 864[&!color="#5311FF"]'
-        new = 'KM042485_1_864[&!color="#5311FF"]'
-
-        expect(old.clean_name).to eq new
-      end
+  describe "#has_single_quote?" do
+    it "returns a regex match if the string has a single quote" do
+      str = %q{apple 'pie'}
+      expect(str.has_single_quote?).to be_a MatchData
     end
 
-    context "with non-colored name" do
-      it "cleans the whole thing" do
-        old = "KM042485 1* 864"
-        new = "KM042485_1_864"
-
-        expect(old.clean_name).to eq new
-      end
+    it "returns nil if the string has no single quote" do
+      str = "apple pie"
+      expect(str.has_single_quote?).to be nil
     end
   end
 end

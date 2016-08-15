@@ -22,7 +22,7 @@ module Iroki
       tree.children(node).empty?
     end
 
-    def add_color_to_leaf_branch patterns, node, exact
+    def add_color_to_leaf_branch patterns, node, exact, iroki_to_name=nil
       num_matches = 0
       color = nil
       already_matched = false
@@ -37,9 +37,12 @@ module Iroki
           return nil
         end
       else
-        node_s = node.to_s
+        assert iroki_to_name, "iroki_to_name arg is nil"
+        assert iroki_to_name[node.to_s], "iroki_to_name is missing #{node.to_s}"
+        node_s = iroki_to_name[node.to_s]
 
         patterns.each do |pattern, this_color|
+          p [:hi, pattern, this_color, node_s]
           if node_s =~ pattern
             abort_if already_matched,
                      "Non specific matching for #{node_s}"
@@ -61,13 +64,15 @@ module Iroki
       end
     end
 
-    def color_nodes patterns, tree, node, exact
+    def color_nodes patterns, tree, node, exact, iroki_to_name
       # # check if it needs color, if so set the color
       # color = add_color_to_leaf_branch patterns, node, exact
 
       # clean the name no matter what
       if node.name
-        node.name = node.name.clean_name
+        # puts "before haha: #{node.name}"
+        node.name = node.name #.clean_name
+        # puts "after  haha: #{node.name}"
       else
         node.name = nil
       end
@@ -82,16 +87,18 @@ module Iroki
 
         # NOTE: this was originally before cleaning the node name a
         # couple lines up, does it matter that it is after?
-        color = add_color_to_leaf_branch patterns, node, exact
+        color = add_color_to_leaf_branch patterns, node, exact, iroki_to_name
 
         # add color to the name
+        # p [:before, node.name]
         node.name = node.name + color[:branch] if color
+        # p [:after, node.name]
       elsif !leaf?(tree, node)
         children = tree.children(node) # get the children
         children_colors = []
         children.each do |child|
           # recurse to color the child if needed
-          color_nodes patterns, tree, child, exact
+          color_nodes patterns, tree, child, exact, iroki_to_name
           children_colors << get_color(child) # add color of the child
         end
 

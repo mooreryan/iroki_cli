@@ -1,18 +1,17 @@
 #NEXUS
 begin taxa;
-dimensions ntax=6;
+dimensions ntax=5;
 taxlabels
-apple
-pie
-is
-really_good
-_and_tasty
-f
+'seq_1'[&!color="#F0FFF0"]
+'seq_2'[&!color="#B4FFD9"]
+'seq_3'[&!color="#78FFFF"]
+'seq_4'[&!color="#3C9DFF"]
+'seq_5'[&!color="#0000FF"]
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (apple,(pie,(is,(really_good,(_and_tasty,f)))));
+  tree tree_1 = [&R] ('seq_1'[&!color="#F0FFF0"],('seq_2'[&!color="#B4FFD9"],('seq_3'[&!color="#78FFFF"],('seq_4'[&!color="#3C9DFF"],'seq_5'[&!color="#0000FF"]))));
 
 end;
 

@@ -1,19 +1,35 @@
 #NEXUS
 begin taxa;
-dimensions ntax=7;
+dimensions ntax=23;
 taxlabels
-s1[&!color="#00FF00"]
-s2[&!color="#0000FF"]
-s3[&!color="#0000FF"]
-s4[&!color="#0000FF"]
-s5[&!color="#FF0000"]
-s6
-s7[&!color="#0000FF"]
+'1'[&!color="#875692"]
+'2'[&!color="#F38400"]
+'3'[&!color="#A1CAF1"]
+'4'[&!color="#BE0032"]
+'5'[&!color="#C2B280"]
+'6'[&!color="#848482"]
+'7'[&!color="#008856"]
+'8'[&!color="#E68FAC"]
+'9'[&!color="#0067A5"]
+'10'[&!color="#F99379"]
+'11'[&!color="#604E97"]
+'12'[&!color="#F6A600"]
+'13'[&!color="#B3446C"]
+'14'[&!color="#882D17"]
+'15'[&!color="#8DB600"]
+'16'[&!color="#654522"]
+'17'[&!color="#E25822"]
+'18'[&!color="#2B3D26"]
+'19'[&!color="#F3C300"]
+'20'
+'21'
+'22'
+'23'
 ;
 end;
 
 begin trees;
-  tree tree_1 = [&R] (s1,(s2,(s3,(s4,(s5,(s6,s7))))));
+  tree tree_1 = [&R] ('1'[&!color="#875692"],('2'[&!color="#F38400"],('3'[&!color="#A1CAF1"],('4'[&!color="#BE0032"],('5'[&!color="#C2B280"],('6'[&!color="#848482"],('7'[&!color="#008856"],('8'[&!color="#E68FAC"],('9'[&!color="#0067A5"],('10'[&!color="#F99379"],('11'[&!color="#604E97"],('12'[&!color="#F6A600"],('13'[&!color="#B3446C"],('14'[&!color="#882D17"],('15'[&!color="#8DB600"],('16'[&!color="#654522"],('17'[&!color="#E25822"],('18'[&!color="#2B3D26"],('19'[&!color="#F3C300"],('20',('21',('22','23'))))))))))))))))))))));
 
 end;
 
