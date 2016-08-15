@@ -2,7 +2,11 @@
 
 # Iroki #
 
-[![Gem Version](https://badge.fury.io/rb/iroki.svg)](https://badge.fury.io/rb/iroki) [![Build Status](https://travis-ci.org/mooreryan/iroki.svg?branch=master)](https://travis-ci.org/mooreryan/iroki) [![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki?branch=master)
+[![Gem Version](https://badge.fury.io/rb/iroki.svg)](https://badge.fury.io/rb/iroki)
+[![Build Status](https://travis-ci.org/mooreryan/iroki.svg?branch=master)](https://travis-ci.org/mooreryan/iroki)
+[![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki?branch=master)
+[![GitHub issues](https://img.shields.io/github/issues/mooreryan/iroki.svg)](https://github.com/mooreryan/iroki/issues)
+[![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/mooreryan/iroki/master/COPYING)
 
 Command line app and library code for Iroki, a phylogenetic tree
 customization program.
