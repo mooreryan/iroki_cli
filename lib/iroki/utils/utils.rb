@@ -42,7 +42,6 @@ module Iroki
         node_s = iroki_to_name[node.to_s]
 
         patterns.each do |pattern, this_color|
-          p [:hi, pattern, this_color, node_s]
           if node_s =~ pattern
             abort_if already_matched,
                      "Non specific matching for #{node_s}"

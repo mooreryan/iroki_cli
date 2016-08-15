@@ -356,11 +356,6 @@ module Iroki
         end
       end
 
-      # puts str
-      # puts tre_str
-
-
-
       nexus = "#NEXUS
 begin taxa;
 dimensions ntax=#{leaves.count};

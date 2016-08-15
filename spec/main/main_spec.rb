@@ -95,6 +95,17 @@ describe Iroki::Main do
   let(:apple_no_color_nexus) {
     File.join nexus_files, "apple.no_color.nexus" }
 
+  let(:z_tre) {
+    File.join test_files, "z.tre" }
+  let(:z_color_map) {
+    File.join test_files, "z.color_map" }
+  let(:z_name_map) {
+    File.join test_files, "z.name_map" }
+  let(:z_nex) {
+    File.join nexus_files, "z.nex" }
+  let(:z_nex_with_name_map) {
+    File.join nexus_files, "z_with_name_map.nex" }
+
 
 
   describe "::main" do
@@ -130,20 +141,42 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
 
-    it "handles seanie's weird chars" do
-      Iroki::Main::main color_branches:   true,
-                        color_taxa_names: true,
-                        exact:            true,
-                        color_map_f:      color_map,
-                        newick_f:         newick,
-                        out_f:            output_nexus
+    context "seanie's issue" do
+      it "handles seanie's weird chars" do
+        Iroki::Main::main color_branches:   true,
+                          color_taxa_names: true,
+                          exact:            true,
+                          color_map_f:      z_color_map,
+                          newick_f:         z_tre,
+                          out_f:            output_nexus
 
-      expected_output = File.read expected_nexus
-      actual_output   = File.read output_nexus
+        expected_output = File.read z_nex
+        actual_output   = File.read output_nexus
 
-      expect(actual_output).to eq expected_output
+        expect(actual_output).to eq expected_output
 
-      FileUtils.rm output_nexus
+        FileUtils.rm output_nexus
+      end
+
+      context "with name map" do
+        # NOTE the name map must not contain the surrounding quotes!
+        it "handles seanie's weird chars" do
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            exact:            true,
+                            color_map_f:      z_color_map,
+                            name_map_f:       z_name_map,
+                            newick_f:         z_tre,
+                            out_f:            output_nexus
+
+          expected_output = File.read z_nex_with_name_map
+          actual_output   = File.read output_nexus
+
+          expect(actual_output).to eq expected_output
+
+          FileUtils.rm output_nexus
+        end
+      end
     end
 
     it "handles auto colors mixed with specified colors" do

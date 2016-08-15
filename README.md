@@ -139,3 +139,8 @@ Add `reorder_nodes` script.
 ### 0.0.15 ###
 
 - `.ruby-version` file was being weird when user didn't have the correct ruby
+
+### 0.0.16 ###
+
+- Allow unusual characters in label names ([GitHub issue](https://github.com/mooreryan/iroki/issues/2))
+- Fix no method `clean` bug ([GitHub issue](https://github.com/mooreryan/iroki/issues/3))
