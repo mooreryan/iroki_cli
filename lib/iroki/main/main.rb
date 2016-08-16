@@ -150,6 +150,9 @@ module Iroki
                   newick_f: nil,
                   out_f: nil)
 
+      args = method(__method__).parameters.map { |arg| arg[1] }
+      AbortIf::logger.info "Args " + args.map { |arg| "#{arg} = #{eval(arg.to_s).inspect}" }.join(', ')
+
       if display_auto_color_options
         STDERR.puts "\n  Choices for --auto-color ..."
         STDERR.print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
@@ -171,10 +174,6 @@ module Iroki
       abort_if single_color && biom_f.nil?,
                "--single-color was passed but no biom file was given"
 
-      # this should be allowed
-      abort_if biom_f && color_map_f,
-               "--color-map and --biom-file cannot both be specified. Try iroki --help for help."
-
       abort_if (biom_f || color_map_f) && color_branches.nil? && color_taxa_names.nil?,
                "No coloring options selected."
 
@@ -191,6 +190,7 @@ module Iroki
 
       color_f = nil
       if !biom_f && (color_taxa_names || color_branches)
+        p color_map_f
         color_f = check_file color_map_f, :color_map_f
       end
 
@@ -230,10 +230,6 @@ module Iroki
         name_map = nil
       end
 
-      if name_map_f && color_map_f.nil? && biom_f.nil? # just name map
-        # put node names back
-      end
-
       ################
       # parse name map
       #################################################################
@@ -245,8 +241,46 @@ module Iroki
       #################################################################
       # get color patterns
       ####################
+      p [color_f, biom_f]
+      if color_map_f && biom_f
+        color_map_patterns = parse_color_map_iroki color_map_f,
+                                                   iroki_to_name,
+                                                   exact_matching: exact,
+                                                   auto_color: auto_color_hash
+        samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
-      if color_f
+        if is_single_group
+          biom_patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
+        else
+          g1_counts = counts.map(&:first)
+          g2_counts = counts.map(&:last)
+          biom_patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
+        end
+
+        # these patterns have the original name for the key, so change
+        # the key to the iroki name
+        name_to_iroki = iroki_to_name.invert
+        biom_patterns_iroki_name = {}
+        biom_patterns.each do |name, val|
+          biom_patterns_iroki_name[name_to_iroki[name]] = val
+        end
+
+        patterns = biom_patterns_iroki_name.merge(color_map_patterns) do |key, oldval, newval|
+          new_label = if !newval[:label].nil? && !newval[:label].empty?
+                        newval[:label]
+                      else
+                        oldval[:label]
+                      end
+
+          new_branch = if !newval[:branch].nil? && !newval[:branch].empty?
+                        newval[:branch]
+                      else
+                        oldval[:branch]
+                      end
+
+          { label: new_label, branch: new_branch }
+        end
+      elsif color_f
         patterns = parse_color_map_iroki color_f,
                                          iroki_to_name,
                                          exact_matching: exact,
@@ -280,26 +314,7 @@ module Iroki
       #################################################################
 
 
-      # puts [:tree_after_change_names, tree.newick(indent: false)]
       nil_val = { label: "", branch: "" }
-
-      # do this first cos everything after will use the "new" names
-      # if name_map_f
-      #   name_map = parse_name_map name_map_f
-
-      #   tree.collect_node! do |node|
-      #     unless node.name.nil?
-      #       # every name is cleaned no matter what
-      #       # node.name = node.name.clean_name
-
-      #       if name_map.has_key?(node.name)
-      #         node.name = name_map[node.name]
-      #       end
-      #     end
-
-      #     node
-      #   end
-      # end
 
       leaves_with_names = tree.leaves.reject { |leaf| leaf.name.nil? }
       if color_taxa_names
@@ -339,12 +354,6 @@ module Iroki
       # end
 
       tre_str = tree.newick(indent: false)
-      # tree.each_node do |node|
-      #   p [:node, node.name]
-      # end
-      # puts [:tree_str, tre_str]
-      # puts [:iroki_to_name, iroki_to_name]
-      # puts [:after_change, Iroki::Tree.gsub_iroki_newick_string(tre_str, iroki_to_name)]
 
       # this hash can be used regardless of whether a name map was used
       silly_iroki_to_name = {}

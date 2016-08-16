@@ -106,7 +106,16 @@ describe Iroki::Main do
   let(:z_nex_with_name_map) {
     File.join nexus_files, "z_with_name_map.nex" }
 
-
+  let(:color_map_override_biom) {
+    File.join test_files, "color_map_override.biom" }
+  let(:color_map_override_tre) {
+    File.join test_files, "color_map_override.tre" }
+  let(:color_map_override_nex) {
+    File.join nexus_files, "color_map_override.nex" }
+  let(:color_map_override_color_map) {
+    File.join test_files, "color_map_override.color_map" }
+  let(:color_map_override_name_map) {
+    File.join test_files, "color_map_override.name_map" }
 
   describe "::main" do
     context "with renaming" do
@@ -115,7 +124,8 @@ describe Iroki::Main do
           # this also tests what happens when (1) names are in the
           # tree but missing from the name map, (2) names are in the
           # name map but not in the tree, (3) illegal characters are
-          # used (parentheses and spaces only)
+          # used (parentheses and spaces only), (4) tags with hex
+          # codes
           Iroki::Main::main name_map_f: apple_name_map,
                             newick_f:   apple_newick,
                             out_f:      output_nexus
@@ -213,50 +223,72 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
 
-    it "handles single sample biom files with single color gradient" do
-      Iroki::Main::main color_branches:   true,
-                        color_taxa_names: true,
-                        exact:            true,
-                        biom_f:           single_sample_biom,
-                        single_color:     true,
-                        newick_f:         single_sample_tre,
-                        out_f:            output_nexus
+    context "with color gradients" do
+      it "handles single sample biom files with single color gradient" do
+        Iroki::Main::main color_branches:   true,
+                          color_taxa_names: true,
+                          exact:            true,
+                          biom_f:           single_sample_biom,
+                          single_color:     true,
+                          newick_f:         single_sample_tre,
+                          out_f:            output_nexus
 
-      actual_output   = File.read output_nexus
-      expected_output = File.read single_sample_one_color_nex
+        actual_output   = File.read output_nexus
+        expected_output = File.read single_sample_one_color_nex
 
-      expect(actual_output).to eq expected_output
+        expect(actual_output).to eq expected_output
 
-      FileUtils.rm output_nexus
+        FileUtils.rm output_nexus
+      end
+
+
+      it "handles single sample biom files with two color gradient" do
+        Iroki::Main::main color_branches:   true,
+                          color_taxa_names: true,
+                          exact:            true,
+                          biom_f:           single_sample_biom,
+                          newick_f:         single_sample_tre,
+                          out_f:            output_nexus
+
+        actual_output   = File.read output_nexus
+        expected_output = File.read single_sample_nex
+
+        expect(actual_output).to eq expected_output
+
+        FileUtils.rm output_nexus
+      end
+
+      it "handles two group biom files with two color gradient" do
+        Iroki::Main::main color_branches:   true,
+                          color_taxa_names: true,
+                          exact:            true,
+                          biom_f:           two_group_biom,
+                          newick_f:         two_group_tre,
+                          out_f:            output_nexus
+
+        check_output output_nexus, two_group_nex
+      end
+
+      context "color gradient with color map and name map" do
+        it "uses the color map to override the gradient" do
+          # also tests (1) captical letters and lower case letters in
+          # color map hex codes, (2) weird symbols in name map
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            exact:            true,
+                            name_map_f:       color_map_override_name_map,
+                            color_map_f:      color_map_override_color_map,
+                            biom_f:           color_map_override_biom,
+                            newick_f:         color_map_override_tre,
+                            out_f:            output_nexus
+
+          check_output output_nexus, color_map_override_nex
+        end
+      end
     end
 
-
-    it "handles single sample biom files with two color gradient" do
-      Iroki::Main::main color_branches:   true,
-                        color_taxa_names: true,
-                        exact:            true,
-                        biom_f:           single_sample_biom,
-                        newick_f:         single_sample_tre,
-                        out_f:            output_nexus
-
-      actual_output   = File.read output_nexus
-      expected_output = File.read single_sample_nex
-
-      expect(actual_output).to eq expected_output
-
-      FileUtils.rm output_nexus
-    end
-
-    it "handles two group biom files with two color gradient" do
-      Iroki::Main::main color_branches:   true,
-                        color_taxa_names: true,
-                        exact:            true,
-                        biom_f:           two_group_biom,
-                        newick_f:         two_group_tre,
-                        out_f:            output_nexus
-
-      check_output output_nexus, two_group_nex
-    end
+    it "handles color map + name map"
+    it "handles two group biom file with single single color option"
 
     context "Testing of command line args with tricky color map" do
       context "exact string matching" do
@@ -293,8 +325,6 @@ describe Iroki::Main do
           check_output output_nexus, basic_labels_and_branches
         end
       end
-
-      it "handles biom file and color map file"
 
       context "regular expression matching" do
         it "colors the labels" do

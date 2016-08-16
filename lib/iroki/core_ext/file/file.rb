@@ -20,14 +20,16 @@ def color_given? str
   str && !str.empty?
 end
 
+# TODO spec this for hex matching
 def has_label_tag? str
-  m = str.match(/\Alabel:(\p{Alnum}+)\Z/i)
+  m = str.match(/\Alabel:(#?\p{Alnum}+)\Z/i)
 
   m[1] if m
 end
 
+# TODO spec this for hex matching
 def has_branch_tag? str
-  m = str.match(/\Abranch:(\p{Alnum}+)\Z/i)
+  m = str.match(/\Abranch:(#?\p{Alnum}+)\Z/i)
 
   m[1] if m
 end
@@ -154,7 +156,8 @@ module Iroki
               if name_to_iroki.has_key? pattern
                 pattern = name_to_iroki[pattern]
               else
-                assert false, "String '#{pattern}' has no match in #{name_to_iroki.inspect}"
+                assert false, "String '#{pattern}' has no match " +
+                              "in #{name_to_iroki.inspect}"
               end
             else
               # TODO flag bad regexp
