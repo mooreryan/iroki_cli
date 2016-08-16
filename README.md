@@ -148,3 +148,7 @@ Add `reorder_nodes` script.
 
 - Allow unusual characters in label names ([GitHub issue](https://github.com/mooreryan/iroki/issues/2))
 - Fix no method `clean` bug ([GitHub issue](https://github.com/mooreryan/iroki/issues/3))
+
+### 0.0.17 ###
+
+- Color map can override color gradient from biom file
