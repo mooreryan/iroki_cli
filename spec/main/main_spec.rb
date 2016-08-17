@@ -117,6 +117,9 @@ describe Iroki::Main do
   let(:color_map_override_name_map) {
     File.join test_files, "color_map_override.name_map" }
 
+  let(:color_map_has_entries_not_in_tree_nex) {
+    File.join nexus_files, "color_map_has_entries_not_in_tree.nex" }
+
   describe "::main" do
     context "with renaming" do
       context "no coloring options" do
@@ -133,6 +136,19 @@ describe Iroki::Main do
           check_output output_nexus, apple_no_color_nexus
         end
       end
+    end
+
+    it "is fine when the color map has entries not in the tree"
+
+    it "is fine when the color map has entries not in the tree" do
+      Iroki::Main::main color_branches: true,
+                        color_taxa_names: true,
+                        exact: true,
+                        newick_f: two_group_tre,
+                        color_map_f: basic_color_map_with_tags,
+                        out_f: output_nexus
+
+      check_output output_nexus, color_map_has_entries_not_in_tree_nex
     end
 
     it "runs Iroki main program" do

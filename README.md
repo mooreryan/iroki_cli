@@ -156,3 +156,7 @@ Add `reorder_nodes` script.
 ### 0.0.18 ###
 
 - `Iroki::Main::main` returns `:success` (for `iroki.net`)
+
+### 0.0.19 ###
+
+- Remove assertion that color map cannot have entries that aren't in the newick file
