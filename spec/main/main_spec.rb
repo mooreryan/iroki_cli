@@ -151,6 +151,17 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
 
+    it "returns :success when it completes successfully" do
+      val = Iroki::Main::main color_branches:   true,
+                              color_taxa_names: true,
+                              exact:            true,
+                              color_map_f:      color_map,
+                              newick_f:         newick,
+                              out_f:            output_nexus
+
+      expect(val).to eq :success
+    end
+
     context "seanie's issue" do
       it "handles seanie's weird chars" do
         Iroki::Main::main color_branches:   true,

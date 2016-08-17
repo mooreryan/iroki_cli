@@ -152,3 +152,7 @@ Add `reorder_nodes` script.
 ### 0.0.17 ###
 
 - Color map can override color gradient from biom file
+
+### 0.0.18 ###
+
+- `Iroki::Main::main` returns `:success` (for `iroki.net`)

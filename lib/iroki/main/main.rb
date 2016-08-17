@@ -241,7 +241,6 @@ module Iroki
       #################################################################
       # get color patterns
       ####################
-      p [color_f, biom_f]
       if color_map_f && biom_f
         color_map_patterns = parse_color_map_iroki color_map_f,
                                                    iroki_to_name,
@@ -380,6 +379,8 @@ end;
 #{FIG}"
 
       File.open(out_f, "w") { |f| f.puts nexus }
-    end
-  end
-end
+
+      :success
+    end # def self.main
+  end # module Main
+end # module Iroki
