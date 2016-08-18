@@ -167,6 +167,12 @@ describe Iroki::Main do
       FileUtils.rm output_nexus
     end
 
+    it "handles a biom file that has more entries than the tree"
+    it "handles a biom file that has fewer entries than the tree"
+    it "doesn't die if the color gradient radio button is selected with no biom file"
+    it "raises AbortIf::Exit if nothing in the color map matches matches the tree"
+    it "handles when user uses new and old names in color map"
+
     it "returns :success when it completes successfully" do
       val = Iroki::Main::main color_branches:   true,
                               color_taxa_names: true,

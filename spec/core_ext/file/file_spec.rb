@@ -116,8 +116,13 @@ describe Iroki::CoreExt::File do
     end
   end
 
+
   # NAMETHING
   describe "::parse_color_map_iroki" do
+    context "blueberry crumblepie bug" do
+      it "handles the empty tab at the end of the color map"
+    end
+
     context "exact matching" do
       it "reads the color file and returns a hash of patterns" do
         iroki_to_name = { "iroki0iroki" => "s1",
@@ -203,6 +208,13 @@ describe Iroki::CoreExt::File do
   end
 
   describe "#parse_name_map" do
+    context "barb's testing bugs" do
+      context "pineapple cheesecake" do
+        it "handles the bad name map"
+        it "handles the bad biom file"
+      end
+    end
+
     context "with good input" do
       it "returns a hash with old name => new name" do
         fname = File.join test_files, "name_map.good.txt"
