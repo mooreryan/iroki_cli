@@ -208,13 +208,6 @@ describe Iroki::CoreExt::File do
   end
 
   describe "#parse_name_map" do
-    context "barb's testing bugs" do
-      context "pineapple cheesecake" do
-        it "handles the bad name map"
-        it "handles the bad biom file"
-      end
-    end
-
     context "with good input" do
       it "returns a hash with old name => new name" do
         fname = File.join test_files, "name_map.good.txt"
@@ -226,6 +219,14 @@ describe Iroki::CoreExt::File do
     end
 
     context "with bad input" do
+      context "when name map has more than two columns" do
+        it "raises AbortIf::Exit" do
+          iroki_net_issue_2_name_map = File.join test_files, "iroki_net_issues", "issue_2", "name_map"
+
+          expect{klass.parse_name_map iroki_net_issue_2_name_map}.to raise_error AbortIf::Exit
+        end
+      end
+
       context "when col 1 is empty" do
         it "raises SystemExit" do
           fname = File.join test_files, "name_map.col1_empty.txt"

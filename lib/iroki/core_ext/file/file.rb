@@ -226,6 +226,9 @@ module Iroki
         name_map = {}
         Object::File.open(fname, "rt").each_line do |line|
           unless line.start_with? "#"
+            abort_if line.chomp.split("\t").count > 2,
+                     "Line (#{line.inspect}) has more than two columns"
+
             oldname, newname = line.chomp.split "\t"
 
 

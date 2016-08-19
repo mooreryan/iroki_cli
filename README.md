@@ -160,3 +160,7 @@ Add `reorder_nodes` script.
 ### 0.0.19 ###
 
 - Remove assertion that color map cannot have entries that aren't in the newick file
+
+### 0.0.20 ###
+
+- Handle more examples of bad biom files and bad name maps
