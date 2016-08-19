@@ -17,6 +17,7 @@
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
 require "spec_helper"
+require "fileutils"
 
 describe Iroki::Biom do
   let(:this_dir) { File.dirname __FILE__ }
@@ -32,37 +33,110 @@ describe Iroki::Biom do
     File.join test_files, "different_number_of_columns.biom"
   }
 
+  let(:with_bad_counts_single_sample_biom) {
+    File.join test_files, "with_bad_counts_single_sample.biom" }
+
+  let(:iroki_net_issue_2_biom) {
+    File.join test_files, "iroki_net_issues", "issue_2", "biom" }
+
+  let(:empty_first_col_biom) {
+    File.join test_files, "empty_first_col.biom" }
+  let(:empty_second_col_biom) {
+    File.join test_files, "empty_second_col.biom" }
+  let(:empty_thrid_col_biom) {
+    File.join test_files, "empty_third_col.biom" }
+
   it "is a File" do
     expect(single_sample_biom).to be_a File
   end
 
   describe "#parse" do
-    context "when passed a file where not all rows have the same number of columns" do
-      it "raises AbortIf::Exit" do
-        expect { Iroki::Biom.open(different_number_of_columns).parse }.
-          to raise_error AbortIf::Exit
+    context "bad input" do
+      context "when passed a file where not all rows have the same number of columns" do
+        it "raises AbortIf::Exit" do
+          expect { Iroki::Biom.open(different_number_of_columns).parse }.
+            to raise_error AbortIf::Exit
+        end
+      end
+
+      context "with bad counts" do
+        it "raises AbortIf::Exit" do
+          expect { Iroki::Biom.open(with_bad_counts_single_sample_biom).parse }.
+            to raise_error AbortIf::Exit
+        end
+      end
+
+      context "the biom file from iroki.net issue 2" do
+        it "raises AbortIf::Exit" do
+          expect { Iroki::Biom.open(iroki_net_issue_2_biom, "rt").parse }.
+            to raise_error AbortIf::Exit
+        end
+      end
+
+      context "with empty columns" do
+        context "first col empty" do
+          it "raises AbortIf::Exit" do
+            expect { Iroki::Biom.open(empty_first_col_biom, "rt").parse }.
+              to raise_error AbortIf::Exit
+          end
+        end
+
+        context "second col empty" do
+          it "raises AbortIf::Exit" do
+            expect { Iroki::Biom.open(empty_second_col_biom, "rt").parse }.
+              to raise_error AbortIf::Exit
+          end
+        end
+
+        context "third col empty" do
+          it "raises AbortIf::Exit" do
+            expect { Iroki::Biom.open(empty_thrid_col_biom, "rt").parse }.
+              to raise_error AbortIf::Exit
+          end
+        end
       end
     end
 
-    context "when passed a single sample biom file" do
-      it "returns the samples and the counts" do
-        is_single_group = true
-        counts = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
 
-        expect(single_sample_biom.parse).
-          to eq [samples, counts, is_single_group]
+    context "good input" do
+      context 'it handles \r as line ending char with passed "rt" option' do
+        it "returns the samples and the counts" do
+          fname = File.join File.dirname(__FILE__), "tmpfile"
+          File.open(fname, "w") do |f|
+            f.print "s1\t100\rs2\t200"
+          end
 
+          is_single_group = true
+          samples = ["s1", "s2"]
+          counts = [100.0, 200.0]
+
+          expect(Iroki::Biom.open(fname, "rt").parse).
+            to eq [samples, counts, is_single_group]
+
+          FileUtils.rm fname
+        end
       end
-    end
 
-    context "when passed a two sample biom file" do
-      it "returns samples and counts for both" do
-        is_single_group = nil
-        counts1 = [100.0, 75.0, 50.0, 25.0, 0.0, 0.0]
-        counts2 = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
+      context "when passed a single sample biom file" do
+        it "returns the samples and the counts" do
+          is_single_group = true
+          counts = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
 
-        expect(two_sample_biom.parse).
-          to eq [samples, counts1.zip(counts2), is_single_group]
+          expect(single_sample_biom.parse).
+            to eq [samples, counts, is_single_group]
+
+        end
+      end
+
+      context "when passed a two sample biom file" do
+        it "returns samples and counts for both" do
+          is_single_group = nil
+          counts1 = [100.0, 75.0, 50.0, 25.0, 0.0, 0.0]
+          counts2 = [0.0, 25.0, 50.0, 75.0, 100.0, 0.0]
+
+          expect(two_sample_biom.parse).
+            to eq [samples, counts1.zip(counts2), is_single_group]
+        end
       end
     end
   end

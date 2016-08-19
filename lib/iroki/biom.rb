@@ -16,6 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
+def count_or_rel_abund? str
+  str.match /\A[01]?.?[0-9]+\Z/
+end
+
 module Iroki
   class Biom < File
     attr_accessor :single_group
@@ -31,12 +35,24 @@ module Iroki
           lineno += 1
           sample, *the_counts = line.chomp.split "\t"
 
+          abort_if sample.nil? || sample.empty? || sample =~ / +/,
+                   "Line #{idx+1} has no sample"
+
+          the_counts.flatten.each do |count|
+            abort_unless count_or_rel_abund?(count),
+                         "The value '#{count}' in the biom file " +
+                         "was not a count or relative abundance"
+          end
+
           if lineno.zero?
             first_line_count = the_counts.count
           else
             abort_unless first_line_count == the_counts.count,
-                         "The biom file has rows with different " +
-                         "numbers of columns"
+                         "Line number #{idx+1} (#{line.inspect}) in the " +
+                         "biom file has #{the_counts.count} " +
+                         "columns when it should have " +
+                         "#{first_line_count} columns like the " +
+                         "first row does."
           end
 
           samples << sample

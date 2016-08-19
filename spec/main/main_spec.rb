@@ -360,48 +360,50 @@ describe Iroki::Main do
       end
 
       context "regular expression matching" do
-        it "colors the labels" do
-          Iroki::Main::main color_branches: false,
-                            color_taxa_names: true,
-                            exact: false,
-                            newick_f: basic_tre,
-                            color_map_f: basic_color_map_regex,
-                            out_f: output_nexus
+        context "just color map" do
+          it "colors the labels" do
+            Iroki::Main::main color_branches: false,
+                              color_taxa_names: true,
+                              exact: false,
+                              newick_f: basic_tre,
+                              color_map_f: basic_color_map_regex,
+                              out_f: output_nexus
 
-          check_output output_nexus, basic_labels_regex
-        end
+            check_output output_nexus, basic_labels_regex
+          end
 
-        it "colors the branches" do
-          Iroki::Main::main color_branches: true,
-                            color_taxa_names: false,
-                            exact: false,
-                            newick_f: basic_tre,
-                            color_map_f: basic_color_map_regex,
-                            out_f: output_nexus
+          it "colors the branches" do
+            Iroki::Main::main color_branches: true,
+                              color_taxa_names: false,
+                              exact: false,
+                              newick_f: basic_tre,
+                              color_map_f: basic_color_map_regex,
+                              out_f: output_nexus
 
-          check_output output_nexus, basic_branches_regex
-        end
+            check_output output_nexus, basic_branches_regex
+          end
 
-        it "colors labels and branches" do
-          Iroki::Main::main color_branches: true,
-                            color_taxa_names: true,
-                            exact: false,
-                            newick_f: basic_tre,
-                            color_map_f: basic_color_map_regex,
-                            out_f: output_nexus
+          it "colors labels and branches" do
+            Iroki::Main::main color_branches: true,
+                              color_taxa_names: true,
+                              exact: false,
+                              newick_f: basic_tre,
+                              color_map_f: basic_color_map_regex,
+                              out_f: output_nexus
 
-          check_output output_nexus, basic_labels_and_branches_regex
-        end
+            check_output output_nexus, basic_labels_and_branches_regex
+          end
 
-        it "works with the ^ (match at beginning character) (bug fix)" do
-          Iroki::Main::main color_branches: true,
-                            color_taxa_names: true,
-                            exact: false,
-                            newick_f: regex_bug_tre,
-                            color_map_f: regex_bug_color_map,
-                            out_f: output_nexus
+          it "works with the ^ (match at beginning character) (bug fix)" do
+            Iroki::Main::main color_branches: true,
+                              color_taxa_names: true,
+                              exact: false,
+                              newick_f: regex_bug_tre,
+                              color_map_f: regex_bug_color_map,
+                              out_f: output_nexus
 
-          check_output output_nexus, regex_bug_nexus
+            check_output output_nexus, regex_bug_nexus
+          end
         end
       end
     end
