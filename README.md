@@ -164,3 +164,8 @@ Add `reorder_nodes` script.
 ### 0.0.20 ###
 
 - Handle more examples of bad biom files and bad name maps
+
+### 0.0.21 ###
+
+- Fix empty branch tag bug (issue 6)
+
