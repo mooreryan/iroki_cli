@@ -190,7 +190,6 @@ module Iroki
 
       color_f = nil
       if !biom_f && (color_taxa_names || color_branches)
-        p color_map_f
         color_f = check_file color_map_f, :color_map_f
       end
 
