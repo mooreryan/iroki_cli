@@ -49,6 +49,7 @@ module Iroki
         arg
       end
 
+      # TODO this is now pointless
       def parse_color_map fname,
                           exact_matching: true,
                           auto_color: false
@@ -180,6 +181,8 @@ module Iroki
                 label_tag = Iroki::Color.get_tag color, auto_color
               elsif (color = has_branch_tag? label_color)
                 branch_tag = Iroki::Color.get_tag color, auto_color
+              elsif line.match(/\t\Z/) # empty branch color, branch will be black
+                label_tag = Iroki::Color.get_tag label_color, auto_color
               else
                 label_tag = Iroki::Color.get_tag label_color, auto_color
                 branch_tag = Iroki::Color.get_tag label_color, auto_color

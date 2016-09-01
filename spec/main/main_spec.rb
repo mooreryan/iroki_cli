@@ -120,6 +120,17 @@ describe Iroki::Main do
   let(:color_map_has_entries_not_in_tree_nex) {
     File.join nexus_files, "color_map_has_entries_not_in_tree.nex" }
 
+  # Iroki issues
+  let(:iroki_issue_2_tree) {
+    File.join test_files, "iroki_issues", "issue_6", "tree"
+  }
+  let(:iroki_issue_2_nexus) {
+    File.join test_files, "iroki_issues", "issue_6", "nexus"
+  }
+  let(:iroki_issue_2_color_map) {
+    File.join test_files, "iroki_issues", "issue_6", "color_map"
+  }
+
   describe "::main" do
     context "with renaming" do
       context "no coloring options" do
@@ -562,6 +573,26 @@ describe Iroki::Main do
                                    out_f: output_nexus,
                                    single_color: true}.
           to raise_error AbortIf::Exit
+      end
+    end
+
+    context "Iroki issues" do
+      context "issue 6" do
+        it "handles the empty branch column" do
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            exact:            true,
+                            color_map_f:      iroki_issue_2_color_map,
+                            newick_f:         iroki_issue_2_tree,
+                            out_f:            output_nexus
+
+          expected_output = File.read iroki_issue_2_nexus
+          actual_output   = File.read output_nexus
+
+          expect(actual_output).to eq expected_output
+
+          FileUtils.rm output_nexus
+        end
       end
     end
   end
