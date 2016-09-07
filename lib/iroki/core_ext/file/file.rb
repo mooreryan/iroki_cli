@@ -130,7 +130,7 @@ module Iroki
         patterns
       end
 
-      def parse_color_map_iroki( fname,
+      def parse_color_map_iroki(fname,
                                 iroki_to_name,
                                 exact_matching: true,
                                 auto_color: false)
@@ -147,6 +147,10 @@ module Iroki
             branch_tag = ""
 
             pattern, label_color, branch_color = line.chomp.split "\t"
+
+            pattern.strip! if pattern
+            label_color.strip! if label_color
+            branch_color.strip! if branch_color
 
             # color = "black" if color.nil? || color.empty?
 
@@ -234,6 +238,8 @@ module Iroki
 
             oldname, newname = line.chomp.split "\t"
 
+            oldname.strip! if oldname
+            newname.strip! if newname
 
             abort_if oldname.nil? || oldname.empty?,
                      "Column 1 missing for line: #{line.inspect}"

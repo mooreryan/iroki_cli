@@ -169,3 +169,7 @@ Add `reorder_nodes` script.
 
 - Fix empty branch tag bug (issue 6)
 
+### 0.0.22 ###
+
+- Strip whitespace from beginning and end of entries in color map and name map
+

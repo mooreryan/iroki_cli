@@ -119,11 +119,13 @@ describe Iroki::CoreExt::File do
 
   # NAMETHING
   describe "::parse_color_map_iroki" do
+
     context "blueberry crumblepie bug" do
       it "handles the empty tab at the end of the color map"
     end
 
     context "exact matching" do
+      # note, this also tests the spaces in the names and colors
       it "reads the color file and returns a hash of patterns" do
         iroki_to_name = { "iroki0iroki" => "s1",
                           "iroki1iroki" => "s2",
@@ -210,6 +212,7 @@ describe Iroki::CoreExt::File do
   describe "#parse_name_map" do
     context "with good input" do
       it "returns a hash with old name => new name" do
+        # note, this also tests trimming whitespace from the ends
         fname = File.join test_files, "name_map.good.txt"
         name_map = { %q{a"p"p&^%$le} => %q{p'i'e},
                      %q{i's'} => %q{g o "o" !@#$ d}, }
