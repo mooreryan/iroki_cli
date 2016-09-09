@@ -184,7 +184,7 @@ describe Iroki::Main do
     it "raises AbortIf::Exit if nothing in the color map matches matches the tree"
     it "handles when user uses new and old names in color map"
 
-    it "returns :success when it completes successfully" do
+    it "returns the nexus string when it completes successfully" do
       val = Iroki::Main::main color_branches:   true,
                               color_taxa_names: true,
                               exact:            true,
@@ -192,7 +192,9 @@ describe Iroki::Main do
                               newick_f:         newick,
                               out_f:            output_nexus
 
-      expect(val).to eq :success
+      expected_output = File.read expected_nexus
+
+      expect(val).to eq expected_output
     end
 
     context "seanie's issue" do

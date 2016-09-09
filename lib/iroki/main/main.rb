@@ -379,7 +379,7 @@ end;
 
       File.open(out_f, "w") { |f| f.puts nexus }
 
-      :success
+      nexus
     end # def self.main
   end # module Main
 end # module Iroki
