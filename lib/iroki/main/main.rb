@@ -150,7 +150,7 @@ module Iroki
                        newick_f: nil)
 
       begin
-        out_f = Tempfile.new
+        out_f = Tempfile.new "foo"
 
         self.main(color_branches: color_branches,
                   color_taxa_names: color_taxa_names,
@@ -165,8 +165,10 @@ module Iroki
                   newick_f: newick_f,
                   out_f: out_f)
       ensure
-        out_f.close
-        out_f.unlink
+        if out_f
+          out_f.close
+          out_f.unlink
+        end
       end
     end
 
