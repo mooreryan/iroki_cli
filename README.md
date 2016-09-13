@@ -176,3 +176,7 @@ Add `reorder_nodes` script.
 ### 0.0.23 ###
 
 - `Iroki::Main::main` returns the nexus string (for `iroki.net`)
+
+### 0.0.24 ###
+
+- Add `Iroki::Main::iroki_job` runs Iroki w/o needing an output file (for `iroki.net`)

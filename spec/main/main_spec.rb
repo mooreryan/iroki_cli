@@ -131,6 +131,20 @@ describe Iroki::Main do
     File.join test_files, "iroki_issues", "issue_6", "color_map"
   }
 
+  describe "::iroki_job" do
+    it "calls main without needing the output file" do
+      actual_output = Iroki::Main::iroki_job color_branches:   true,
+                                             color_taxa_names: true,
+                                             exact:            true,
+                                             color_map_f:      color_map,
+                                             newick_f:         newick
+
+      expected_output = File.read expected_nexus
+
+      expect(actual_output).to eq expected_output
+    end
+  end
+
   describe "::main" do
     context "with renaming" do
       context "no coloring options" do
