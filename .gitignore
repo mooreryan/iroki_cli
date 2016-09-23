@@ -16,3 +16,5 @@ sandbox
 .coveralls.yml
 spec/test_files/nexus_files/output.nex
 .idea
+.DS_Store
+spec/.DS_Store
