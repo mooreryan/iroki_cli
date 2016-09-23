@@ -99,6 +99,20 @@ describe Iroki::CoreExt::File do
   end
   let(:color_map_iroki) { File.join test_files, "color_map_iroki.txt" }
 
+  let(:tre) { File.join test_files, "basic.tre" }
+  let(:nex) { File.join test_files, "nexus_files", "small.nex" }
+
+
+  describe "#valid_newick?" do
+    it "returns true when newick file looks like a newick file" do
+      expect(klass.valid_newick? tre).to be true
+    end
+
+    it "returns fales when newick file does not look like newick" do
+      expect(klass.valid_newick? nex).to be false
+    end
+  end
+
   describe "#check_file" do
     it "aborts if file is nil" do
       fname = nil

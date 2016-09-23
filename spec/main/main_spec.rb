@@ -131,6 +131,13 @@ describe Iroki::Main do
     File.join test_files, "iroki_issues", "issue_6", "color_map"
   }
 
+  let(:iroki_issue_9_tree) {
+    File.join test_files, "iroki_issues", "issue_9", "tree"
+  }
+  let(:iroki_issue_9_color_map) {
+    File.join test_files, "iroki_issues", "issue_9", "color_map"
+  }
+
   describe "::iroki_job" do
     it "calls main without needing the output file" do
       actual_output = Iroki::Main::iroki_job color_branches:   true,
@@ -608,6 +615,19 @@ describe Iroki::Main do
           expect(actual_output).to eq expected_output
 
           FileUtils.rm output_nexus
+        end
+      end
+
+      context "issue 9" do
+        it "raises error when Newick file isn't valid" do
+          expect { Iroki::Main::main exact: true,
+                                     color_branches: true,
+                                     color_taxa_names: true,
+                                     color_map_f: iroki_issue_9_color_map,
+                                     newick_f: iroki_issue_9_tree,
+                                     out_f: output_nexus}.
+            to raise_error AbortIf::Exit
+
         end
       end
     end

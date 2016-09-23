@@ -214,6 +214,9 @@ module Iroki
 
       newick = check_file newick_f, :newick
 
+      abort_unless valid_newick?(newick_f),
+                   "The Newick file doesn't look like a real Newick file"
+
       abort_if out_f.nil?,
                "--outfile is a required arg. Try iroki --help for help."
 

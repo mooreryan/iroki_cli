@@ -37,6 +37,18 @@ end
 module Iroki
   module CoreExt
     module File
+      # @note Only checks that first and last chars off the file
+      #   (minus trailing newlines) are correct. I.e., first char is
+      #   '(' and last char is ';'
+      def valid_newick? fname
+        str = Object::File.read(fname).chomp
+        first_char = str[0]
+        last_char = str[-1]
+
+        p [:ryan, first_char, last_char]
+        first_char == "(" && last_char == ";"
+      end
+
       def check_file arg, which
         help = " Try iroki --help for help."
 

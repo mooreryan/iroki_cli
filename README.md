@@ -184,3 +184,7 @@ Add `reorder_nodes` script.
 ### 0.0.25 ###
 
 - Bugfix
+
+### 0.0.26 ###
+
+- Basic validation of Newick files (issue 9)
