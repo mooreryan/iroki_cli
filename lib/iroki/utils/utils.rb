@@ -69,9 +69,7 @@ module Iroki
 
       # clean the name no matter what
       if node.name
-        # puts "before haha: #{node.name}"
         node.name = node.name #.clean_name
-        # puts "after  haha: #{node.name}"
       else
         node.name = nil
       end
@@ -89,9 +87,7 @@ module Iroki
         color = add_color_to_leaf_branch patterns, node, exact, iroki_to_name
 
         # add color to the name
-        # p [:before, node.name]
         node.name = node.name + color[:branch] if color
-        # p [:after, node.name]
       elsif !leaf?(tree, node)
         children = tree.children(node) # get the children
         children_colors = []

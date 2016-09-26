@@ -45,7 +45,6 @@ module Iroki
         first_char = str[0]
         last_char = str[-1]
 
-        p [:ryan, first_char, last_char]
         first_char == "(" && last_char == ";"
       end
 
