@@ -5,17 +5,35 @@ use File::Spec;
 my @args = ();
 
 foreach my $arg (@ARGV) {
-    if ($arg =~ /^-/) {
+    if ($arg =~ /^-/) { # arg is a flag
         push @args, $arg;
-    } else {
+
+        # check if next arg should expand (these are file inputs)
+        if ($arg eq "-c" || $arg eq "--color-map" ||
+            $arg eq "-i" || $arg eq "--biom" ||
+            $arg eq "-f" || $arg eq "--infile" ||
+            $arg eq "-o" || $arg eq "--outfile" ||
+            $arg eq "-n" || $arg eq "--name-map") {
+
+            $expand = 1;
+        } else {
+            $expand = 0;
+        }
+    } elsif ($expand) { # an arg that is a path, expand it
         my $path = File::Spec->rel2abs($arg);
+
         push @args, $path;
+    } else { # an arg that is not a path and not a flag
+        push @args, $arg;
     }
 }
 
 my $img = "mooreryan/iroki";
-my $cmd = "docker run -v \"\$HOME:\$HOME\" $img @args";
+my $pull = "docker pull $img";
+my $run = "docker run -v \"\$HOME:\$HOME\" $img @args";
 
-print "\nRUNNING COMMAND: $cmd\n";
+print "\n\n\nRUNNING COMMAND: $pull\n\n\n";
+system("$pull");
 
-exec("$cmd");
+print "\n\n\nRUNNING COMMAND: $run\n\n\n";
+exec("$run");
