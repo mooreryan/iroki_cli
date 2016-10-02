@@ -245,36 +245,43 @@ describe Iroki::CoreExt::File do
       end
 
       context "when col 1 is empty" do
-        it "raises SystemExit" do
+        it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col1_empty.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error SystemExit
+          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
         end
       end
 
       context "when col 2 is empty" do
-        it "raises SystemExit" do
+        it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col2_empty.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error SystemExit
+          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
         end
       end
 
       context "when col 2 is missing" do
-        it "raises SystemExit" do
+        it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col2_missing.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error SystemExit
+          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
         end
       end
 
-      it "raises when col 1 has duplicate values"
+      context "when col 1 has duplicate values" do
+        it "raises AbortIf::Exit" do
+          fname = File.join test_files,
+                            "name_map.duplicate_vals.first_column.txt"
+
+          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+        end
+      end
 
       context "when col 2 has duplicate values" do
-        it "raises SystemExit" do
+        it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.duplicate_vals.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error SystemExit
+          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
         end
       end
 
