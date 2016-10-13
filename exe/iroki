@@ -30,6 +30,8 @@ opts = Trollop.options do
 
   Iroki command line program.
 
+  See https://github.com/mooreryan/iroki/wiki for the Iroki manual.
+
   Options:
   EOS
 
@@ -78,6 +80,11 @@ opts = Trollop.options do
   opt(:outfile,
       "Name of outfile",
       type: :string)
+
+  opt(:default_color,
+      "Default color",
+      type: :string,
+      default: "black")
 end
 
 Iroki::Main.main(
@@ -92,5 +99,6 @@ Iroki::Main.main(
   auto_color:                 opts[:auto_color],
   display_auto_color_options: opts[:display_auto_color_options],
   newick_f:                   opts[:infile],
-  out_f:                      opts[:outfile]
+  out_f:                      opts[:outfile],
+  default_color:              opts[:default_color]
 )

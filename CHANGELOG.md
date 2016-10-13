@@ -111,3 +111,8 @@ Add `reorder_nodes` script.
 ### 0.0.27 ###
 
 - Remove some debugging statements
+
+### 0.0.28 ###
+
+- Update `Dockerfile`
+- Let user choose default color (issue 15)

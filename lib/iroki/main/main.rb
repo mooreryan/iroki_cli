@@ -183,7 +183,8 @@ module Iroki
                   auto_color: nil,
                   display_auto_color_options: nil,
                   newick_f: nil,
-                  out_f: nil)
+                  out_f: nil,
+                  default_color: "black")
 
       args = method(__method__).parameters.map { |arg| arg[1] }
       AbortIf::logger.info "Args " + args.map { |arg| "#{arg} = #{eval(arg.to_s).inspect}" }.join(', ')
@@ -344,6 +345,18 @@ module Iroki
       else
         patterns = nil
       end
+
+      # set default color if needed
+      if default_color && default_color != "black"
+
+        abort_if !default_color.hex? && !Iroki::Color::COLORS[default_color],
+                 "--default-color must be a hex code (don't forget the '#' or a valid color. Got '#{default_color}'."
+
+        Iroki::Color::default_color_tag = { label: Iroki::Color.get_tag(default_color),
+                                            branch: Iroki::Color.get_tag(default_color), }
+      end
+
+
 
       ####################
       # get color patterns

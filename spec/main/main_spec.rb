@@ -138,6 +138,17 @@ describe Iroki::Main do
     File.join test_files, "iroki_issues", "issue_9", "color_map"
   }
 
+  let(:iroki_issue_15_tree) {
+    File.join test_files, "iroki_issues", "issue_15", "tree"
+  }
+  let(:iroki_issue_15_nexus) {
+    File.join test_files, "iroki_issues", "issue_15", "nexus"
+  }
+  let(:iroki_issue_15_color_map) {
+    File.join test_files, "iroki_issues", "issue_15", "color_map"
+  }
+
+
   describe "::iroki_job" do
     it "calls main without needing the output file" do
       actual_output = Iroki::Main::iroki_job color_branches:   true,
@@ -629,6 +640,67 @@ describe Iroki::Main do
             to raise_error AbortIf::Exit
 
         end
+      end
+
+      context "issue 15 -- default colors" do
+        it "lets the user choose a default color with a color name" do
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            exact:            true,
+                            color_map_f:      iroki_issue_15_color_map,
+                            newick_f:         iroki_issue_15_tree,
+                            out_f:            output_nexus,
+                            default_color:    "blue"
+
+          expected_output = File.read iroki_issue_15_nexus
+          actual_output   = File.read output_nexus
+
+          expect(actual_output).to eq expected_output
+
+          FileUtils.rm output_nexus
+        end
+
+        it "lets the user choose a default color with a hex code" do
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            exact:            true,
+                            color_map_f:      iroki_issue_15_color_map,
+                            newick_f:         iroki_issue_15_tree,
+                            out_f:            output_nexus,
+                            default_color:    "#0000ff"
+
+          expected_output = File.read iroki_issue_15_nexus
+          actual_output   = File.read output_nexus
+
+          expect(actual_output).to eq expected_output
+
+          FileUtils.rm output_nexus
+        end
+
+        it "raises AbortIf::Exit if hex code is bad" do
+          expect {
+            Iroki::Main::main color_branches:   true,
+                              color_taxa_names: true,
+                              exact:            true,
+                              color_map_f:      iroki_issue_15_color_map,
+                              newick_f:         iroki_issue_15_tree,
+                              out_f:            output_nexus,
+                              default_color:    "0000ff"}.
+            to raise_error AbortIf::Exit
+        end
+
+        it "raises AbortIf::Exit if the default color isn't available" do
+          expect {
+            Iroki::Main::main color_branches:   true,
+                              color_taxa_names: true,
+                              exact:            true,
+                              color_map_f:      iroki_issue_15_color_map,
+                              newick_f:         iroki_issue_15_tree,
+                              out_f:            output_nexus,
+                              default_color:    "arstoien"}.
+            to raise_error AbortIf::Exit
+        end
+
       end
     end
   end

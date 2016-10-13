@@ -731,5 +731,13 @@ module Iroki
       hex = colors[col]
       %Q{[&!color="#{hex.upcase}"]}
     end
+
+    def self.default_color_tag= tag_hash
+      @@default_color = tag_hash
+    end
+
+    def self.default_color_tag
+      @@default_color ||= nil
+    end
   end
 end

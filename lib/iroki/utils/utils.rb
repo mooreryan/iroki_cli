@@ -33,6 +33,10 @@ module Iroki
           color = patterns[node_s]
 
           return color
+        elsif Iroki::Color::default_color_tag
+          color = Iroki::Color::default_color_tag
+
+          return color
         else
           return nil
         end
