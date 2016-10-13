@@ -55,6 +55,11 @@ module Iroki
           end
         end
 
+        # if there was no match and there is a default color
+        if !color && Iroki::Color::default_color_tag
+          color = Iroki::Color::default_color_tag
+        end
+
         return color
       end
     end

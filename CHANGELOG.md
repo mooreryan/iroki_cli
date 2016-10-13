@@ -115,4 +115,8 @@ Add `reorder_nodes` script.
 ### 0.0.28 ###
 
 - Update `Dockerfile`
-- Let user choose default color (issue 15)
+- Let user choose default color (issue 15) when using exact matching
+
+### 0.0.29 ###
+
+- Let user choose default color (issue 15) when using regex matching

@@ -660,6 +660,23 @@ describe Iroki::Main do
           FileUtils.rm output_nexus
         end
 
+        it "lets the user choose a default color with a color name (regex)" do
+          Iroki::Main::main color_branches:   true,
+                            color_taxa_names: true,
+                            color_map_f:      iroki_issue_15_color_map,
+                            newick_f:         iroki_issue_15_tree,
+                            out_f:            output_nexus,
+                            default_color:    "blue"
+
+          expected_output = File.read iroki_issue_15_nexus
+          actual_output   = File.read output_nexus
+
+          expect(actual_output).to eq expected_output
+
+          FileUtils.rm output_nexus
+        end
+
+
         it "lets the user choose a default color with a hex code" do
           Iroki::Main::main color_branches:   true,
                             color_taxa_names: true,
