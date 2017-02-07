@@ -19,6 +19,10 @@ Iroki is research software. If you use Iroki, please cite the Iroki preprint:
 Moore RM, Harrison AO, McAllister SM, Marine R, Chan C, Wommack KE. 2017. Iroki: automatic customization for phylogenetic trees. doi: https://doi.org/10.1101/106138
 ```
 
+## Documentation ##
+
+For in depth docs and examples, please see the [Iroki wiki](https://github.com/mooreryan/iroki/wiki) page.
+
 ## Installation ##
 
 ### Running with Docker ###
