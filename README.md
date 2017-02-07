@@ -11,6 +11,14 @@
 Command line app and library code for Iroki, a phylogenetic tree
 customization program.
 
+## Citation ##
+
+Iroki is research software. If you use Iroki, please cite the Iroki preprint:
+
+```
+Moore RM, Harrison AO, McAllister SM, Marine R, Chan C, Wommack KE. 2017. Iroki: automatic customization for phylogenetic trees. doi: https://doi.org/10.1101/106138
+```
+
 ## Installation ##
 
 ### Running with Docker ###
