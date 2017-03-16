@@ -172,9 +172,9 @@ module Iroki
               if name_to_iroki.has_key? pattern
                 pattern = name_to_iroki[pattern]
               else
-                AbortIf::logger.warn "String '#{pattern}' has no " +
+                AbortIf::logger.info "String '#{pattern}' has no " +
                                      "match in " +
-                                     "#{name_to_iroki.inspect}"
+                                     "name_to_iroki map"
               end
             else
               # TODO flag bad regexp
