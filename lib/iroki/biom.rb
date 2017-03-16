@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-def count_or_rel_abund? str
-  str.match /\A[01]?.?[0-9]+\Z/
+def valid_numerical_val? str
+  # looks something like sci notation
+  str.match(/[-+]?[0-9]?\.?[0-9]?[eE]?[-+]?[0-9]+/)
 end
 
 module Iroki
@@ -39,9 +40,9 @@ module Iroki
                    "Line #{idx+1} has no sample"
 
           the_counts.flatten.each do |count|
-            abort_unless count_or_rel_abund?(count),
-                         "The value '#{count}' in the biom file " +
-                         "was not a count or relative abundance"
+            abort_unless valid_numerical_val?(count),
+                         "The value '#{count}' in the " +
+                         "biom file might not be valid"
           end
 
           if lineno.zero?

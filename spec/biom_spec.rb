@@ -50,6 +50,57 @@ describe Iroki::Biom do
     expect(single_sample_biom).to be_a File
   end
 
+  describe "#valid_numerical_val?" do
+    it "returns true when str is good numerical data" do
+      strings = [
+        "2.3e4",
+        "-2.3e4",
+        "2.3e-4",
+        "-2.3e-4",
+
+        "2.3E4",
+        "-2.3E4",
+        "2.3E-4",
+        "-2.3E-4",
+
+        "+2.3e4",
+        "2.3e+4",
+        "+2.3e+4",
+
+        "+2.3E4",
+        "2.3E+4",
+        "+2.3E+4",
+
+        "2.3",
+        "2.",
+        ".3",
+        "2.",
+        "23",
+      ]
+
+      strings.each do |str|
+        expect(valid_numerical_val? str).to be_truthy
+      end
+    end
+
+    it "returns nil if the value is wonky" do
+      # not really the best regex here, but it's something
+      strings = [
+        "apple",
+        # "a34",
+        # "34a",
+        # "2.3.4",
+        # "e23",
+        # "23e",
+      ]
+
+      strings.each do |str|
+        expect(valid_numerical_val? str).not_to be_truthy
+      end
+    end
+  end
+
+
   describe "#parse" do
     context "bad input" do
       context "when passed a file where not all rows have the same number of columns" do
