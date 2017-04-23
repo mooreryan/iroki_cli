@@ -21,11 +21,19 @@ module Iroki
     class TwoGroupGradient < Gradient
       attr_accessor :g1_counts, :g2_counts, :g1_rabunds, :g2_rabunds
 
-      def initialize samples, g1_counts, g2_counts
+      def initialize samples,
+                     g1_counts,
+                     g2_counts,
+                     min_lumin,
+                     max_lumin
+
         assert(samples.count == g1_counts.count &&
                      g1_counts.count == g2_counts.count,
                      "Samples and counts are different lengths. " +
                      "Check your biom file.")
+
+        @min_lumin = min_lumin
+        @max_lumin = max_lumin
 
         @samples = samples
         @g1_counts = g1_counts
@@ -37,9 +45,17 @@ module Iroki
 
       def percent_of_group1_color ra1, ra2
         if ra1 > ra2
-          1 - scale(ra2 / ra1, new_min=0.0, new_max=0.5, old_min=0.0, old_max=1.0)
+          1 - scale(ra2 / ra1,
+                    new_min=0.0,
+                    new_max=0.5,
+                    old_min=0.0,
+                    old_max=1.0)
         elsif ra1 < ra2
-          scale(ra1 / ra2, new_min=0.0, new_max=0.5, old_min=0.0, old_max=1.0)
+          scale(ra1 / ra2,
+                new_min=0.0,
+                new_max=0.5,
+                old_min=0.0,
+                old_max=1.0)
         else
           0.5
         end
@@ -51,9 +67,17 @@ module Iroki
 
       def lumin_level ra1, ra2
         if ra1 > ra2
-          scale_reverse ra1, new_min=50, new_max=90, old_min=0.0, old_max=1.0
+          scale_reverse ra1,
+                        new_min=@min_lumin,
+                        new_max=@max_lumin,
+                        old_min=0.0,
+                        old_max=1.0
         else
-          scale_reverse ra2, new_min=50, new_max=90, old_min=0.0, old_max=1.0
+          scale_reverse ra2,
+                        new_min=@min_lumin,
+                        new_max=@max_lumin,
+                        old_min=0.0,
+                        old_max=1.0
         end
       end
 

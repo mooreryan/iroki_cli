@@ -21,10 +21,18 @@ module Iroki
     class SingleGroupGradient < Gradient
       attr_accessor :counts, :rel_abunds
 
-      def initialize samples, counts, single_color=false
+      def initialize samples,
+                     counts,
+                     single_color=false,
+                     min_lumin,
+                     max_lumin
+
         abort_unless samples.count == counts.count,
                      "Samples (#{samples.count}) and counts " +
                      "#{counts.count} are different size."
+
+        @min_lumin = min_lumin
+        @max_lumin = max_lumin
 
         @single_color = single_color
         @samples = samples
@@ -45,6 +53,8 @@ module Iroki
 
           col =
             Iroki::Color::GREEN.mix_with Iroki::Color::BLUE, rel_abund
+          # col =
+          #   Iroki::Color::BLUE.mix_with Iroki::Color::GREEN, rel_abund
 
           col.luminosity = lumin
 
@@ -55,7 +65,8 @@ module Iroki
       def single_color_gradient_hex_codes
         @rel_abunds.zip(@lumins).map do |rel_abund, lumin|
           amt_of_orig_color =
-            scale rel_abund, new_min=10, new_max=95
+            # scale rel_abund, new_min=10, new_max=95
+            scale rel_abund, new_min=@min_lumin, new_max=@max_lumin
 
           col =
             Iroki::Color::DARK_GREEN.lighten_by amt_of_orig_color

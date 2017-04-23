@@ -19,16 +19,43 @@
 module Iroki
   module Color
     class Gradient
-      attr_accessor :samples, :color_hex_codes, :lumins, :single_color
+      attr_accessor :samples,
+                    :color_hex_codes,
+                    :lumins,
+                    :single_color,
+                    :min_lumin,
+                    :max_lumin
 
       # scales [old_min, old_max] to [new_min, new_max]
-      def scale x, new_min=0.05, new_max=0.9, old_min=0.0, old_max=1.0
+      def scale x,
+                new_min=0.05,
+                new_max=0.9,
+                old_min=0.0,
+                old_max=1.0
+
+        x = x.to_f
+        new_min = new_min.to_f
+        new_max = new_max.to_f
+        old_min = old_min.to_f
+        old_max = old_max.to_f
+
         ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)
       end
 
       # scales [old_min, old_max] to [new_max, new_min]
-      def scale_reverse x, new_min=0.0, new_max=0.0, old_min=0.0, old_max=1.0
-        (new_max - ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)) + new_min
+      def scale_reverse x,
+                        new_min=0.0,
+                        new_max=0.0,
+                        old_min=0.0,
+                        old_max=1.0
+
+        x = x.to_f
+        new_min = new_min.to_f
+        new_max = new_max.to_f
+        old_min = old_min.to_f
+        old_max = old_max.to_f
+
+(new_max - ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)) + new_min
       end
 
       def patterns
@@ -51,7 +78,10 @@ module Iroki
 
       def rabunds_to_lumins rabunds
         rabunds.map do |count|
-          scale_reverse count, new_min=50, new_max=97
+          # scale_reverse count, new_min=50, new_max=97
+          # scale_reverse count, new_min=35, new_max=85
+          scale_reverse count, new_min=@min_lumin, new_max=@max_lumin
+          # scale_reverse count, 0.0, 50.0
         end
       end
     end

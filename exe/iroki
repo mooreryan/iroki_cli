@@ -59,8 +59,7 @@ opts = Trollop.options do
       type: :string)
 
   opt(:single_color,
-      "Use single color gradient for single group biom files",
-      type: :string)
+      "Use single color gradient for single group biom files")
 
   opt(:name_map,
       "File with name mappings",
@@ -85,6 +84,17 @@ opts = Trollop.options do
       "Default color",
       type: :string,
       default: "black")
+
+    opt(:min_lumin,
+      "Min luminosity (only used for gradients)",
+      type: :int,
+      default: 35)
+
+    opt(:max_lumin,
+      "Max luminosity (only used for gradients)",
+      type: :int,
+      default: 70)
+
 end
 
 Iroki::Main.main(
@@ -100,5 +110,7 @@ Iroki::Main.main(
   display_auto_color_options: opts[:display_auto_color_options],
   newick_f:                   opts[:infile],
   out_f:                      opts[:outfile],
-  default_color:              opts[:default_color]
+  default_color:              opts[:default_color],
+  min_lumin:                  opts[:min_lumin],
+  max_lumin:                  opts[:max_lumin]
 )

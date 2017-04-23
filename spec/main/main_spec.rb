@@ -25,6 +25,10 @@ describe Iroki::Main do
   let(:test_files) { File.join spec_dir, "test_files" }
   let(:nexus_files) { File.join test_files, "nexus_files" }
 
+  # The vals ror the original tests
+  let(:min_lumin) { 50 }
+  let(:max_lumin) { 90 }
+
   let(:empty_name_map) { File.join test_files, "empty.name_map" }
 
   let(:two_group_biom) { File.join test_files, "two_group.biom" }
@@ -309,7 +313,10 @@ describe Iroki::Main do
                           biom_f:           single_sample_biom,
                           single_color:     true,
                           newick_f:         single_sample_tre,
-                          out_f:            output_nexus
+                          out_f:            output_nexus,
+
+                          min_lumin: 10, # old default
+                          max_lumin: 95  # old default
 
         actual_output   = File.read output_nexus
         expected_output = File.read single_sample_one_color_nex
@@ -326,7 +333,10 @@ describe Iroki::Main do
                           exact:            true,
                           biom_f:           single_sample_biom,
                           newick_f:         single_sample_tre,
-                          out_f:            output_nexus
+                          out_f:            output_nexus,
+
+                          min_lumin: min_lumin,
+                          max_lumin: 97 # the old default
 
         actual_output   = File.read output_nexus
         expected_output = File.read single_sample_nex
@@ -342,7 +352,10 @@ describe Iroki::Main do
                           exact:            true,
                           biom_f:           two_group_biom,
                           newick_f:         two_group_tre,
-                          out_f:            output_nexus
+                          out_f:            output_nexus,
+
+                          min_lumin: min_lumin,
+                          max_lumin: max_lumin
 
         check_output output_nexus, two_group_nex
       end
@@ -358,7 +371,10 @@ describe Iroki::Main do
                             color_map_f:      color_map_override_color_map,
                             biom_f:           color_map_override_biom,
                             newick_f:         color_map_override_tre,
-                            out_f:            output_nexus
+                            out_f:            output_nexus,
+
+                            min_lumin: min_lumin,
+                            max_lumin: max_lumin
 
           check_output output_nexus, color_map_override_nex
         end

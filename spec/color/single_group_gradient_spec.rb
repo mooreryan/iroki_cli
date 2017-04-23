@@ -22,11 +22,14 @@ SingleGroupGradient = Iroki::Color::SingleGroupGradient
 Gradient = Iroki::Color::Gradient
 
 describe Iroki::Color::SingleGroupGradient do
+  let(:min_lumin) { 50 }
+  let(:max_lumin) { 90 }
+
   let(:samples) { %w[s1 s2 s3 s4 s5] }
   let(:counts)  { [0, 25, 50, 75, 100] }
 
   let(:ssg) {
-    SingleGroupGradient.new samples, counts
+    SingleGroupGradient.new samples, counts, min_lumin, max_lumin
   }
 
   it "is a Gradient" do
@@ -39,8 +42,19 @@ describe Iroki::Color::SingleGroupGradient do
 
   describe "::initialize" do
     it "raises an error if the samples and counts are different sized" do
-      expect { SingleGroupGradient.new %w[s], [1,2] }.
+      expect { SingleGroupGradient.new %w[s],
+                                       [1,2],
+                                       min_lumin,
+                                       max_lumin }.
         to raise_error AbortIf::Exit
+    end
+
+    it "sets the max lumin" do
+      expect(ssg.max_lumin).to eq max_lumin
+    end
+
+    it "sets the min lumin" do
+      expect(ssg.min_lumin).to eq min_lumin
     end
 
     it "sets the samples" do

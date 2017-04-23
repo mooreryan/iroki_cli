@@ -22,6 +22,10 @@ TwoGroupGradient = Iroki::Color::TwoGroupGradient
 Gradient = Iroki::Color::Gradient
 
 describe Iroki::Color::TwoGroupGradient do
+
+  let(:min_lumin) { 50 }
+  let(:max_lumin) { 90 }
+
   let(:samples) { %w[s1 s2 s3 s4 s5] }
   let(:g1_counts) { [0, 50, 10, 20, 100] }
   let(:g2_counts) { [0, 50, 20, 10, 100] }
@@ -30,7 +34,11 @@ describe Iroki::Color::TwoGroupGradient do
   }
 
   let(:tsg) {
-    TwoGroupGradient.new samples, g1_counts, g2_counts
+    TwoGroupGradient.new samples,
+                         g1_counts,
+                         g2_counts,
+                         min_lumin,
+                         max_lumin
   }
 
   it "is a Gradient" do
@@ -46,9 +54,24 @@ describe Iroki::Color::TwoGroupGradient do
 
   describe "::initialize" do
     it "raises an error if the samples and counts are different sized" do
-      expect { TwoGroupGradient.new ["a", "b"], [1,2,3], [4,5,6] }.
+      expect { TwoGroupGradient.new ["a", "b"],
+                                    [1,2,3],
+                                    [4,5,6],
+                                    min_lumin,
+                                    max_lumin}.
         to raise_error AbortIf::Assert::AssertionFailureError
     end
+
+    it "sets the max lumin" do
+      expect(tsg.max_lumin).to eq max_lumin
+    end
+
+    it "sets the min lumin" do
+      expect(tsg.min_lumin).to eq min_lumin
+    end
+
+    it "validates max lumin vals"
+    it "validates min lumin vals"
 
     it "sets the samples" do
       expect(tsg.samples).to eq samples

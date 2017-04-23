@@ -184,7 +184,9 @@ module Iroki
                   display_auto_color_options: nil,
                   newick_f: nil,
                   out_f: nil,
-                  default_color: "black")
+                  default_color: "black",
+                  min_lumin: 35,
+                  max_lumin: 70)
 
       args = method(__method__).parameters.map { |arg| arg[1] }
       AbortIf::logger.info "Args " + args.map { |arg| "#{arg} = #{eval(arg.to_s).inspect}" }.join(', ')
@@ -287,11 +289,19 @@ module Iroki
         samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
         if is_single_group
-          biom_patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
+          biom_patterns = SingleGroupGradient.new(samples,
+                                                  counts,
+                                                  single_color,
+                                                  min_lumin,
+                                                  max_lumin).patterns
         else
           g1_counts = counts.map(&:first)
           g2_counts = counts.map(&:last)
-          biom_patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
+          biom_patterns = TwoGroupGradient.new(samples,
+                                               g1_counts,
+                                               g2_counts,
+                                               min_lumin,
+                                               max_lumin).patterns
         end
 
         # these patterns have the original name for the key, so change
@@ -326,11 +336,19 @@ module Iroki
         samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
         if is_single_group
-          patterns = SingleGroupGradient.new(samples, counts, single_color).patterns
+          patterns = SingleGroupGradient.new(samples,
+                                             counts,
+                                             single_color,
+                                             min_lumin,
+                                             max_lumin).patterns
         else
           g1_counts = counts.map(&:first)
           g2_counts = counts.map(&:last)
-          patterns = TwoGroupGradient.new(samples, g1_counts, g2_counts).patterns
+          patterns = TwoGroupGradient.new(samples,
+                                          g1_counts,
+                                          g2_counts,
+                                          min_lumin,
+                                          max_lumin).patterns
         end
 
         # these patterns have the original name for the key, so change
