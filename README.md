@@ -13,10 +13,10 @@ customization program.
 
 ## Citation ##
 
-Iroki is research software. If you use Iroki, please cite the Iroki preprint:
+Iroki is research software. If you use Iroki, please cite the Iroki [preprint](http://biorxiv.org/content/early/2017/04/25/106138.1):
 
 ```
-Moore RM, Harrison AO, McAllister SM, Marine R, Chan C, Wommack KE. 2017. Iroki: automatic customization for phylogenetic trees. doi: https://doi.org/10.1101/106138
+Moore RM, Harrison AO, McAllister SM , Marine RL, Chan CS, and Wommack KE. 2017. Iroki: automatic customization for phylogenetic trees. bioRxiv doi:10.1101/106138
 ```
 
 ## Documentation ##
@@ -24,6 +24,10 @@ Moore RM, Harrison AO, McAllister SM, Marine R, Chan C, Wommack KE. 2017. Iroki:
 For in depth docs and examples, please see the [Iroki wiki](https://github.com/mooreryan/iroki/wiki) page.
 
 ## Installation ##
+
+### Using the web app
+
+Iroki has a web app ([iroki.net](http://www.iroki.net/)). The [code](https://github.com/mooreryan/iroki_web) for that is also on GitHub.
 
 ### Running with Docker ###
 
