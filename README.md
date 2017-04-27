@@ -1,3 +1,5 @@
+[![Iroki](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo2.png)](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)
+
 # Iroki #
 
 [![Gem Version](https://badge.fury.io/rb/iroki.svg)](https://badge.fury.io/rb/iroki)
