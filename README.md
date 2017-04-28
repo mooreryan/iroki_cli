@@ -1,4 +1,4 @@
-[![Iroki](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo2.png)](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)
+[![Iroki](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)
 
 # Iroki #
 

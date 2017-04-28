@@ -1,4 +1,4 @@
-# Copyright 2016 Ryan Moore
+# Copyright 2015 - 2017 Ryan Moore
 # Contact: moorer@udel.edu
 #
 # This file is part of Iroki.
@@ -16,17 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Iroki.  If not, see <http://www.gnu.org/licenses/>.
 
-# Library metadata
-module Iroki
-  VERSION = "0.0.33"
-  COPYRIGHT = "2015 - 2017 Ryan Moore"
-  CONTACT   = "moorer@udel.edu"
-  WEBSITE   = "https://github.com/mooreryan/iroki"
-  LICENSE   = "GPLv3"
+require "spec_helper"
 
-  VERSION_BANNER = "  # Version: #{Iroki::VERSION}
-  # Copyright #{Iroki::COPYRIGHT}
-  # Contact: #{Iroki::CONTACT}
-  # Website: #{Iroki::WEBSITE}
-  # License: #{Iroki::LICENSE}"
+describe Iroki::Color::Palette do
+  it "has the kelly palette" do
+    expect(Iroki::Color::Palette::KELLY).not_to be nil
+  end
+
+  it "has the kelly text" do
+    expect(Iroki::Color::Palette::KELLY_TEXT).not_to be nil
+  end
 end

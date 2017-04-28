@@ -155,19 +155,35 @@ describe Iroki::Main do
 
   describe "::iroki_job" do
     it "calls main without needing the output file" do
+      # the min and max lumin don't actually affect the output, just
+      # here to test that it accepts the opts
       actual_output = Iroki::Main::iroki_job color_branches:   true,
                                              color_taxa_names: true,
                                              exact:            true,
                                              color_map_f:      color_map,
-                                             newick_f:         newick
+                                             newick_f:         newick,
+                                             min_lumin:        min_lumin,
+                                             max_lumin:        max_lumin
 
       expected_output = File.read expected_nexus
 
       expect(actual_output).to eq expected_output
     end
+
+    it "actually passes the min and max lumin vals to main"
   end
 
   describe "::main" do
+    context "when getting the auto color options" do
+
+      it "raises SystemExit when display-auto-color-options is passed" do
+        expect { Iroki::Main::main display_auto_color_options: true }.
+          to raise_error SystemExit
+      end
+
+      it "prints the kelly color palette"
+    end
+
     context "with renaming" do
       context "no coloring options" do
         it "renames node labels with a name map" do
@@ -485,11 +501,6 @@ describe Iroki::Main do
 
     #   # FileUtils.rm output_nexus
     # end
-
-    it "raises SystemExit when display-auto-color-options is passed" do
-      expect { Iroki::Main::main display_auto_color_options: true }.
-        to raise_error SystemExit
-    end
 
     context "bad user input" do
 

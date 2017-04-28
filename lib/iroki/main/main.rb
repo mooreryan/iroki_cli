@@ -147,7 +147,9 @@ module Iroki
                        name_map_f: nil,
                        auto_color: nil,
                        display_auto_color_options: nil,
-                       newick_f: nil)
+                       newick_f: nil,
+                       min_lumin: 35,
+                       max_lumin: 70)
 
       begin
         out_f = Tempfile.new "foo"
@@ -163,7 +165,9 @@ module Iroki
                   auto_color: auto_color,
                   display_auto_color_options: display_auto_color_options,
                   newick_f: newick_f,
-                  out_f: out_f)
+                  out_f: out_f,
+                  min_lumin: min_lumin,
+                  max_lumin: max_lumin)
       ensure
         if out_f
           out_f.close
@@ -193,7 +197,7 @@ module Iroki
 
       if display_auto_color_options
         STDERR.puts "\n  Choices for --auto-color ..."
-        STDERR.print "    - kelly: up to 19 high contrast colors (purple, orange, light blue, red, ...)\n\n"
+        STDERR.print "    - kelly: up to 19 high contrast colors\n\n#{Iroki::Color::Palette::KELLY_TEXT}\n\n"
         exit
       end
 

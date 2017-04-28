@@ -34,6 +34,27 @@ module Iroki
         "18" => { name: "olive_green",     hex: "#2B3D26" },
         "19" => { name: "yellow",          hex: "#F3C300" },
       }
+
+      KELLY_TEXT = " 1: Purple          (#875692)
+ 2: Orange          (#F38400)
+ 3: Light Blue      (#A1CAF1)
+ 4: Red             (#BE0032)
+ 5: Buff            (#C2B280)
+ 6: Grey            (#848482)
+ 7: Green           (#008856)
+ 8: Purplish pink   (#E68FAC)
+ 9: Blue            (#0067A5)
+10: Yellowish pink  (#F99379)
+11: Violet          (#604E97)
+12: Orange yellow   (#F6A600)
+13: Purplish red    (#B3446C)
+14: Reddish brown   (#882D17)
+15: Yellow green    (#8DB600)
+16: Yellowish brown (#654522)
+17: Reddish orange  (#E25822)
+18: Olive green     (#2B3D26)
+19: Yellow          (#F3C300)"
+
     end
   end
 end
