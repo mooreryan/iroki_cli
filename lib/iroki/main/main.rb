@@ -252,6 +252,10 @@ module Iroki
                name_map_f.nil?,
                "Newick file was given but no other files were given")
 
+      abort_if biom_f && !exact,
+               "Regex matching cannot be used with a biom file. " +
+               "Pass the --exact flag"
+
       # treeio = Bio::FlatFile.open(Bio::Newick, newick)
 
       # newick = treeio.next_entry
@@ -285,11 +289,11 @@ module Iroki
       #################################################################
       # get color patterns
       ####################
-      if color_map_f && biom_f
-        color_map_patterns = parse_color_map_iroki color_map_f,
-                                                   iroki_to_name,
-                                                   exact_matching: exact,
-                                                   auto_color: auto_color_hash
+      if biom_f
+        abort_if single_color,
+                 "--single-color is not compatible with a two " +
+                 "group biom file. Please remove that option."
+
         samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
         if is_single_group
@@ -299,6 +303,9 @@ module Iroki
                                                   min_lumin,
                                                   max_lumin).patterns
         else
+          # abort_if single_color,
+          #          "--single-color is incompatible with a two group biom file, please remove it."
+
           g1_counts = counts.map(&:first)
           g2_counts = counts.map(&:last)
           biom_patterns = TwoGroupGradient.new(samples,
@@ -307,6 +314,13 @@ module Iroki
                                                min_lumin,
                                                max_lumin).patterns
         end
+      end
+
+      if color_map_f && biom_f
+        color_map_patterns = parse_color_map_iroki color_map_f,
+                                                   iroki_to_name,
+                                                   exact_matching: exact,
+                                                   auto_color: auto_color_hash
 
         # these patterns have the original name for the key, so change
         # the key to the iroki name
@@ -337,23 +351,7 @@ module Iroki
                                          exact_matching: exact,
                                          auto_color: auto_color_hash
       elsif biom_f
-        samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
-
-        if is_single_group
-          patterns = SingleGroupGradient.new(samples,
-                                             counts,
-                                             single_color,
-                                             min_lumin,
-                                             max_lumin).patterns
-        else
-          g1_counts = counts.map(&:first)
-          g2_counts = counts.map(&:last)
-          patterns = TwoGroupGradient.new(samples,
-                                          g1_counts,
-                                          g2_counts,
-                                          min_lumin,
-                                          max_lumin).patterns
-        end
+        patterns = biom_patterns
 
         # these patterns have the original name for the key, so change
         # the key to the iroki name

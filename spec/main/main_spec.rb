@@ -436,7 +436,21 @@ describe Iroki::Main do
         end
       end
 
+      # TODO is this in the tricky context from above? It shouldn't be
       context "regular expression matching" do
+        context "with biom file" do
+
+          # https://github.com/mooreryan/iroki_web/issues/4
+          it "dies because biom file and regex can't go together" do
+            expect { Iroki::Main::main color_branches: true,
+                                       exact:          false,
+                                       biom_f:         two_group_biom,
+                                       newick_f:       two_group_tre,
+                                       out_f:          output_nexus
+            }.to raise_error AbortIf::Exit
+          end
+        end
+
         context "just color map" do
           it "colors the labels" do
             Iroki::Main::main color_branches: false,
@@ -629,7 +643,7 @@ describe Iroki::Main do
         expect { Iroki::Main::main exact: true,
                                    color_branches: true,
                                    color_taxa_names: true,
-                                   color_map_f: two_group_biom,
+                                   biom_f: two_group_biom,
                                    newick_f: small_newick,
                                    out_f: output_nexus,
                                    single_color: true}.
