@@ -289,11 +289,8 @@ module Iroki
       #################################################################
       # get color patterns
       ####################
-      if biom_f
-        abort_if single_color,
-                 "--single-color is not compatible with a two " +
-                 "group biom file. Please remove that option."
 
+      if biom_f
         samples, counts, is_single_group = Biom.open(biom_f, "rt").parse
 
         if is_single_group
@@ -303,8 +300,9 @@ module Iroki
                                                   min_lumin,
                                                   max_lumin).patterns
         else
-          # abort_if single_color,
-          #          "--single-color is incompatible with a two group biom file, please remove it."
+          abort_if single_color,
+                   "--single-color is not compatible with a two " +
+                   "group biom file. Please remove that option."
 
           g1_counts = counts.map(&:first)
           g2_counts = counts.map(&:last)

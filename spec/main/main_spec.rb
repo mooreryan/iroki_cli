@@ -124,6 +124,21 @@ describe Iroki::Main do
   let(:color_map_has_entries_not_in_tree_nex) {
     File.join nexus_files, "color_map_has_entries_not_in_tree.nex" }
 
+  let(:single_group_bug_tre) {
+    File.join test_files, "single_group_bug.tre" }
+  let(:single_group_bug_nex) {
+    File.join test_files, "single_group_bug.nex" }
+  let(:single_group_bug_color_map) {
+    File.join test_files, "single_group_bug.color_map" }
+  let(:single_group_bug_biom) {
+    File.join test_files, "single_group_bug.biom" }
+  let(:single_group_bug_min_lumin) {
+    1 }
+  let(:single_group_bug_max_lumin) {
+    100 }
+  let(:single_group_bug_single_group_true) {
+    true }
+
   # Iroki issues
   let(:iroki_issue_2_tree) {
     File.join test_files, "iroki_issues", "issue_6", "tree"
@@ -201,8 +216,6 @@ describe Iroki::Main do
       end
     end
 
-    it "is fine when the color map has entries not in the tree"
-
     it "is fine when the color map has entries not in the tree" do
       Iroki::Main::main color_branches: true,
                         color_taxa_names: true,
@@ -235,6 +248,28 @@ describe Iroki::Main do
     it "doesn't die if the color gradient radio button is selected with no biom file"
     it "raises AbortIf::Exit if nothing in the color map matches matches the tree"
     it "handles when user uses new and old names in color map"
+
+    context "single group bug" do
+      it "doesn't mistake a single group biom for a two group biom" do
+        expect { Iroki::Main::main color_branches: true,
+                                   color_taxa_names: true,
+                                   exact: true,
+                                   color_map_f: single_group_bug_color_map,
+                                   newick_f: single_group_bug_tre,
+                                   biom_f: single_group_bug_biom,
+                                   out_f: output_nexus,
+                                   min_lumin: 1,
+                                   max_lumin: 100,
+                                   single_color: true }.not_to raise_error
+
+        expected_output = File.read(single_group_bug_nex)
+        actual_output   = File.read output_nexus
+
+        expect(actual_output).to eq expected_output
+
+        FileUtils.rm output_nexus
+      end
+    end
 
     it "returns the nexus string when it completes successfully" do
       val = Iroki::Main::main color_branches:   true,
