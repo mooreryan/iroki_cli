@@ -21,14 +21,14 @@ def color_given? str
 end
 
 # TODO spec this for hex matching
-def has_label_tag? str
+def label_tag? str
   m = str.match(/\Alabel:(#?\p{Alnum}+)\Z/i)
 
   m[1] if m
 end
 
 # TODO spec this for hex matching
-def has_branch_tag? str
+def branch_tag? str
   m = str.match(/\Abranch:(#?\p{Alnum}+)\Z/i)
 
   m[1] if m
@@ -101,20 +101,45 @@ module Iroki
               pattern = Regexp.new pattern
             end
 
-            if color_given?(label_color) && color_given?(branch_color)
-              abort_if(has_label_tag?(label_color) &&
-                       has_label_tag?(branch_color),
-                       "Label tag specified twice for '#{line}'")
 
-              abort_if(has_branch_tag?(label_color) &&
-                       has_branch_tag?(branch_color),
-                       "Branch tag specified twice for '#{line}'")
+            if color_given?(label_color) && color_given?(branch_color)
+              if label_tag?(label_color) &&
+                 label_tag?(branch_color)
+
+                abort_unless label_color == branch_color,
+                             "Label tags specified twice for " +
+                             "#{line.inspect}, but the tags don't " +
+                             "match."
+
+                # ie both are label tags specifying the same color
+                branch_color = nil
+              elsif branch_tag?(label_color) &&
+                    branch_tag?(branch_color)
+
+                abort_unless label_color == branch_color,
+                             "Branch tags specified twice for " +
+                             "#{line.inspect}, but the tags don't " +
+                             "match."
+
+                # ie both are branch tags specifying the same color
+                label_color = nil
+              end
             end
 
+            # if color_given?(label_color) && color_given?(branch_color)
+            #   abort_if(label_tag?(label_color) &&
+            #            label_tag?(branch_color),
+            #            "Label tag specified twice for '#{line}'")
+
+            #   abort_if(branch_tag?(label_color) &&
+            #            branch_tag?(branch_color),
+            #            "Branch tag specified twice for '#{line}'")
+            # end
+
             if color_given?(label_color) && !color_given?(branch_color)
-              if (color = has_label_tag? label_color)
+              if (color = label_tag? label_color)
                 label_tag = Iroki::Color.get_tag color, auto_color
-              elsif (color = has_branch_tag? label_color)
+              elsif (color = branch_tag? label_color)
                 branch_tag = Iroki::Color.get_tag color, auto_color
               elsif line.match(/\t\Z/) # empty branch color, branch
                                        # will be black
@@ -128,9 +153,9 @@ module Iroki
               end
             else
               if color_given? label_color
-                if (color = has_label_tag? label_color)
+                if (color = label_tag? label_color)
                   label_tag = Iroki::Color.get_tag color, auto_color
-                elsif (color = has_branch_tag? label_color)
+                elsif (color = branch_tag? label_color)
                   branch_tag = Iroki::Color.get_tag color, auto_color
                 else
                   label_tag = Iroki::Color.get_tag label_color,
@@ -139,9 +164,9 @@ module Iroki
               end
 
               if color_given? branch_color
-                if (color = has_branch_tag? branch_color)
+                if (color = branch_tag? branch_color)
                   branch_tag = Iroki::Color.get_tag color, auto_color
-                elsif (color = has_label_tag? branch_color)
+                elsif (color = label_tag? branch_color)
                   label_tag = Iroki::Color.get_tag color, auto_color
                 else
                   branch_tag = Iroki::Color.get_tag branch_color,

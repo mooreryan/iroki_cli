@@ -40,6 +40,14 @@ describe Iroki::CoreExt::File do
     File.join test_files, "branch_tag_twice.txt"
   }
 
+  let(:same_label_tag_twice) {
+    File.join test_files, "same_label_tag_twice.txt"
+  }
+
+  let(:same_branch_tag_twice) {
+    File.join test_files, "same_branch_tag_twice.txt"
+  }
+
   let(:bad_name_color_map) { File.join test_files,
                                        "bad_names.color_map" }
 
@@ -216,20 +224,44 @@ describe Iroki::CoreExt::File do
     end
 
     context "misc bad user input" do
-      it "raises SystemExit if label tag is given twice" do
-        iroki_to_name = { "iroki0iroki" => "apple" }
+      context "label tag is given twice" do
+        it "raises SystemExit if the label tags are different" do
+          iroki_to_name = { "iroki0iroki" => "apple" }
 
-        expect{klass.parse_color_map_iroki label_tag_twice,
-                                           iroki_to_name}.
-          to raise_error SystemExit
+          expect{klass.parse_color_map_iroki label_tag_twice,
+                                             iroki_to_name}.
+            to raise_error SystemExit
+        end
+
+        it "doesn't raise if label tags are the same" do
+          iroki_to_name = { "iroki0iroki" => "apple" }
+          output = { "iroki0iroki" => { label: blue_tag,
+                                        branch: ""} }
+
+          expect(klass.parse_color_map_iroki same_label_tag_twice,
+                                             iroki_to_name).
+            to eq output
+        end
       end
 
-      it "raises SystemExit if branch tag is given twice" do
-        iroki_to_name = { "iroki0iroki" => "apple" }
+      context "branch tag is given twice" do
+        it "raises SystemExit if branch tag is given twice" do
+          iroki_to_name = { "iroki0iroki" => "apple" }
 
-        expect{klass.parse_color_map_iroki branch_tag_twice,
-                                           iroki_to_name}.
-          to raise_error SystemExit
+          expect{klass.parse_color_map_iroki branch_tag_twice,
+                                             iroki_to_name}.
+            to raise_error SystemExit
+        end
+
+        it "doesn't raise if branch tags are the same" do
+          iroki_to_name = { "iroki0iroki" => "apple" }
+          output = { "iroki0iroki" => { label: "",
+                                        branch: blue_tag } }
+
+          expect(klass.parse_color_map_iroki same_branch_tag_twice,
+                                             iroki_to_name).
+            to eq output
+        end
       end
     end
 
