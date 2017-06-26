@@ -42,16 +42,21 @@ module Iroki
         end
       else
         assert iroki_to_name, "iroki_to_name arg is nil"
-        assert iroki_to_name[node.to_s], "iroki_to_name is missing #{node.to_s}"
+        assert iroki_to_name[node.to_s],
+               "iroki_to_name is missing #{node.to_s}"
         node_s = iroki_to_name[node.to_s]
 
         patterns.each do |pattern, this_color|
           if node_s =~ pattern
             abort_if already_matched,
-                     "Non specific matching for #{node_s}"
+                     "Non specific matching for #{node_s}. " +
+                     "Previously matched pattern was " +
+                     "#{already_matched.inspect}. Current pattern " +
+                     "is " +
+                     "#{pattern.inspect}. Color was #{this_color}."
 
             color = this_color
-            already_matched = true
+            already_matched = pattern
           end
         end
 
@@ -93,7 +98,10 @@ module Iroki
 
         # NOTE: this was originally before cleaning the node name a
         # couple lines up, does it matter that it is after?
-        color = add_color_to_leaf_branch patterns, node, exact, iroki_to_name
+        color = add_color_to_leaf_branch patterns,
+                                         node,
+                                         exact,
+                                         iroki_to_name
 
         # add color to the name
         node.name = node.name + color[:branch] if color

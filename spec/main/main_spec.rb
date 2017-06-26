@@ -139,6 +139,10 @@ describe Iroki::Main do
   let(:single_group_bug_single_group_true) {
     true }
 
+  let(:ambiguous_regex_color_map) {
+    File.join test_files, "ambiguous_regex.color_map"
+  }
+
   # Iroki issues
   let(:iroki_issue_2_tree) {
     File.join test_files, "iroki_issues", "issue_6", "tree"
@@ -552,6 +556,15 @@ describe Iroki::Main do
     # end
 
     context "bad user input" do
+      it "raises Exit when the regex matches more than one node" do
+        expect { Iroki::Main::main color_branches:   true,
+                                   color_taxa_names: true,
+                                   exact:            false,
+                                   color_map_f:      ambiguous_regex_color_map,
+                                   newick_f:         basic_tre,
+                                   out_f:            output_nexus }.
+          to raise_error AbortIf::Exit
+      end
 
       it "raises AbortIf::Exit when the auto-color option is invalid" do
         auto_color = "asldkfjaldj"
