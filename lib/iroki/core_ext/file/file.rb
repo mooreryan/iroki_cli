@@ -126,16 +126,6 @@ module Iroki
               end
             end
 
-            # if color_given?(label_color) && color_given?(branch_color)
-            #   abort_if(label_tag?(label_color) &&
-            #            label_tag?(branch_color),
-            #            "Label tag specified twice for '#{line}'")
-
-            #   abort_if(branch_tag?(label_color) &&
-            #            branch_tag?(branch_color),
-            #            "Branch tag specified twice for '#{line}'")
-            # end
-
             if color_given?(label_color) && !color_given?(branch_color)
               if (color = label_tag? label_color)
                 label_tag = Iroki::Color.get_tag color, auto_color

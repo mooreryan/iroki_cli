@@ -39,9 +39,9 @@ opts = Trollop.options do
       "Color branches?",
       short: "-b")
 
-  opt(:color_taxa_names,
+  opt(:color_labels,
       "Color label names?",
-      short: "-t")
+      short: "-l")
 
   opt(:exact,
       "Exact pattern matching")
@@ -99,7 +99,7 @@ end
 
 Iroki::Main.main(
   color_branches:             opts[:color_branches],
-  color_taxa_names:           opts[:color_taxa_names],
+  color_taxa_names:           opts[:color_labels],
   exact:                      opts[:exact],
   remove_bootstraps_below:    opts[:remove_bootstraps_below],
   color_map_f:                opts[:color_map],
