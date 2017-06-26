@@ -725,8 +725,16 @@ module Iroki
         colors = COLORS
       end
 
-      abort_unless colors.has_key?(col),
-                   "Color '#{col}' is not defined."
+      unless colors.has_key? col
+        if col.match(/\A[0-9]+\Z/)
+          msg = "Color '#{col}' is not defined. " +
+                "Did you forget the --auto-color option?"
+        else
+          msg = "Color '#{col}' is not defined."
+        end
+
+        abort_if true, msg
+      end
 
       hex = colors[col]
       %Q{[&!color="#{hex.upcase}"]}
