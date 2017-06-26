@@ -261,6 +261,19 @@ module Iroki
       # newick = treeio.next_entry
       str = File.read newick
       newick = Bio::Newick.new str, parser: :iroki
+
+      # Warn if there is extra info in the newick file
+      if newick &&
+         newick.entry_overrun &&
+         !newick.entry_overrun.chomp.empty?
+
+        AbortIf.logger.warn {
+          "Extra info (#{newick.entry_overrun}) in newick file " +
+            "(#{newick_f}) will be ignored. " +
+            "Does your newick file contain multiple trees?"
+        }
+      end
+
       tree = newick.tree
 
       # puts [:tree_first_parsed, tree.newick(indent: false)]
