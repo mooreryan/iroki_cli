@@ -50,6 +50,13 @@ describe Iroki::CoreExt::File do
                                              branch: red_tag, } }
   end
 
+  let(:bad_name_patterns_iroki) do
+    {
+      "iroki0iroki" => { label: blue_tag, branch: blue_tag, },
+      "iroki1iroki" => { label: red_tag, branch: red_tag, }
+    }
+  end
+
   let(:auto_purple) {
     Iroki::Color.get_tag Iroki::Color::Palette::KELLY["1"][:hex]
   }
@@ -58,16 +65,25 @@ describe Iroki::CoreExt::File do
   }
   let(:red) { Iroki::Color.get_tag "red" }
 
-  let(:auto_color_patterns) {
+  let(:auto_color_patterns) do
     {
       "auto_1" => { label: auto_purple, branch: auto_purple },
       "auto_2" => { label: auto_orange, branch: auto_orange },
       "ryan_3" => { label: red_tag, branch: red_tag },
     }
-  }
+  end
+
+  let(:auto_color_patterns_iroki) do
+    {
+      "iroki0iroki" => { label: auto_purple, branch: auto_purple },
+      "iroki1iroki" => { label: auto_orange, branch: auto_orange },
+      "iroki2iroki" => { label: red_tag, branch: red_tag },
+    }
+  end
 
   let(:patterns) do
-    { "apple" =>     { label: Iroki::Color.get_tag("red"),
+    {
+      "apple" =>     { label: Iroki::Color.get_tag("red"),
                        branch: Iroki::Color.get_tag("red"), },
       "grape" =>     { label: Iroki::Color.get_tag("green"),
                        branch: Iroki::Color.get_tag("blue"), },
@@ -87,6 +103,32 @@ describe Iroki::CoreExt::File do
                        branch: Iroki::Color.get_tag("goldenrod3"), },
       "water" =>     { label: Iroki::Color.get_tag("black"),
                        branch: Iroki::Color.get_tag("thistle"), },
+
+    }
+  end
+
+  let(:big_patterns_iroki) do
+    {
+      "iroki0iroki" => { label: Iroki::Color.get_tag("red"),
+                         branch: Iroki::Color.get_tag("red"), },
+      "iroki1iroki" => { label: Iroki::Color.get_tag("green"),
+                         branch: Iroki::Color.get_tag("blue"), },
+      "iroki2iroki" => { label: Iroki::Color.get_tag("green"),
+                         branch: Iroki::Color.get_tag("green"), },
+      "iroki3iroki" => { label: Iroki::Color.get_tag("brown"),
+                         branch: Iroki::Color.get_tag("brown"), },
+      "iroki4iroki" => { label: Iroki::Color.get_tag("brown"),
+                         branch: Iroki::Color.get_tag("blue"), },
+      "iroki5iroki" => { label: Iroki::Color.get_tag("green"),
+                         branch: "", },
+      "iroki6iroki" => { label: Iroki::Color.get_tag("orange"),
+                         branch: Iroki::Color.get_tag("purple"), },
+      "iroki7iroki" => { label: "",
+                         branch: Iroki::Color.get_tag("tomato"), },
+      "iroki8iroki" => { label: "",
+                         branch: Iroki::Color.get_tag("goldenrod3"), },
+      "iroki9iroki" => { label: Iroki::Color.get_tag("black"),
+                         branch: Iroki::Color.get_tag("thistle"), },
 
     }
   end
@@ -159,27 +201,34 @@ describe Iroki::CoreExt::File do
                    /s2/ => { label: blue_tag, branch: blue_tag },
                    /s3/ => { label: red_tag, branch: red_tag }, }
 
-        expect(klass.parse_color_map_iroki color_map_iroki, iroki_to_name, exact_matching: false).to eq output
+        expect(klass.parse_color_map_iroki color_map_iroki,
+                                           iroki_to_name,
+                                           exact_matching: false).
+          to eq output
       end
     end
-  end
 
-  describe "::parse_color_map" do
     context "when file doesn't exist" do
       it "raises SystemExit" do
-        expect{klass.parse_color_map "apple.txt"}.
+        expect{klass.parse_color_map_iroki "apple.txt", Hash.new}.
           to raise_error SystemExit
       end
     end
 
     context "misc bad user input" do
       it "raises SystemExit if label tag is given twice" do
-        expect{klass.parse_color_map label_tag_twice}.
+        iroki_to_name = { "iroki0iroki" => "apple" }
+
+        expect{klass.parse_color_map_iroki label_tag_twice,
+                                           iroki_to_name}.
           to raise_error SystemExit
       end
 
       it "raises SystemExit if branch tag is given twice" do
-        expect{klass.parse_color_map branch_tag_twice}.
+        iroki_to_name = { "iroki0iroki" => "apple" }
+
+        expect{klass.parse_color_map_iroki branch_tag_twice,
+                                           iroki_to_name}.
           to raise_error SystemExit
       end
     end
@@ -187,16 +236,54 @@ describe Iroki::CoreExt::File do
     context "exact matching" do
       context "with good input" do
         it "reads the color file and returns a hash of patterns" do
-          expect(klass.parse_color_map color_map).to eq patterns
+          iroki_to_name = {
+            "iroki0iroki" => "apple",
+            "iroki1iroki" => "grape",
+            "iroki2iroki" => "peanut",
+            "iroki3iroki" => "amelionia",
+            "iroki4iroki" => "ice cream",
+            "iroki5iroki" => "thingy",
+            "iroki6iroki" => "pi--ece",
+            "iroki7iroki" => "teehee",
+            "iroki8iroki" => "pie",
+            "iroki9iroki" => "water",
+          }
+
+          expect(klass.parse_color_map_iroki color_map,
+                                             iroki_to_name).
+            to eq big_patterns_iroki
         end
 
         it "runs every non regex pattern through str.clean method" do
-          expect(klass.parse_color_map bad_name_color_map).
-            to eq bad_name_patterns
+          iroki_to_name = {
+            "iroki0iroki" => %q{ap-"p"le*'3'_2!#$#@.()p,ie},
+            # whitespace is stripped
+            "iroki1iroki" => %q{pie '"is"' "'really'" good},
+          }
+
+          expect(klass.parse_color_map_iroki bad_name_color_map,
+                                             iroki_to_name).
+            to eq bad_name_patterns_iroki
         end
 
         it "treats the pattern as a string" do
-          pattern = klass.parse_color_map(color_map).first.first
+          iroki_to_name = {
+            "iroki0iroki" => "apple",
+            "iroki1iroki" => "grape",
+            "iroki2iroki" => "peanut",
+            "iroki3iroki" => "amelionia",
+            "iroki4iroki" => "ice cream",
+            "iroki5iroki" => "thingy",
+            "iroki6iroki" => "pi--ece",
+            "iroki7iroki" => "teehee",
+            "iroki8iroki" => "pie",
+            "iroki9iroki" => "water",
+          }
+
+          pattern = klass.parse_color_map_iroki(color_map,
+                                                iroki_to_name).
+                    first.
+                    first
 
           expect(pattern).to be_a String
         end
@@ -204,9 +291,24 @@ describe Iroki::CoreExt::File do
     end
 
     context "regex pattern matching" do
+          iroki_to_name = {
+            "iroki0iroki" => "apple",
+            "iroki1iroki" => "grape",
+            "iroki2iroki" => "peanut",
+            "iroki3iroki" => "amelionia",
+            "iroki4iroki" => "ice cream",
+            "iroki5iroki" => "thingy",
+            "iroki6iroki" => "pi--ece",
+            "iroki7iroki" => "teehee",
+            "iroki8iroki" => "pie",
+            "iroki9iroki" => "water",
+          }
+
       it "treats the pattern column as a regular expression" do
         pattern =
-          klass.parse_color_map(color_map, exact_matching: false).
+          klass.parse_color_map_iroki(color_map,
+                                      iroki_to_name,
+                                      exact_matching: false).
           first.
           first
 
@@ -214,11 +316,20 @@ describe Iroki::CoreExt::File do
       end
     end
 
+    # TODO something wrong here
     context "with auto-coloring turned on" do
       it "selects colors automatically from the given palette" do
         kelly = Iroki::Color::Palette::KELLY
-        expect(klass.parse_color_map(auto_color_map, auto_color: kelly)).
-          to eq auto_color_patterns
+        iroki_to_name = {
+          "iroki0iroki" => "auto_1",
+          "iroki1iroki" => "auto_2",
+          "iroki2iroki" => "ryan_3",
+        }
+
+        expect(klass.parse_color_map_iroki(auto_color_map,
+                                           iroki_to_name,
+                                           auto_color: kelly)).
+          to eq auto_color_patterns_iroki
       end
     end
   end
@@ -240,7 +351,8 @@ describe Iroki::CoreExt::File do
         it "raises AbortIf::Exit" do
           iroki_net_issue_2_name_map = File.join test_files, "iroki_net_issues", "issue_2", "name_map"
 
-          expect{klass.parse_name_map iroki_net_issue_2_name_map}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map iroki_net_issue_2_name_map}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -248,7 +360,8 @@ describe Iroki::CoreExt::File do
         it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col1_empty.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map fname}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -256,7 +369,8 @@ describe Iroki::CoreExt::File do
         it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col2_empty.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map fname}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -264,7 +378,8 @@ describe Iroki::CoreExt::File do
         it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.col2_missing.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map fname}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -273,7 +388,8 @@ describe Iroki::CoreExt::File do
           fname = File.join test_files,
                             "name_map.duplicate_vals.first_column.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map fname}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -281,7 +397,8 @@ describe Iroki::CoreExt::File do
         it "raises AbortIf::Exit" do
           fname = File.join test_files, "name_map.duplicate_vals.txt"
 
-          expect{klass.parse_name_map fname}.to raise_error AbortIf::Exit
+          expect{klass.parse_name_map fname}.
+            to raise_error AbortIf::Exit
         end
       end
 
@@ -304,7 +421,8 @@ describe Iroki::CoreExt::File do
 
         it "handles carriage returns and line feeds" do
           fname =
-            File.join test_files, "line_endings_car_return_line_feed.txt"
+            File.join test_files,
+                      "line_endings_car_return_line_feed.txt"
           name_map = { "a" => "A", "b" => "B", "c" => "C" }
 
           expect(klass.parse_name_map fname).to eq name_map

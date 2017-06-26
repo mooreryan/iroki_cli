@@ -60,87 +60,8 @@ module Iroki
         arg
       end
 
-      # TODO this is now pointless
-      def parse_color_map fname,
-                          exact_matching: true,
-                          auto_color: false
-
-        check_file fname, :color_map
-
-
-        patterns = {}
-        Object::File.open(fname, "rt").each_line do |line|
-          unless line.start_with? "#"
-            label_tag = ""
-            branch_tag = ""
-
-            pattern, label_color, branch_color = line.chomp.split "\t"
-
-            # color = "black" if color.nil? || color.empty?
-
-            assert pattern, "found no pattern"
-
-            if exact_matching # TODO should this really be everytime?
-              pattern = pattern#.clean_name
-            else
-              # TODO flag bad regexp
-              pattern = Regexp.new pattern
-            end
-
-            if color_given?(label_color) && color_given?(branch_color)
-              abort_if(has_label_tag?(label_color) &&
-                       has_label_tag?(branch_color),
-                       "Label tag specified twice for '#{line}'")
-
-              abort_if(has_branch_tag?(label_color) &&
-                       has_branch_tag?(branch_color),
-                       "Branch tag specified twice for '#{line}'")
-            end
-
-            if color_given?(label_color) && !color_given?(branch_color)
-              if (color = has_label_tag? label_color)
-                label_tag = Iroki::Color.get_tag color, auto_color
-              elsif (color = has_branch_tag? label_color)
-                branch_tag = Iroki::Color.get_tag color, auto_color
-              else
-                label_tag = Iroki::Color.get_tag label_color, auto_color
-                branch_tag = Iroki::Color.get_tag label_color, auto_color
-              end
-            else
-              if color_given? label_color
-                if (color = has_label_tag? label_color)
-                  label_tag = Iroki::Color.get_tag color, auto_color
-                elsif (color = has_branch_tag? label_color)
-                  branch_tag = Iroki::Color.get_tag color, auto_color
-                else
-                  label_tag = Iroki::Color.get_tag label_color, auto_color
-                end
-              end
-
-              if color_given? branch_color
-                if (color = has_branch_tag? branch_color)
-                  branch_tag = Iroki::Color.get_tag color, auto_color
-                elsif (color = has_label_tag? branch_color)
-                  label_tag = Iroki::Color.get_tag color, auto_color
-                else
-                  branch_tag = Iroki::Color.get_tag branch_color, auto_color
-                end
-              end
-            end
-
-            # if auto_color
-            #   patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
-            # else
-            #   patterns[pattern] = Iroki::Color.get_tag color, auto_color
-            # end
-
-            patterns[pattern] = { label: label_tag, branch: branch_tag }
-          end
-        end
-
-        patterns
-      end
-
+      # TODO what's the point of the iroki_to_name? To allow wonky
+      # chars maybe?
       def parse_color_map_iroki(fname,
                                 iroki_to_name,
                                 exact_matching: true,
@@ -168,7 +89,6 @@ module Iroki
             assert pattern, "found no pattern"
 
             if exact_matching # TODO should this really be everytime?
-            # pattern = pattern.clean_name
               if name_to_iroki.has_key? pattern
                 pattern = name_to_iroki[pattern]
               else
@@ -196,11 +116,15 @@ module Iroki
                 label_tag = Iroki::Color.get_tag color, auto_color
               elsif (color = has_branch_tag? label_color)
                 branch_tag = Iroki::Color.get_tag color, auto_color
-              elsif line.match(/\t\Z/) # empty branch color, branch will be black
-                label_tag = Iroki::Color.get_tag label_color, auto_color
+              elsif line.match(/\t\Z/) # empty branch color, branch
+                                       # will be black
+                label_tag = Iroki::Color.get_tag label_color,
+                                                 auto_color
               else
-                label_tag = Iroki::Color.get_tag label_color, auto_color
-                branch_tag = Iroki::Color.get_tag label_color, auto_color
+                label_tag = Iroki::Color.get_tag label_color,
+                                                 auto_color
+                branch_tag = Iroki::Color.get_tag label_color,
+                                                  auto_color
               end
             else
               if color_given? label_color
@@ -209,7 +133,8 @@ module Iroki
                 elsif (color = has_branch_tag? label_color)
                   branch_tag = Iroki::Color.get_tag color, auto_color
                 else
-                  label_tag = Iroki::Color.get_tag label_color, auto_color
+                  label_tag = Iroki::Color.get_tag label_color,
+                                                   auto_color
                 end
               end
 
@@ -219,18 +144,14 @@ module Iroki
                 elsif (color = has_label_tag? branch_color)
                   label_tag = Iroki::Color.get_tag color, auto_color
                 else
-                  branch_tag = Iroki::Color.get_tag branch_color, auto_color
+                  branch_tag = Iroki::Color.get_tag branch_color,
+                                                    auto_color
                 end
               end
             end
 
-            # if auto_color
-            #   patterns[pattern] = "[&!color=\"#{auto_colors[color]}\"]"
-            # else
-            #   patterns[pattern] = Iroki::Color.get_tag color, auto_color
-            # end
-
-            patterns[pattern] = { label: label_tag, branch: branch_tag }
+            patterns[pattern] = { label: label_tag,
+                                  branch: branch_tag }
           end
         end
 
@@ -257,9 +178,6 @@ module Iroki
 
             abort_if newname.nil? || newname.empty?,
                      "Column 2 missing for line: #{line.inspect}"
-
-            # oldname = oldname.clean_name
-            # newname = newname.clean_name
 
             abort_if name_map.has_key?(oldname),
                      "#{oldname} is repeated in column 1"

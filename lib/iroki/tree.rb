@@ -15,6 +15,9 @@ module Iroki
     # @param [Bio::Tree] a bio ruby tree object
     #
     # @return [Hash] iroki_name (string) => quoted_orig_name (string)
+    #
+    # @todo not a good name as it doesn't actually change the names in
+    #   the tree
     def self.change_names tree
       idx = -1
       realname = {}
