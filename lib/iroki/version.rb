@@ -18,7 +18,7 @@
 
 # Library metadata
 module Iroki
-  VERSION = "0.0.35"
+  VERSION = "0.0.36"
   COPYRIGHT = "2015 - 2017 Ryan Moore"
   CONTACT   = "moorer@udel.edu"
   WEBSITE   = "https://github.com/mooreryan/iroki"
