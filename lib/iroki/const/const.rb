@@ -18,17 +18,6 @@
 
 module Iroki
   module Const
-    COPYRIGHT = "2016 Ryan Moore"
-    CONTACT   = "moorer@udel.edu"
-    WEBSITE   = "https://github.com/mooreryan/color_tree"
-    LICENSE   = "GPLv3"
-
-    VERSION_BANNER = "  # Version: #{Iroki::VERSION}
-  # Copyright #{COPYRIGHT}
-  # Contact: #{CONTACT}
-  # Website: #{WEBSITE}
-  # License: #{LICENSE}"
-
     FIG = 'begin figtree;
 	set appearance.backgroundColorAttribute="Default";
 	set appearance.backgroundColour=#-1;

@@ -55,7 +55,7 @@ module Iroki
         old_min = old_min.to_f
         old_max = old_max.to_f
 
-(new_max - ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)) + new_min
+        (new_max - ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)) + new_min
       end
 
       def patterns

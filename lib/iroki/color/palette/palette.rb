@@ -1,18 +1,6 @@
 module Iroki
   module Color
     module Palette
-      # BASIC =
-      #   { "1" => "#FF3814",   # red
-      #     "2" => "#712BFF",   # blue
-      #     "3" => "#FFDF14",   # yellow
-      #     "4" => "#14FF63", } # green
-
-      # FUNKY =
-      #   { "1" => "#FF7314",
-      #     "2" => "#9F23FF",
-      #     "3" => "#FFF814",
-      #     "4" => "#14FFD8", }
-
       KELLY = {
         "1"  => { name: "purple",          hex: "#875692" },
         "2"  => { name: "orange",          hex: "#F38400" },

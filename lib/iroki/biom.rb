@@ -49,7 +49,8 @@ module Iroki
             first_line_count = the_counts.count
           else
             abort_unless first_line_count == the_counts.count,
-                         "Line number #{idx+1} (#{line.inspect}) in the " +
+                         "Line number #{idx+1} (#{line.inspect}) " +
+                         "in the " +
                          "biom file has #{the_counts.count} " +
                          "columns when it should have " +
                          "#{first_line_count} columns like the " +
