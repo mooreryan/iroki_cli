@@ -252,13 +252,12 @@ module Iroki
                name_map_f.nil?,
                "Newick file was given but no other files were given")
 
+      # Quick fix for issue 21. TODO let a color map use regex while
+      # biom file always uses exact.
       abort_if biom_f && !exact,
                "Regex matching cannot be used with a biom file. " +
                "Pass the --exact flag"
 
-      # treeio = Bio::FlatFile.open(Bio::Newick, newick)
-
-      # newick = treeio.next_entry
       str = File.read newick
       newick = Bio::Newick.new str, parser: :iroki
 
@@ -291,13 +290,13 @@ module Iroki
         name_map = nil
       end
 
-      ################
-      # parse name map
-      #################################################################
-
       if name_map_f && color_map_f.nil? && biom_f.nil?
         AbortIf.logger.info "Only renaming was requested."
       end
+
+      ################
+      # parse name map
+      #################################################################
 
       #################################################################
       # get color patterns

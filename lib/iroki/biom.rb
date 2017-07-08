@@ -25,6 +25,10 @@ module Iroki
   class Biom < File
     attr_accessor :single_group
 
+    # Parse a biom plain text file.
+    #
+    # @return an array of three items. 1. An array of samples, 2. an
+    #   array of counts, 3. single_group flag
     def parse
       samples = []
       counts  = []
