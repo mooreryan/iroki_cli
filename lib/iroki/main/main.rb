@@ -332,6 +332,7 @@ module Iroki
                                                    exact_matching: exact,
                                                    auto_color: auto_color_hash
 
+
         # these patterns have the original name for the key, so change
         # the key to the iroki name
         name_to_iroki = iroki_to_name.invert

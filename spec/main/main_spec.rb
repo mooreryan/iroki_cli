@@ -171,6 +171,16 @@ describe Iroki::Main do
     File.join test_files, "iroki_issues", "issue_15", "color_map"
   }
 
+  let(:iroki_issue_21_color_map) {
+    File.join test_files, "iroki_issues", "issue_21", "color_map"
+  }
+  let(:iroki_issue_21_tree) {
+    File.join test_files, "iroki_issues", "issue_21", "tree"
+  }
+  let(:iroki_issue_21_biom) {
+    File.join test_files, "iroki_issues", "issue_21", "biom"
+  }
+
 
   describe "::iroki_job" do
     it "calls main without needing the output file" do
@@ -731,6 +741,19 @@ describe Iroki::Main do
         end
       end
 
+      context "issue 21 -- regex and biom files" do
+        it "exits with regex matching and biom file" do
+          expect { Iroki::Main::main exact: false,
+                                     color_branches: true,
+                                     color_taxa_names: true,
+                                     color_map_f: iroki_issue_21_color_map,
+                                     newick_f: iroki_issue_21_tree,
+                                     biom_f: iroki_issue_21_biom,
+                                     out_f: output_nexus}.
+            to raise_error AbortIf::Exit
+        end
+      end
+
       context "issue 15 -- default colors" do
         it "lets the user choose a default color with a color name" do
           Iroki::Main::main color_branches:   true,
@@ -806,7 +829,6 @@ describe Iroki::Main do
                               default_color:    "arstoien"}.
             to raise_error AbortIf::Exit
         end
-
       end
     end
   end

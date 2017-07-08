@@ -60,8 +60,15 @@ module Iroki
         arg
       end
 
-      # TODO what's the point of the iroki_to_name? To allow wonky
-      # chars maybe?
+
+      # Parses the color map to return the pattern hash.
+      #
+      # @note If exact_matching is true, then the keys of the pattern
+      #   hash will be strings. If the exact_matching flag is false,
+      #   then the keys of the pattern hash will be Regexp objects.
+      #
+      # @todo what's the point of the iroki_to_name? To allow wonky
+      #   chars maybe?
       def parse_color_map_iroki(fname,
                                 iroki_to_name,
                                 exact_matching: true,

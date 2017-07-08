@@ -58,6 +58,11 @@ module Iroki
         (new_max - ((((new_max - new_min) * (x - old_min.to_f)) / (old_max - old_min)) + new_min)) + new_min
       end
 
+      # Returns the pattern hash. Patterns are strings for exact
+      # matching.
+      #
+      # @return the pattern hash
+      #  { pattern [String] => { label: tag, branch: tag } }
       def patterns
         hash = {}
         @samples.zip(@color_hex_codes).each do |(sample, hexcode)|

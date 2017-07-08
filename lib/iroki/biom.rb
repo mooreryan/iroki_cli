@@ -27,6 +27,9 @@ module Iroki
 
     # Parse a biom plain text file.
     #
+    # @note The samples returned by this function will be Strings and
+    #   NOT regex's.
+    #
     # @return an array of three items. 1. An array of samples, 2. an
     #   array of counts, 3. single_group flag
     def parse
