@@ -1,3 +1,5 @@
+**NOTE**: THE IROKI COMMAND LINE APP IS NO LONGER MAINTAINED.  ALL FUTURE WORK WILL BE WITH THE WEB APP: https://github.com/mooreryan/iroki_web , www.iroki.net.
+
 [![Iroki](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)
 
 # Iroki #
@@ -7,8 +9,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/mooreryan/iroki/badge.svg?branch=master)](https://coveralls.io/github/mooreryan/iroki?branch=master)
 [![GitHub issues](https://img.shields.io/github/issues/mooreryan/iroki.svg)](https://github.com/mooreryan/iroki/issues)
 [![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://raw.githubusercontent.com/mooreryan/iroki/master/COPYING)
-
-**NOTE**: THE IROKI COMMAND LINE APP IS NO LONGER MAINTAINED.  ALL FUTURE WORK WILL BE WITH THE WEB APP: https://github.com/mooreryan/iroki_web , www.iroki.net.
 
 Command line app and library code for Iroki, a phylogenetic tree
 customization program.
