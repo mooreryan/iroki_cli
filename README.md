@@ -1,4 +1,4 @@
-**NOTE**: THE IROKI COMMAND LINE APP IS NO LONGER MAINTAINED.  ALL FUTURE WORK WILL BE WITH THE WEB APP: https://github.com/mooreryan/iroki_web , www.iroki.net.
+**NOTE**: THE IROKI COMMAND LINE APP IS NO LONGER MAINTAINED.  ALL FUTURE WORK WILL BE WITH THE WEB APP: https://github.com/mooreryan/iroki , www.iroki.net.
 
 [![Iroki](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)](https://github.com/mooreryan/iroki/blob/master/assets/images/iroki_logo3.png)
 
